@@ -31,6 +31,12 @@ export interface ZoomRegistrant {
 	lastName: string;
 }
 
+interface ZoomRegistrantResponse {
+	id: string;
+	join_url: string;
+	registrant_id: string;
+}
+
 // ----------------------------
 // Get Zoom OAuth token (Server-to-Server)
 // ----------------------------
@@ -65,7 +71,7 @@ export async function getZoomToken(): Promise<string> {
 // ----------------------------
 // Create Zoom meeting + add registrants
 // ----------------------------
-export async function createZoomMeeting(topic: string, startTime: Date, duration = 30, registrants: ZoomRegistrant[] = []): Promise<ZoomMeetingResponse> {
+export async function createZoomMeeting(topic: string, startTime: Date, duration = 30, registrants: ZoomRegistrant[] = []): Promise<{ meeting: ZoomMeetingResponse; registrantLinks: Record<string, string> }> {
 	const token = await getZoomToken();
 
 	// 1️⃣ Create meeting
@@ -86,7 +92,7 @@ export async function createZoomMeeting(topic: string, startTime: Date, duration
 				participant_video: true,
 				join_before_host: false,
 				approval_type: 0, // auto-approve
-				registration_type: 1,
+				registration_type: 1, // registration required
 				audio: "both",
 				waiting_room: true,
 				registrants_email_notification: true,
@@ -101,7 +107,9 @@ export async function createZoomMeeting(topic: string, startTime: Date, duration
 
 	const meeting = (await res.json()) as ZoomMeetingResponse;
 
-	// 2️⃣ Add registrants (Zoom sends confirmation email)
+	// 2️⃣ Add registrants and collect their join URLs
+	const registrantLinks: Record<string, string> = {};
+
 	for (const r of registrants) {
 		const regRes = await fetch(`https://api.zoom.us/v2/meetings/${meeting.id}/registrants`, {
 			method: "POST",
@@ -119,8 +127,12 @@ export async function createZoomMeeting(topic: string, startTime: Date, duration
 		if (!regRes.ok) {
 			const text = await regRes.text();
 			console.warn(`Failed to add registrant ${r.email}: ${regRes.status} ${text}`);
+			continue;
 		}
+
+		const regData = (await regRes.json()) as ZoomRegistrantResponse;
+		registrantLinks[r.email] = regData.join_url;
 	}
 
-	return meeting;
+	return { meeting, registrantLinks };
 }

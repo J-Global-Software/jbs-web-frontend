@@ -101,13 +101,9 @@ export async function POST(req: NextRequest) {
 
 		const startJST = new Date(`${date}T${time}:00+09:00`);
 		const startUTC = new Date(startJST.getTime() - startJST.getTimezoneOffset() * 60000); // adjust to UTC
-		const meeting = await createZoomMeeting(`Free Coaching X ${firstName} ${lastName}`, startUTC, 30, [
-			{
-				email,
-				firstName,
-				lastName,
-			},
-		]);
+		const { meeting, registrantLinks } = await createZoomMeeting(`Free Coaching X ${firstName} ${lastName}`, startUTC, 30, [{ email, firstName, lastName }]);
+
+		const userZoomLink = registrantLinks[email]; // <-- This is the personal join URL
 
 		// -----------------------------
 		// Insert event into calendar
@@ -117,7 +113,7 @@ export async function POST(req: NextRequest) {
 			description: `Free coaching session with ${firstName} ${lastName}
 Email: ${email}
 ${phone ? `Phone: ${phone}\n` : ""}${message ? `Message: ${message}\n` : ""}
-Zoom link: ${meeting.join_url || ""}`,
+Zoom link: ${userZoomLink || ""}`,
 			start: { dateTime: start.toISOString(), timeZone: "Asia/Tokyo" },
 			end: { dateTime: end.toISOString(), timeZone: "Asia/Tokyo" },
 			extendedProperties: { private: { firstName, lastName, email, phone: phone || "", message: message || "" } },
@@ -142,8 +138,40 @@ Zoom link: ${meeting.join_url || ""}`,
 		// -----------------------------
 		const resend = new Resend(process.env.RESEND_API_KEY);
 
+		// -----------------------------
+		// Calendar helpers
+		// -----------------------------
 		const formatForGoogle = (d: Date) => d.toISOString().replace(/-|:|\.\d{3}/g, "");
 		const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Free+Coaching+Session&dates=${formatForGoogle(start)}/${formatForGoogle(end)}&details=Your+free+coaching+session&location=Online`;
+
+		// Outlook / Teams URL
+		const outlookUrl = `https://outlook.office.com/calendar/0/deeplink/compose?subject=Free+Coaching+Session&startdt=${start.toISOString()}&enddt=${end.toISOString()}&body=Your+free+coaching+session&location=Online`;
+
+		// ICS generation
+		const generateICS = ({ start, end, title, description, location }: { start: Date; end: Date; title: string; description: string; location: string }) => {
+			const formatICSDate = (d: Date) => d.toISOString().replace(/-|:|\.\d{3}/g, "");
+			return `
+BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTART:${formatICSDate(start)}
+DTEND:${formatICSDate(end)}
+SUMMARY:${title}
+DESCRIPTION:${description}
+LOCATION:${location}
+END:VEVENT
+END:VCALENDAR
+`.trim();
+		};
+
+		const icsContent = generateICS({
+			start,
+			end,
+			title: "Free Coaching Session",
+			description: "Your free coaching session",
+			location: "Online",
+		});
 
 		// Email to user
 
@@ -152,61 +180,60 @@ Zoom link: ${meeting.join_url || ""}`,
 			to: email,
 			subject: messages.server.email.subject,
 			html: `
-  <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; padding: 20px;">
+<div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; padding: 20px;">
 
-    <!-- Logo -->
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img src="https://j-globalbizschool.com/logo.avif" alt="Company Logo" style="max-width: 150px;" />
-    </div>
-
-    <!-- Header -->
-    <h2 style="text-align: center; color: #2563eb; margin-bottom: 30px;">
-      ${messages.server.email.header}
-    </h2>
-
-    <!-- Greeting -->
-    <p>${interpolate(messages.server.email.hi, { name: locale == "ja" ? lastName : firstName })}</p>
-
-    <!-- Intro -->
-    <p>
-      ${messages.server.email.thanks}<br/>
-      ${interpolate(messages.server.email.seeYou, { date, time })}
-    </p>
-
-    <!-- Booking details -->
-    <p>
-      <strong>${messages.server.email.serviceBooked}:</strong> ${messages.server.email.serviceName}<br/>
-      <strong>${messages.server.email.zoomLink}:</strong>
-      <a href="${meeting.join_url || ""}" style="color:#2563eb;">${process.env.ZOOM_LINK || ""}</a><br/>
-      <strong>${messages.server.email.staff}:</strong> ${messages.server.email.staffName}
-    </p>
-
-    <!-- Contact -->
-    <p>
-      ${messages.server.email.contact}<br/>
-      <a href="mailto:${messages.server.email.supportEmail}" style="color:#2563eb;">
-        ${messages.server.email.supportEmail}
-      </a>
-    </p>
-
-    <!-- Add to Calendar -->
-    <p style="text-align: center; margin-top: 30px;">
-      <a href="${calendarUrl}" target="_blank" rel="noopener noreferrer" style="
-        display:inline-block;
-        padding: 12px 24px;
-        background-color:#2563eb;
-        color:white;
-        font-weight:600;
-        border-radius:12px;
-        text-decoration:none;
-      ">
-        ${messages.server.email.addToCalendar}
-      </a>
-    </p>
-
-    <p style="margin-top: 40px;">— ${messages.server.email.teamName}</p>
+  <!-- Logo -->
+  <div style="text-align: center; margin-bottom: 20px;">
+    <img src="https://j-globalbizschool.com/logo.avif" alt="Company Logo" style="max-width: 150px;" />
   </div>
-  `,
+
+  <!-- Header -->
+  <h2 style="text-align: center; color: #2563eb; margin-bottom: 30px;">
+    ${messages.server.email.header}
+  </h2>
+
+  <!-- Greeting -->
+  <p>${interpolate(messages.server.email.hi, { name: locale == "ja" ? lastName : firstName })}</p>
+
+  <!-- Intro -->
+  <p>
+    ${messages.server.email.thanks}<br/>
+    ${interpolate(messages.server.email.seeYou, { date, time })}
+  </p>
+
+  <!-- Booking details -->
+  <p>
+    <strong>${messages.server.email.serviceBooked}:</strong> ${messages.server.email.serviceName}<br/>
+    <strong>${messages.server.email.zoomLink}:</strong>
+    <a href="${userZoomLink || ""}" style="color:#2563eb;">${userZoomLink || ""}</a><br/>
+    <strong>${messages.server.email.staff}:</strong> ${messages.server.email.staffName}
+  </p>
+
+  <!-- Contact -->
+  <p>
+    ${messages.server.email.contact}<br/>
+    <a href="mailto:${messages.server.email.supportEmail}" style="color:#2563eb;">
+      ${messages.server.email.supportEmail}
+    </a>
+  </p>
+
+  <!-- Calendar links (simpler inline style) -->
+  <p style="text-align: center; margin-top: 30px; font-size: 14px;">
+    <a href="${calendarUrl}" target="_blank" rel="noopener noreferrer" style="color:#2563eb; text-decoration:underline; margin:0 8px;">Google Calendar</a> |
+    <a href="${outlookUrl}" target="_blank" rel="noopener noreferrer" style="color:#2563eb; text-decoration:underline; margin:0 8px;">Outlook / Teams</a> |
+    <a href="data:text/calendar;base64,${Buffer.from(icsContent).toString("base64")}" download="coaching-session.ics" style="color:#2563eb; text-decoration:underline; margin:0 8px;">Apple / Other</a>
+  </p>
+
+  <p style="margin-top: 40px;">— ${messages.server.email.teamName}</p>
+</div>
+`,
+			attachments: [
+				{
+					filename: "coaching-session.ics",
+					content: Buffer.from(icsContent).toString("base64"),
+					contentType: "text/calendar",
+				},
+			],
 		});
 
 		// Email to lecturer
