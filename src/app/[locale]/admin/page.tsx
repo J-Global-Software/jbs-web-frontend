@@ -1,7 +1,7 @@
 import LogoutButton from "@/app/components/admin/LogoutButton";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Users, Calendar, Clock, TrendingUp, Mail, Phone, MessageSquare } from "lucide-react";
+import { Users, Calendar, Clock, TrendingUp, Mail, Phone } from "lucide-react";
 import MessageModal from "@/app/components/admin/ModalMessage";
 
 type Booking = {

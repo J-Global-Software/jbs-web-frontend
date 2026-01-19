@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
 
 		const startJST = new Date(`${date}T${time}:00+09:00`);
 		const startUTC = new Date(startJST.getTime() - startJST.getTimezoneOffset() * 60000); // adjust to UTC
-		const { meeting, registrantLinks } = await createZoomMeeting(`Free Coaching X ${firstName} ${lastName}`, startUTC, 30, [{ email, firstName, lastName }]);
+		const { registrantLinks } = await createZoomMeeting(`Free Coaching X ${firstName} ${lastName}`, startUTC, 30, [{ email, firstName, lastName }]);
 
 		const userZoomLink = registrantLinks[email]; // <-- This is the personal join URL
 
