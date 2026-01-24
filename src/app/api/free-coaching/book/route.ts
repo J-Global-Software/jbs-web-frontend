@@ -149,22 +149,10 @@ Zoom link: ${userZoomLink || ""}`,
 
 		// ICS generation
 		const generateICS = ({ start, end, title, description, location }: { start: Date; end: Date; title: string; description: string; location: string }) => {
-			const formatICSDate = (d: Date) => d.toISOString().replace(/-|:|\.\d{3}/g, "");
-			return `
-BEGIN:VCALENDAR
-VERSION:2.0
-CALSCALE:GREGORIAN
-BEGIN:VEVENT
-DTSTART:${formatICSDate(start)}
-DTEND:${formatICSDate(end)}
-SUMMARY:${title}
-DESCRIPTION:${description}
-LOCATION:${location}
-END:VEVENT
-END:VCALENDAR
-`.trim();
-		};
+			const formatICSDate = (d: Date) => d.toISOString().replace(/-|:|\.\d{3}/g, "") + "Z";
 
+			return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//J Global Biz School//Coaching Session//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "BEGIN:VEVENT", `UID:${crypto.randomUUID()}@j-globalbizschool.com`, `DTSTAMP:${formatICSDate(new Date())}`, `DTSTART:${formatICSDate(start)}`, `DTEND:${formatICSDate(end)}`, `SUMMARY:${title}`, `DESCRIPTION:${description}`, `LOCATION:${location}`, "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+		};
 		const icsContent = generateICS({
 			start,
 			end,
@@ -219,10 +207,39 @@ END:VCALENDAR
 
   <!-- Calendar links (simpler inline style) -->
   <p style="text-align: center; margin-top: 30px; font-size: 14px;">
-    <a href="${calendarUrl}" target="_blank" rel="noopener noreferrer" style="color:#2563eb; text-decoration:underline; margin:0 8px;">Google Calendar</a> |
-    <a href="${outlookUrl}" target="_blank" rel="noopener noreferrer" style="color:#2563eb; text-decoration:underline; margin:0 8px;">Outlook / Teams</a> |
-    <a href="data:text/calendar;base64,${Buffer.from(icsContent).toString("base64")}" download="coaching-session.ics" style="color:#2563eb; text-decoration:underline; margin:0 8px;">Apple / Other</a>
-  </p>
+  <strong>${messages.server.email.calendar.addToCalendar}</strong><br/><br/>
+
+  <a
+    href="${calendarUrl}"
+    target="_blank"
+    rel="noopener noreferrer"
+    style="color:#2563eb; text-decoration:underline; margin:0 8px;"
+  >
+    ${messages.server.email.calendar.google}
+  </a>
+  |
+
+  <a
+    href="${outlookUrl}"
+    target="_blank"
+    rel="noopener noreferrer"
+    style="color:#2563eb; text-decoration:underline; margin:0 8px;"
+  >
+    ${messages.server.email.calendar.outlook}
+  </a>
+  |
+
+  <span style="color:#2563eb; margin:0 8px;">
+    ${messages.server.email.calendar.apple}
+  </span>
+
+  <br/><br/>
+
+  <span style="color:#666; font-size:12px;">
+    ${messages.server.email.calendar.appleHint}
+  </span>
+</p>
+
 
   <p style="margin-top: 40px;">— ${messages.server.email.teamName}</p>
 </div>
@@ -230,8 +247,8 @@ END:VCALENDAR
 			attachments: [
 				{
 					filename: "coaching-session.ics",
-					content: Buffer.from(icsContent).toString("base64"),
-					contentType: "text/calendar",
+					content: icsContent, // ← DO NOT base64 encode
+					contentType: "text/calendar; charset=utf-8",
 				},
 			],
 		});

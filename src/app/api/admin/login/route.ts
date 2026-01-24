@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 
@@ -18,7 +20,7 @@ export async function POST(req: Request) {
 	res.cookies.set("admin_session", "true", {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
-		sameSite: "strict",
+		sameSite: "lax",
 		path: "/",
 	});
 

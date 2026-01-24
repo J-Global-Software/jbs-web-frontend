@@ -13,6 +13,13 @@ export const LINKS: Record<string, LinkEntry> = {
 		},
 	},
 
+	fmp: {
+		url: "https://fms.j-globalbizschool.com/fmi/webd/IBSApplication",
+		langUrls: {
+			en: "https://fms.j-globalbizschool.com/fmi/webd/IBSApplication?script=homepageEn",
+		},
+	},
+
 	freeTrial: {
 		url: "https://fms.j-globalbizschool.com/fmi/webd/IBSApplication?script=twoweekstrial",
 		langUrls: {
