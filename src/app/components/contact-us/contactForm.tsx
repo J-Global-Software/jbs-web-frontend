@@ -64,6 +64,8 @@ export default function ContactForm() {
 					</div>
 				))}
 
+				<input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" />
+
 				<div className="relative">
 					<label className="absolute -top-2 left-3 bg-white px-1 text-sm font-medium text-gray-700">
 						{t("form.message")}
