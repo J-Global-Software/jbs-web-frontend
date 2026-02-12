@@ -71,8 +71,9 @@ export async function getZoomToken(): Promise<string> {
 // ----------------------------
 // Create Zoom meeting + add registrants
 // ----------------------------
-export async function createZoomMeeting(topic: string, startTime: Date, duration = 30, registrants: ZoomRegistrant[] = []): Promise<{ meeting: ZoomMeetingResponse; registrantLinks: Record<string, string> }> {
+export async function createZoomMeeting(topic: string, startJST: Date, duration = 30, registrants: ZoomRegistrant[] = []): Promise<{ meeting: ZoomMeetingResponse; registrantLinks: Record<string, string> }> {
 	const token = await getZoomToken();
+	const endJST = new Date(startJST.getTime() + 30 * 60 * 1000);
 
 	// 1️⃣ Create meeting
 	const res = await fetch("https://api.zoom.us/v2/users/me/meetings", {
@@ -84,7 +85,8 @@ export async function createZoomMeeting(topic: string, startTime: Date, duration
 		body: JSON.stringify({
 			topic,
 			type: 2, // Scheduled meeting
-			start_time: startTime.toISOString(),
+			start: { dateTime: startJST.toISOString(), timeZone: "Asia/Tokyo" },
+			end: { dateTime: endJST.toISOString(), timeZone: "Asia/Tokyo" },
 			duration,
 			timezone: "Asia/Tokyo",
 			settings: {

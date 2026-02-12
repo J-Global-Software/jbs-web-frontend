@@ -85,9 +85,15 @@ export async function POST(req: NextRequest) {
 		}
 
 		// Create Zoom meeting
-		const startJST = new Date(`${date}T${time}:00+09:00`);
-		const startUTC = new Date(startJST.getTime() - startJST.getTimezoneOffset() * 60000);
-		const { meeting, registrantLinks } = await createZoomMeeting(`Free Coaching X ${firstName} ${lastName}`, startUTC, 30, [{ email, firstName, lastName }]);
+
+		const [year, month, day] = date.split("-").map(Number);
+		const [hour, minute] = time.split(":").map(Number);
+
+		// Construct Date with JST offset
+		const startJST = new Date(Date.UTC(year, month - 1, day, hour - 9, minute));
+		console.log(date); // 2026-02-12T01:30:00.000Z
+
+		const { meeting, registrantLinks } = await createZoomMeeting(`Free Coaching X ${firstName} ${lastName}`, startJST, 30, [{ email, firstName, lastName }]);
 
 		const userZoomLink = registrantLinks[email];
 
@@ -155,8 +161,8 @@ Zoom link: ${userZoomLink || ""}`,
 			location: "Online",
 		});
 
-		// Management URL for reschedule/cancel
-		const managementUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://j-globalbizschool.com"}/free-coaching/manage/${cancellationToken}`;
+		const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://j-globalbizschool.com";
+		const managementUrl = `${baseUrl}${locale === "ja" ? "" : `/${locale}`}/free-coaching/manage/${cancellationToken}`;
 
 		const text =
 			locale === "ja"

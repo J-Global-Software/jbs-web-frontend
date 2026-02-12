@@ -176,7 +176,9 @@ Zoom link: ${userZoomLink || ""}
 		// SEND EMAIL NOTIFICATIONS
 		// ============================================================
 		const resend = new Resend(process.env.RESEND_API_KEY);
-		const managementUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://j-globalbizschool.com"}/free-coaching/manage/${newCancellationToken}`;
+
+		const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://j-globalbizschool.com";
+		const managementUrl = `${baseUrl}${locale === "ja" ? "" : `/${locale}`}/free-coaching/manage/${newCancellationToken}`;
 
 		// Calendar URLs
 		const formatForGoogle = (d: Date) => d.toISOString().replace(/-|:|\.\d{3}/g, "");
