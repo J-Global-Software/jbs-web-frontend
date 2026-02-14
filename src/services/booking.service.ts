@@ -23,15 +23,15 @@ export const BookingService = {
 			const policy = BookingPolicy.canModify(start);
 			if (!policy.allowed) throw new Error("NEW_TIME_TOO_SOON");
 
-			//  ACQUIRE LOCK
+			// ACQUIRE LOCK
 			const lockKey = Math.abs(hashCode(`${payload.date}-${payload.time}`));
 			await query(`SELECT pg_advisory_lock($1)`, [lockKey]);
 
 			try {
 				// 3. Conflict Check
-				await checkCalendarConflict(start, end); // Throws or returns boolean
+				await checkCalendarConflict(start, end);
 
-				// 4 & 5. External Events IN PARALLEL
+				// 4 & 5. External Events (Zoom & Google Calendar)
 				const zoomTopic = `(JBS) Free Coaching X ${payload.firstName} ${payload.lastName}`;
 
 				const [zoomData, gCalEvent] = await Promise.all([
@@ -62,48 +62,53 @@ export const BookingService = {
 					eventDate: start.toISOString(),
 				});
 
-				// 7. Send Emails (Non-blocking)
-				(async () => {
-					try {
-						const messages = await loadServerMessages(locale);
-						const managementUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://j-globalbizschool.com"}/${locale}/free-coaching/manage/${booking.cancellation_token}`;
+				// 7. Send Emails (AWAITED to ensure production delivery)
+				// We do this BEFORE returning so the serverless function doesn't terminate early
+				try {
+					const messages = await loadServerMessages(locale);
 
-						const icsContent = generateICS({
-							start,
-							end,
-							title: zoomTopic,
-							description: "Your free coaching session",
-							location: "Zoom Meeting",
-						});
+					// Fallback for production URL
+					const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://j-globalbizschool.com";
+					const managementUrl = `${baseUrl}/${locale}/free-coaching/manage/${booking.cancellation_token}`;
 
-						await Promise.all([
-							EmailService.sendUserConfirmation({
-								locale,
-								userData: payload,
-								userZoomLink,
-								managementUrl,
-								messages,
-								icsContent,
-								fromEmail: process.env.FROM_EMAIL || "",
-								toEmail: payload.email,
-							}),
-							EmailService.sendLecturerNotification({
-								userData: payload,
-								messages,
-								fromEmail: process.env.FROM_EMAIL || "",
-								toEmail: process.env.LECTURER_EMAIL || "",
-							}),
-						]);
-					} catch (emailError) {
-						console.error("Email Error:", emailError);
-					}
-				})();
+					const icsContent = generateICS({
+						start,
+						end,
+						title: zoomTopic,
+						description: "Your free coaching session",
+						location: "Zoom Meeting",
+					});
+
+					await Promise.all([
+						EmailService.sendUserConfirmation({
+							locale,
+							userData: payload,
+							userZoomLink,
+							managementUrl,
+							messages,
+							icsContent,
+							fromEmail: process.env.FROM_EMAIL || "",
+							toEmail: payload.email,
+						}),
+						EmailService.sendLecturerNotification({
+							userData: payload,
+							messages,
+							fromEmail: process.env.FROM_EMAIL || "",
+							toEmail: process.env.LECTURER_EMAIL || "",
+						}),
+					]);
+				} catch (emailError) {
+					// We log the error but don't crash the whole process since the DB/Zoom is already done
+					console.error("CRITICAL: Resend/Email Service failed:", emailError);
+				}
 
 				return { booking, sessionId };
 			} finally {
+				// ALWAYS release the lock
 				await query(`SELECT pg_advisory_unlock($1)`, [lockKey]);
 			}
 		} catch (error) {
+			console.error("Booking Creation Error:", error);
 			throw error;
 		}
 	},
