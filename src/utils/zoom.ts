@@ -1,5 +1,4 @@
-// utils/zoom.ts
-import fetch from "node-fetch"; // or global fetch in Next.js 13+
+// src/utils/zoom.ts
 
 // ----------------------------
 // Zoom token caching
@@ -38,6 +37,23 @@ interface ZoomRegistrantResponse {
 }
 
 // ----------------------------
+// Helper: Format date for Zoom API in specific timezone
+// ----------------------------
+function formatDateForZoom(date: Date, timezone: string): string {
+	// Zoom expects format: "YYYY-MM-DDTHH:mm:ss" (without Z or timezone offset)
+	// We need to format the date AS IT APPEARS in the target timezone
+
+	const year = date.toLocaleString("en-US", { timeZone: timezone, year: "numeric" });
+	const month = date.toLocaleString("en-US", { timeZone: timezone, month: "2-digit" });
+	const day = date.toLocaleString("en-US", { timeZone: timezone, day: "2-digit" });
+	const hour = date.toLocaleString("en-US", { timeZone: timezone, hour: "2-digit", hour12: false });
+	const minute = date.toLocaleString("en-US", { timeZone: timezone, minute: "2-digit" });
+	const second = date.toLocaleString("en-US", { timeZone: timezone, second: "2-digit" });
+
+	return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+}
+
+// ----------------------------
 // Get Zoom OAuth token (Server-to-Server)
 // ----------------------------
 export async function getZoomToken(): Promise<string> {
@@ -71,11 +87,13 @@ export async function getZoomToken(): Promise<string> {
 // ----------------------------
 // Create Zoom meeting + add registrants
 // ----------------------------
-export async function createZoomMeeting(topic: string, startJST: Date, duration = 30, registrants: ZoomRegistrant[] = []): Promise<{ meeting: ZoomMeetingResponse; registrantLinks: Record<string, string> }> {
+export async function createZoomMeeting(topic: string, startTime: Date, duration = 30, registrants: ZoomRegistrant[] = []): Promise<{ meeting: ZoomMeetingResponse; registrantLinks: Record<string, string> }> {
 	const token = await getZoomToken();
-	const endJST = new Date(startJST.getTime() + 30 * 60 * 1000);
 
-	// 1️⃣ Create meeting
+	// FIXED: Format date in JST without converting to UTC
+	const startTimeFormatted = formatDateForZoom(startTime, "Asia/Tokyo");
+
+	// 1 Create meeting
 	const res = await fetch("https://api.zoom.us/v2/users/me/meetings", {
 		method: "POST",
 		headers: {
@@ -85,8 +103,7 @@ export async function createZoomMeeting(topic: string, startJST: Date, duration 
 		body: JSON.stringify({
 			topic,
 			type: 2, // Scheduled meeting
-			start: { dateTime: startJST.toISOString(), timeZone: "Asia/Tokyo" },
-			end: { dateTime: endJST.toISOString(), timeZone: "Asia/Tokyo" },
+			start_time: startTimeFormatted, // ✅ FIXED: Use formatted string
 			duration,
 			timezone: "Asia/Tokyo",
 			settings: {
@@ -109,7 +126,7 @@ export async function createZoomMeeting(topic: string, startJST: Date, duration 
 
 	const meeting = (await res.json()) as ZoomMeetingResponse;
 
-	// 2️⃣ Add registrants and collect their join URLs
+	// 2 Add registrants and collect their join URLs
 	const registrantLinks: Record<string, string> = {};
 
 	for (const r of registrants) {
@@ -157,10 +174,8 @@ export async function deleteZoomMeeting(meetingId: string): Promise<void> {
 			const text = await res.text();
 			throw new Error(`Failed to delete Zoom meeting: ${res.status} ${res.statusText} - ${text}`);
 		}
-
-		console.log(`✅ Deleted Zoom meeting: ${meetingId}`);
 	} catch (error) {
-		console.error(`❌ Failed to delete Zoom meeting ${meetingId}:`, error);
+		console.error(`Failed to delete Zoom meeting ${meetingId}:`, error);
 		throw new Error(`Failed to delete Zoom meeting: ${error instanceof Error ? error.message : "Unknown error"}`);
 	}
 }
