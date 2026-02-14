@@ -14,14 +14,13 @@ const limiter = new Ratelimit({
 });
 
 export async function POST(req: NextRequest) {
-	// 1. Guard: Payload Size (Prevent massive text attacks)
+	// 1. Guard: Payload Size
 	const contentLength = parseInt(req.headers.get("content-length") || "0");
 	if (contentLength > 15000) {
 		return NextResponse.json({ error: "Payload too large" }, { status: 413 });
 	}
 
 	// 2. Rate Limiting: Check IP FIRST
-	// This stops bots before they even trigger a Database call in SessionService
 	const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 	const { success, limit, reset, remaining } = await limiter.limit(`contact:${ip}`);
 
@@ -41,38 +40,55 @@ export async function POST(req: NextRequest) {
 
 	try {
 		const body = await req.json();
+		const { cfToken, confirmEmail, firstName, lastName, email, message } = body;
 
 		// 3. Security: Honeypot (bot trap)
-		if (body.company && String(body.company).trim().length > 0) {
-			// Silently succeed to trick the bot
+		if (confirmEmail && String(confirmEmail).trim().length > 0) {
 			return NextResponse.json({ success: true });
 		}
 
-		// 4. Validation
-		// Suggestion: use a specific validateContact method if available
-		Validators.validateBooking({ ...body, date: "N/A", time: "N/A" });
+		// 4. Security: Cloudflare Turnstile Verification
+		if (!cfToken) {
+			return NextResponse.json({ error: "Security token missing" }, { status: 400 });
+		}
 
-		// 5. Session Management: Link the message to a persistent session
+		const verifyResponse = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			body: new URLSearchParams({
+				secret: process.env.TURNSTILE_SECRET_KEY!, // Keep this private!
+				response: cfToken,
+				remoteip: ip,
+			}),
+		});
+
+		const outcome = await verifyResponse.json();
+		if (!outcome.success) {
+			return NextResponse.json({ error: "Invalid security token" }, { status: 403 });
+		}
+
+		// 5. Validation
+		// Using your specific contact validator
+		Validators.validateContact({ firstName, lastName, email, message });
+
+		// 6. Session Management
 		const { sessionId } = await SessionService.getOrCreate(req);
 
-		// 6. Service Delegation
+		// 7. Service Delegation (Database + Email)
 		await ContactService.handleContactMessage({
-			firstName: body.firstName,
-			lastName: body.lastName,
-			email: body.email,
-			message: body.message,
+			firstName,
+			lastName,
+			email,
+			message,
 			sessionId,
 		});
 
-		// 7. Response with Cookie Persistence
+		// 8. Final Response
 		const res = NextResponse.json({ success: true });
-
-		// Use a secure cookie so the next visit recognizes the user
 		setSessionCookie(res, sessionId);
 
 		return res;
 	} catch (err) {
-		// Type narrowing for the error object
 		const errorMessage = err instanceof Error ? err.message : "Internal Server Error";
 		const status = getErrorStatus(errorMessage);
 

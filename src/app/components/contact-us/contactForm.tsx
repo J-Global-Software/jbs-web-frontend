@@ -2,15 +2,24 @@
 
 import React, { useState } from "react";
 import { Send } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
+import Turnstile from "react-turnstile";
 
 export default function ContactForm() {
+	const [token, setToken] = useState<string | null>(null);
+	const locale = useLocale();
 	const t = useTranslations("contact");
 	const [loading, setLoading] = useState(false);
+	const [appearance, setAppearance] = useState<"interaction-only" | "always">("interaction-only");
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
+
+		if (!token) {
+			toast.error("Please complete the security check");
+			return;
+		}
 
 		const form = e.currentTarget;
 
@@ -32,6 +41,8 @@ export default function ContactForm() {
 					lastName: formData.get("lastName"),
 					email: formData.get("email"),
 					message: formData.get("message"),
+					confirmEmail: formData.get("confirmEmail"), // Honeypot field for bots, should be empty
+					cfToken: token, // Pass the token to the backend
 				}),
 			});
 
@@ -64,7 +75,7 @@ export default function ContactForm() {
 					</div>
 				))}
 
-				<input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" />
+				<input type="text" name="confirmEmail" tabIndex={-1} autoComplete="off" className="sr-only" />
 
 				<div className="relative">
 					<label className="absolute -top-2 left-3 bg-white px-1 text-sm font-medium text-gray-700">
@@ -78,6 +89,22 @@ export default function ContactForm() {
 					<Send className="w-4 h-4" />
 					{loading ? t("form.sending") : t("form.send")}
 				</button>
+				<div className="my-4 flex justify-center">
+					<Turnstile
+						sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+						language={locale}
+						theme="light"
+						appearance={appearance}
+						onVerify={(token) => {
+							setToken(token);
+							// Optional: hide it again once verified if you want
+						}}
+						onError={() => {
+							// If security fails, force the widget to show up
+							setAppearance("always");
+						}}
+					/>
+				</div>
 			</form>
 
 			<style jsx>{`
