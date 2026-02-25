@@ -97,26 +97,6 @@ export default function WorkshopDetail({ workshop, code, levelLabel = true, show
 			{/* --- 2. MAIN BENTO GRID --- */}
 			<div className="max-w-7xl mx-auto px-6 py-12 md:py-24 space-y-8">
 				{/* Program Purpose Section: Fixed Render Truncation */}
-				<section className="relative p-8 md:p-16 bg-white rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-slate-100 shadow-sm">
-					{/* Simplified background for mobile GPU */}
-					<FaBullseye className="absolute -bottom-10 -right-10 text-[10rem] md:text-[15rem] text-slate-50 pointer-events-none -rotate-12" />
-
-					<div className="relative z-10 space-y-8 max-w-4xl">
-						<div className="inline-flex flex-col">
-							<h3 className="text-lg md:text-xl font-extrabold text-slate-900 uppercase tracking-widest">{tPrograms("programPurpose")}</h3>
-							<div className="h-1 w-6 bg-orange-500/40 mt-1" />
-						</div>
-
-						<div className="space-y-6">
-							{processed.purpose.map((item, i) => (
-								<div key={`purpose-${i}`} className="flex gap-4 items-start">
-									<span className="text-xs font-black text-blue-300 mt-1.5 italic">{(i + 1).toString().padStart(2, "0")}</span>
-									<p className="font-bold leading-relaxed text-slate-600 text-base md:text-lg">{item}</p>
-								</div>
-							))}
-						</div>
-					</div>
-				</section>
 
 				<div className="grid lg:grid-cols-12 gap-8 items-start">
 					{/* Objectives Section */}
