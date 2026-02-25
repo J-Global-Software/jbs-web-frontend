@@ -174,5 +174,22 @@
     "miniMBAAddition": "各トピックの他に、ロールプレイングゲームやミニインターンシップなどもあり実践しながら楽しく学ぶことができます。",
     "sixWaysLearning": "2つのトピックからなる6つの学習テーマ",
     "learnMore": "詳しく見る",
-    "freeCoaching": "無料予約！"
+    "freeCoaching": "無料予約！",
+    "pricing": {
+        "title": "料金プラン",
+        "subtitle": "あなたに最適なプランを選んで、グローバルスキルを習得しましょう。",
+        "cycle_monthly": "月払い",
+        "cycle_biannual": "半年払い",
+        "cycle_annual": "年払い",
+        "popular": "人気プラン",
+        "buyNow": "買う",
+        "standardAccess": "標準的なアクセス",
+        "expressFeatures": "月に4回までワークショップを受講可能",
+        "unlimitedFeatures": "無制限でワークショップを受講可能",
+        "perkLearningPlan": "年間個別学習の作成",
+        "perkCoaching1": "コーチングセッション１回",
+        "perkCoaching2": "コーチングセッション２回",
+        "taxIncl": "{price} 円(税込)/月",
+        "oneTime": "{price}円(税込)"
+    }
 }

@@ -1,32 +1,43 @@
-import { ProgramRepository } from "@/repositories/program.repository";
+import { FileMakerService } from "@/services/filemaker.service";
 import { fallbackWorkshop, WorkshopMapper } from "@/utils/mappers/workshop.mapper";
-import WorkshopDetail from "@/app/components/programs/WorkshopDetails";
+import WorkshopDetail from "@/app/[locale]/programs/WorkshopDetails";
 import { redirect } from "next/navigation";
 
-export default async function ProgramPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+interface PageParams {
+	locale: string;
+	slug: string;
+}
+
+export default async function ProgramPage({ params }: { params: Promise<PageParams> }) {
 	const { locale, slug } = await params;
-	const finalLocale = locale || "ja";
+	const finalLocale = (locale as "en" | "ja") || "ja";
 	const properSlug = slug.toUpperCase();
 
-	// 1. Logic & Redirects (Outside try/catch)
+	// 1. Redirect logic
 	if (slug !== properSlug) {
 		redirect(`/${finalLocale}/programs/global-communication/${properSlug}`);
 	}
 
-	// 2. Data Fetching & Mapping (The "Risky" part)
 	let workshop;
-	try {
-		const rawData = await ProgramRepository.findBySlug(properSlug);
-		workshop = WorkshopMapper.toFrontend(rawData, finalLocale, properSlug);
-	} catch (error: unknown) {
-		const message = error instanceof Error ? error.message : "Unknown error";
-		console.error("Critical Page Data Fetch Error:", message);
 
-		// Assign the fallback so the component still has data to render
+	try {
+		// 2. Direct Service Call
+		// We use '==' for an exact match in FileMaker
+		const records = await FileMakerService.find("LearningProgramApi", {
+			LearningProgramCode: `==${properSlug}`,
+		});
+
+		if (!records || records.length === 0) {
+			console.warn(`No program found for code: ${properSlug}`);
+			workshop = fallbackWorkshop;
+		} else {
+			// 3. Map the first record found
+			workshop = WorkshopMapper.toFrontend(records, finalLocale, properSlug);
+		}
+	} catch (error: unknown) {
+		console.error("Data Fetch Error:", error instanceof Error ? error.message : "Unknown");
 		workshop = fallbackWorkshop;
 	}
 
-	// 3. Return the JSX (Outside try/catch)
-	// This satisfies the linter because we aren't "constructing" JSX inside the catch block.
 	return <WorkshopDetail workshop={workshop} code={properSlug} />;
 }

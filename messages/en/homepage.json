@@ -174,5 +174,22 @@
     "miniMBAAddition": " In addition to each topic, there are also role-playing games and mini internships, allowing you to learn in a fun and practical way.",
     "sixWaysLearning": "Six learning modules:",
     "learnMore": "Learn more",
-    "freeCoaching": "Free Coaching"
+    "freeCoaching": "Free Coaching",
+    "pricing": {
+        "title": "Plan Prices",
+        "subtitle": "Choose the best plan to master your global business skills.",
+        "cycle_monthly": "Monthly",
+        "cycle_biannual": "6 Months",
+        "cycle_annual": "Annual",
+        "popular": "Most Popular",
+        "buyNow": "Buy Now",
+        "standardAccess": "Standard monthly access",
+        "expressFeatures": "Up to 4 workshops per month",
+        "unlimitedFeatures": "Unlimited Workshops",
+        "perkLearningPlan": "Personalized annual learning plan",
+        "perkCoaching1": "1 coaching session",
+        "perkCoaching2": "2 coaching sessions",
+        "taxIncl": "{price} JPY (Tax Incl.)",
+        "oneTime": "{price} JPY (One-time payment)"
+    }
 }

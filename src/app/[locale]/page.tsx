@@ -17,6 +17,7 @@ import JBSWorkshopsBenefits from "../components/homepage/Benefits";
 import JBSWorkshopsStructure from "../components/homepage/WorkshopStructure";
 import { Link } from "@/i18n/navigation";
 import { AppLocale } from "@/i18n/config";
+import PricingSection from "../components/homepage/Pricing";
 
 // app/[locale]/page.tsx
 export async function generateMetadata(props: { params: Promise<{ locale: AppLocale }> }, parent: ResolvingMetadata) {
@@ -75,7 +76,7 @@ export default function HomePage() {
 				id: "BIZNITE",
 				title: tLevels("countryBizNites"),
 				image: "/img/globals/country-biz-nites.jpg",
-				link: "/programs/global-communication/E-AU01",
+				link: "/programs/intercultural-biz-nites",
 			},
 		],
 	};
@@ -169,7 +170,6 @@ export default function HomePage() {
 			<JGlobalBusinessSchool />
 			<JGlobalAchievements />
 			<LogoSection />
-
 			<FreeTrial />
 			<div className="bg-[#dbe9ff] pt-20">
 				<div className="bg-[url('/img/bg_continuation.png')] bg-cover bg-center bg-no-repeat">
@@ -188,7 +188,8 @@ export default function HomePage() {
 						<CardGridSection {...globalLeadership} align="left" />
 					</div>
 				</div>
-			</div>
+			</div>{" "}
+			<PricingSection />
 			<JBSWorkshopsBenefits />
 			<JBSWorkshopsStructure />
 			<LecturerIntroduction />

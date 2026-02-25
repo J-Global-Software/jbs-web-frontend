@@ -1,22 +1,24 @@
-// app/api/fmp/records/events/[slug]/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { EventRepository } from "@/repositories/event.repository";
+import { FileMakerService } from "@/services/filemaker.service";
 import { getErrorStatus } from "@/utils/errors";
 
-// 1. Change { id: string } to { slug: string }
 export async function GET(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
 	try {
-		// 2. Destructure 'slug' instead of 'id'
 		const { slug } = await context.params;
 
-		// 3. Pass 'slug' to your repository
-		const data = await EventRepository.findById(slug);
+		// Direct Service call targeting the WorkshopEventApi layout
+		// We use '==' to ensure an exact match for the ID/Slug
+		const data = await FileMakerService.find("WorkshopEventApi", {
+			ID: `==${slug}`,
+		});
 
+		// If no records are found, FileMakerService.find returns an empty array
 		if (!data || data.length === 0) {
 			return NextResponse.json({ error: "Event not found" }, { status: 404 });
 		}
 
-		return NextResponse.json(data);
+		// Return the specific event record
+		return NextResponse.json(data[0]);
 	} catch (error: unknown) {
 		const message = error instanceof Error ? error.message : "Internal Server Error";
 		const status = getErrorStatus(message);
