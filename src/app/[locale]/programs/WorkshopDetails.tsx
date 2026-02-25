@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import WorkshopDetailHeader from "@/app/components/programs/WorkshopDetailHeader";
 import WorkshopHero from "@/app/components/programs/WorkshopHero";
 import WorkshopSessions from "@/app/components/programs/WorkshopSessions";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 export type WorkshopSession = {
 	title: string;
@@ -80,16 +80,9 @@ export default function WorkshopDetail({ workshop, code, levelLabel = true, show
 	const participantsList = useMemo(() => parseList(workshop.participants), [workshop.participants]);
 	const languageList = useMemo(() => parseList(workshop.language), [workshop.language]);
 
-	const [mounted, setMounted] = useState(false);
-	useEffect(() => setMounted(true), []);
-
-	if (!mounted) return <div className="min-h-screen bg-[#F8FAFC]" />;
-
 	return (
 		<main className="min-h-screen bg-[#F8FAFC] selection:bg-blue-100">
 			<WorkshopDetailHeader />
-
-			<WorkshopHero title={workshop.title} subtitle={showSubtitle ? workshop.subtitle : ""} image={workshop.image} code={code} levelLabel={levelLabel ? tLevels(code) : ""} registerNowLabel={tPrograms("registerNow")} readMoreLabel={tPrograms("readMore")} readLessLabel={tPrograms("readLess")} locale={locale} />
 
 			{/* --- 1. STATS OVERLAY --- */}
 			<div className="relative z-30 -mt-10 max-w-5xl mx-auto px-4">
