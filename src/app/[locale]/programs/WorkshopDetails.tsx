@@ -1,5 +1,3 @@
-"use client";
-
 import Footer from "@/app/components/Footer";
 import { FaBullseye, FaUsers, FaLanguage, FaCheck, FaUserTie, FaCalendarAlt } from "react-icons/fa";
 import { useLocale, useTranslations } from "next-intl";
