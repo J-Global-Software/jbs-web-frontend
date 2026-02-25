@@ -33,47 +33,46 @@ interface WorkshopDetailProps {
 	showSubtitle?: boolean;
 }
 
+/**
+ * Replaced 'any' with 'string | string[]' to handle both
+ * raw translation strings and arrays.
+ */
+const parseList = (content: string | string[] | undefined): string[] => {
+	if (!content) return [];
+
+	const rawArray = Array.isArray(content) ? content : content.split(/(?=[●・•○■▪➤])|(?=\d+\.)/);
+
+	return rawArray
+		.map((line: string) => {
+			return line
+				.replace(/^[●・•○■▪➤\s]+/, "")
+				.replace(/^\d+[\.\s]*/, "")
+				.trim();
+		})
+		.filter((t: string) => {
+			const isIntro = t.toLowerCase().includes("by the end of the workshop");
+			return t.length > 0 && !isIntro;
+		});
+};
+
+const cleanSpeakers = (speakers: string[]): string[] => {
+	if (!speakers) return [];
+	return speakers
+		.map((text) => {
+			return text
+				.replace(/^0\d+/, "")
+				.replace(/^[•●・*-]/, "")
+				.replace(/^\d+[\.\s]*/, "")
+				.trim();
+		})
+		.filter(Boolean);
+};
 export default function WorkshopDetail({ workshop, code, levelLabel = true, showSubtitle = true }: WorkshopDetailProps) {
 	const locale = useLocale();
 	const tPrograms = useTranslations("programs");
 	const tLevels = useTranslations("levels");
 
 	// --- Helpers ---
-
-	/**
-	 * Replaced 'any' with 'string | string[]' to handle both
-	 * raw translation strings and arrays.
-	 */
-	const parseList = (content: string | string[] | undefined): string[] => {
-		if (!content) return [];
-
-		const rawArray = Array.isArray(content) ? content : content.split(/(?=[●・•○■▪➤])|(?=\d+\.)/);
-
-		return rawArray
-			.map((line: string) => {
-				return line
-					.replace(/^[●・•○■▪➤\s]+/, "")
-					.replace(/^\d+[\.\s]*/, "")
-					.trim();
-			})
-			.filter((t: string) => {
-				const isIntro = t.toLowerCase().includes("by the end of the workshop");
-				return t.length > 0 && !isIntro;
-			});
-	};
-
-	const cleanSpeakers = (speakers: string[]): string[] => {
-		if (!speakers) return [];
-		return speakers
-			.map((text) => {
-				return text
-					.replace(/^0\d+/, "")
-					.replace(/^[•●・*-]/, "")
-					.replace(/^\d+[\.\s]*/, "")
-					.trim();
-			})
-			.filter(Boolean);
-	};
 
 	const speakersList = useMemo(() => cleanSpeakers(workshop.speakers || []), [workshop.speakers]);
 	const objectivesList = useMemo(() => parseList(workshop.objectives), [workshop.objectives]);
@@ -89,7 +88,7 @@ export default function WorkshopDetail({ workshop, code, levelLabel = true, show
 
 			{/* --- 1. STATS OVERLAY --- */}
 			<div className="relative z-30 -mt-10 max-w-5xl mx-auto px-4">
-				<div className="bg-white/80 backdrop-blur-2xl rounded-3xl shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)] border border-white p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
+				<div className="bg-white/80  rounded-3xl  border border-white p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
 					<div className="flex items-center gap-5 p-6 rounded-2xl bg-blue-50/50">
 						<div className="w-12 h-12 rounded-xl bg-white shadow-sm text-blue-600 flex items-center justify-center shrink-0 text-xl">
 							<FaUsers />
