@@ -84,6 +84,8 @@ export default function WorkshopDetail({ workshop, code, levelLabel = true, show
 		<main className="min-h-screen bg-[#F8FAFC] selection:bg-blue-100">
 			<WorkshopDetailHeader />
 
+			<WorkshopHero title={workshop.title} subtitle={showSubtitle ? workshop.subtitle : ""} image={workshop.image} code={code} levelLabel={levelLabel ? tLevels(code) : ""} registerNowLabel={tPrograms("registerNow")} readMoreLabel={tPrograms("readMore")} readLessLabel={tPrograms("readLess")} locale={locale} />
+
 			{/* --- 1. STATS OVERLAY --- */}
 			<div className="relative z-30 -mt-10 max-w-5xl mx-auto px-4">
 				<div className="bg-white/80  rounded-3xl  border border-white p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
