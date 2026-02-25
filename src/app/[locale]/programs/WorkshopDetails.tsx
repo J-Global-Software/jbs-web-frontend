@@ -149,34 +149,6 @@ export default function WorkshopDetail({ workshop, code, levelLabel = true, show
 				</div>
 
 				{/* SESSIONS LIST */}
-				<div id="sessions" className="pt-12 scroll-mt-24">
-					<h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-8 px-2">{tPrograms("registerToWorkshops")}</h2>
-					<WorkshopSessions
-						sessions={workshop.sessions || []}
-						locale={locale}
-						translations={{
-							workshop: tPrograms("workshop"),
-							close: tPrograms("close"),
-							whatYouWillLearn: tPrograms("whatYouWillLearn"),
-							availableDates: tPrograms("availableDates"),
-							date: tPrograms("date"),
-							dates: tPrograms("dates"),
-							registerToWorkshop: tPrograms("registerToWorkshop"),
-							jan: tPrograms("jan"),
-							feb: tPrograms("feb"),
-							mar: tPrograms("mar"),
-							apr: tPrograms("apr"),
-							may: tPrograms("may"),
-							jun: tPrograms("jun"),
-							jul: tPrograms("jul"),
-							aug: tPrograms("aug"),
-							sep: tPrograms("sep"),
-							oct: tPrograms("oct"),
-							nov: tPrograms("nov"),
-							dec: tPrograms("dec"),
-						}}
-					/>
-				</div>
 			</div>
 
 			<Footer />
