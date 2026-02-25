@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import WorkshopDetailHeader from "@/app/components/programs/WorkshopDetailHeader";
 import WorkshopHero from "@/app/components/programs/WorkshopHero";
 import WorkshopSessions from "@/app/components/programs/WorkshopSessions";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export type WorkshopSession = {
 	title: string;
@@ -79,6 +79,11 @@ export default function WorkshopDetail({ workshop, code, levelLabel = true, show
 	const purposeList = useMemo(() => parseList(workshop.purpose), [workshop.purpose]);
 	const participantsList = useMemo(() => parseList(workshop.participants), [workshop.participants]);
 	const languageList = useMemo(() => parseList(workshop.language), [workshop.language]);
+
+	const [mounted, setMounted] = useState(false);
+	useEffect(() => setMounted(true), []);
+
+	if (!mounted) return <div className="min-h-screen bg-[#F8FAFC]" />;
 
 	return (
 		<main className="min-h-screen bg-[#F8FAFC] selection:bg-blue-100">
