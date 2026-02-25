@@ -131,54 +131,6 @@ export default function WorkshopDetail({ workshop, code, levelLabel = true, show
 					</div>
 				</section>
 
-				<div className="grid lg:grid-cols-12 gap-8 items-start">
-					{/* Objectives Section */}
-					<section className="lg:col-span-8 p-8 md:p-14 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm">
-						<div className="space-y-10">
-							<div className="flex items-center gap-4">
-								<div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shadow-sm">
-									<FaCheck className="text-sm" />
-								</div>
-								<h3 className="text-lg md:text-xl font-extrabold text-slate-900 uppercase tracking-widest">{tPrograms("learningObjectives")}</h3>
-							</div>
-
-							<div className="grid md:grid-cols-2 gap-x-10 gap-y-6">
-								{processed.objectives.map((obj, i) => (
-									<div key={`obj-${i}`} className="flex gap-4 items-start group">
-										<span className="text-xs font-black text-blue-200 mt-1 italic group-hover:text-blue-400 transition-colors">{(i + 1).toString().padStart(2, "0")}</span>
-										<p className="font-bold leading-snug text-slate-500 text-sm group-hover:text-slate-700 transition-colors">{obj}</p>
-									</div>
-								))}
-							</div>
-						</div>
-					</section>
-
-					{/* Speakers Section */}
-					<section className="lg:col-span-4 p-8 md:p-10 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm">
-						<div className="space-y-8">
-							<div className="flex items-center gap-4">
-								<div className="w-10 h-10 rounded-full bg-slate-50 text-slate-900 flex items-center justify-center border border-slate-200 shadow-sm">
-									<FaUserTie className="text-sm" />
-								</div>
-								<h3 className="text-lg md:text-xl font-extrabold text-slate-900 uppercase tracking-widest">{tPrograms("speakers")}</h3>
-							</div>
-
-							<div className="space-y-3">
-								{processed.speakers.length > 0 ? (
-									processed.speakers.map((name, i) => (
-										<div key={i} className="flex gap-4 items-center p-3 rounded-xl bg-slate-50/50 border border-slate-100">
-											<span className="text-xs font-black text-blue-200 italic">{(i + 1).toString().padStart(2, "0")}</span>
-											<p className="font-bold text-slate-700 text-sm">{name}</p>
-										</div>
-									))
-								) : (
-									<div className="py-8 border-2 border-dashed border-slate-100 rounded-2xl bg-slate-50/30 flex items-center justify-center text-slate-400 font-bold text-xs uppercase tracking-widest">{tPrograms("comingSoon")}</div>
-								)}
-							</div>
-						</div>
-					</section>
-				</div>
-
 				{/* --- 4. SESSIONS LIST --- */}
 				<div id="sessions" className="pt-12 md:pt-20 scroll-mt-24">
 					<h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter mb-8 px-2">{tPrograms("registerToWorkshops")}</h2>
