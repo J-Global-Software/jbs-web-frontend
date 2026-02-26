@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { FaArrowRight, FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { getProgramLink, getProgramLinkRegister } from "@/utils/helpers";
+import { getProgramLinkRegister } from "@/utils/helpers";
 
 interface WorkshopHeroProps {
 	title: string;
@@ -24,6 +24,15 @@ export default function WorkshopHero({ title, subtitle, image, code, levelLabel,
 		<section className="relative overflow-hidden bg-[#77acfb]">
 			{/* Optimized Gradient Background */}
 			<div className="absolute inset-0 bg-gradient-to-br from-[#4a88e6] to-[#9dc5fc]"></div>
+
+			{/* --- NEW: SVG Repeating Pattern --- */}
+			{/* mix-blend-overlay makes the white dots blend nicely with the blue gradient */}
+			<div
+				className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none"
+				style={{
+					backgroundImage: `url('/img/dio.png')`,
+				}}
+			></div>
 
 			<div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-16 lg:pt-24 lg:pb-32">
 				<div className="grid lg:grid-cols-2 gap-8 items-center">

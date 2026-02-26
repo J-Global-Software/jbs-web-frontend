@@ -88,7 +88,7 @@ export default function WorkshopDetail({ workshop, code, levelLabel = true, show
 
 			{/* --- 1. STATS OVERLAY --- */}
 			<div className="relative z-30 -mt-10 max-w-5xl mx-auto px-4">
-				<div className="bg-white/80  rounded-3xl  border border-white p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
+				<div className="bg-white/90 rounded-3xl  border border-white p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
 					<div className="flex items-center gap-5 p-6 rounded-2xl bg-blue-50/50">
 						<div className="w-12 h-12 rounded-xl bg-white shadow-sm text-blue-600 flex items-center justify-center shrink-0 text-xl">
 							<FaUsers />
