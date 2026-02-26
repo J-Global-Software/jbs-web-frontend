@@ -15,3 +15,9 @@ export function getProgramLink(programCode: string, lang: string = "ja") {
 
 	return `${baseUrl}${programCode}`;
 }
+
+export function getProgramLinkRegister(programCode: string, lang: string = "ja") {
+	const baseUrl = lang === "ja" ? "https://fms.j-globalbizschool.com/fmi/webd/IBSApplication?script=JbsProgramsRegisterJpn&param=" : "https://fms.j-globalbizschool.com/fmi/webd/IBSApplication?script=JbsProgramsRegisterEng&param=";
+
+	return `${baseUrl}${programCode}`;
+}

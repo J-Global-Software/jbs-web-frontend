@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { FaArrowRight, FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { getProgramLink } from "@/utils/helpers";
+import { getProgramLink, getProgramLinkRegister } from "@/utils/helpers";
 
 interface WorkshopHeroProps {
 	title: string;
@@ -45,7 +45,9 @@ export default function WorkshopHero({ title, subtitle, image, code, levelLabel,
 					{/* Text Column */}
 					<div className="space-y-5 text-center lg:text-left order-2 lg:order-1">
 						<div className="space-y-3">
-							<h1 className="text-2xl lg:text-5xl font-bold text-white leading-tight drop-shadow-sm px-2 lg:px-0">{title}</h1>
+							<h1 className="text-2xl lg:text-5xl font-bold text-white leading-tight drop-shadow-sm px-2 lg:px-0">
+								{title} ({code})
+							</h1>
 							{subtitle && (
 								<div className="text-sm lg:text-base text-blue-50 font-medium px-4 lg:px-0">
 									<div className={expanded ? "" : "line-clamp-2"}>{subtitle}</div>
@@ -66,7 +68,7 @@ export default function WorkshopHero({ title, subtitle, image, code, levelLabel,
 							)}
 						</div>
 						<div className="flex justify-center lg:justify-start pt-2">
-							<a href={getProgramLink(code, locale)} className="bg-[#d74100] text-white px-7 py-2.5 rounded-full font-bold shadow-lg flex items-center gap-2 text-base active:scale-95 transition-transform">
+							<a href={getProgramLinkRegister(code, locale)} className="bg-[#d74100] text-white px-7 py-2.5 rounded-full font-bold shadow-lg flex items-center gap-2 text-base active:scale-95 transition-transform">
 								{registerNowLabel} <FaArrowRight className="text-sm" />
 							</a>
 						</div>
