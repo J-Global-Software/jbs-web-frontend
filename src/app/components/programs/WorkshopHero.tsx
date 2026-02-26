@@ -68,7 +68,7 @@ export default function WorkshopHero({ title, subtitle, image, code, levelLabel,
 							)}
 						</div>
 						<div className="flex justify-center lg:justify-start pt-2">
-							<a href={getProgramLinkRegister(code, locale)} className="bg-[#d74100] text-white px-7 py-2.5 rounded-full font-bold shadow-lg flex items-center gap-2 text-base active:scale-95 transition-transform">
+							<a href={getProgramLinkRegister(code, locale)} className="bg-[#d74100] md:text-xl text-white px-7 py-2.5 rounded-full font-bold shadow-lg flex items-center gap-2 text-base active:scale-95 transition-transform">
 								{registerNowLabel} <FaArrowRight className="text-sm" />
 							</a>
 						</div>
