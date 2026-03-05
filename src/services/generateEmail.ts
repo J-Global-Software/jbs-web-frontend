@@ -547,7 +547,7 @@ export function generateWorkshopPlainTextEmail(
 ): string {
   const isJa = locale === "ja";
   
-  // 1. Localized Date Logic (Matching HTML)
+  // 1. Localized Date Logic
   const [part1, part2, part3] = data.date.split(/[/-]/);
   const month = part1;
   const day = part2;
@@ -568,7 +568,7 @@ export function generateWorkshopPlainTextEmail(
     `${data.eventName} (${programCode})`
   );
 
-  // 4. Construct Content
+  // 4. Content Strings
   const welcomeText = isJa 
     ? "J-Globalのビジネススクールへようこそ。私たちはあなたの目標達成の一端を担えることを光栄に思います。\n\nJ-Globalは、変化の激しい現代のビジネス環境で競争力を高めるために、実践的なスキルを身につける機会を提供しています。" 
     : "Welcome to J-Global's Business School. We are honored to be part of your personal development goals. We understand the need to develop one's skills to be competitive in today’s job market.";
@@ -594,6 +594,8 @@ ${enrollmentText}
 ${isJa ? '日程' : 'Schedule'}: ${localizedDate} (${data.time} JST)
 
 Zoom Link: ${userZoomLink}
+${isJa ? '（リンクがクリックできない場合は、上記URLをコピーしてブラウザに貼り付けてください）' : '(If you cannot click the link, please copy and paste the URL above into your browser)'}
+
 Google Calendar: ${calendarUrl}
 --------------------------------------------------
 
@@ -623,19 +625,16 @@ export function generateWorkshopHTMLEmail(
 ): string {
   const isJa = locale === "ja";
   const calendarUrl = generateGoogleCalendarUrlWorkshop(data.date, data.time, data.timeFinish, (data.eventName + " (" + programCode + ")"));
-// Split the string by / or -
-const [part1, part2, part3] = data.date.split(/[/-]/);
 
-// Since your input is 03/05/2026 (MM/DD/YYYY):
-const month = part1;
-const day = part2;
-const year = part3;
+  const [part1, part2, part3] = data.date.split(/[/-]/);
+  const month = part1;
+  const day = part2;
+  const year = part3;
 
-// Construct the localized strings
-const localizedDate = isJa 
-  ? `${year}年${month}月${day}日` 
-  : `${month}/${day}/${year}`;
-  // Localized Greeting: Last Name for JA, First Name for EN
+  const localizedDate = isJa 
+    ? `${year}年${month}月${day}日` 
+    : `${month}/${day}/${year}`;
+  
   const greetingName = isJa ? data.lastName : data.firstName;
   const hiText = isJa ? `こんにちは、${greetingName}さん。` : `Hi ${greetingName},`;
 
@@ -670,26 +669,34 @@ const localizedDate = isJa
                 : "Welcome to J-Global's Business School. We are honored to be part of your personal development goals. We understand the need to develop one's skills to be competitive in today’s job market."
               }</p>
 
-<p style="font-weight:bold; margin-top:25px;">
-  ${isJa 
-    ? "以下のワークショップにご登録いただきました。" 
-    : "You have enrolled in the following workshop:"}
-</p>              
+              <p style="font-weight:bold; margin-top:25px;">
+                ${isJa 
+                  ? "以下のワークショップにご登録いただきました。" 
+                  : "You have enrolled in the following workshop:"}
+              </p>              
+
               <div style="background-color:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:20px; margin:15px 0;">
-                <p style="margin:0;"><strong>1.${data.eventName} (${programCode})</strong></p>
-                <p style="margin:5px 0 0 0;">${isJa ? '日程' : 'Schedule'}: ${localizedDate} : (${data.time} JST)</p>
+                <p style="margin:0;"><strong>1. ${data.eventName} (${programCode})</strong></p>
+                <p style="margin:5px 0 0 0;">${isJa ? '日程' : 'Schedule'}: ${localizedDate} (${data.time} JST)</p>
                 
                 <div style="margin-top:15px;">
-                  <a href="${userZoomLink}" style="color:#2563eb; font-weight:bold; text-decoration:underline;">${isJa ? 'Zoomリンクはこちら' : 'Join Zoom Meeting'}</a>
+                  <a href="${userZoomLink}" style="color:#2563eb; font-weight:bold; text-decoration:underline;">${isJa ? 'Zoomに参加する' : 'Join Zoom Meeting'}</a>
                   <span style="margin: 0 10px; color:#cbd5e1;">|</span>
-<a href="${calendarUrl}" style="color:#475569; font-size:13px; text-decoration:none;">📅 ${isJa ? 'Googleカレンダーに追加' : 'Add to Google Calendar'}</a>                </div>
+                  <a href="${calendarUrl}" style="color:#475569; font-size:13px; text-decoration:none;">📅 ${isJa ? 'Googleカレンダーに追加' : 'Add to Google Calendar'}</a>
+                </div>
+
+                <div style="margin-top:15px; padding-top:15px; border-top:1px dashed #e2e8f0;">
+                  <p style="margin:0; font-size:12px; color:#64748b; line-height:1.4;">
+                    ${isJa ? 'ボタンがクリックできない場合は、以下のURLをコピーしてブラウザに貼り付けてください：' : 'If you cannot click the button above, please copy and paste this URL into your browser:'}
+                  </p>
+                  <p style="margin:8px 0 0 0; font-size:12px; color:#2563eb; word-break:break-all;">
+                    ${userZoomLink}
+                  </p>
+                </div>
               </div>
-
-
 
               <hr style="border:none; border-top:1px solid #eeeeee; margin:30px 0;" />
 
-            
               <div style="text-align:center; margin:20px 0;">
                 <a href="https://j-globalbizschool.com/${locale}" style="color:#2563eb; font-weight:bold; text-decoration:none;">
                    ${isJa ? 'J-Globalのビジネススクールについて' : "About J-Global's Business School"}
@@ -705,8 +712,6 @@ const localizedDate = isJa
                   ${isJa ? 'J-Globalのビジネススクールを見る' : "Visit our website"}
                 </a>
               </div>
-
-
 
               <p style="font-size:13px; color:#94a3b8; margin-top:40px;">
                 ${isJa ? 'ご不明点やキャンセル等につきましては、 support@j-global.com までご連絡ください。' : 'For general assistance or to cancel your order, contact support@j-global.com'}
