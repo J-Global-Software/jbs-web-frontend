@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { generateCancelHTMLEmail, generateContactNotificationHTML, generateHTMLEmail, generateLecturerCancelNotificationHTML, generateLecturerNotificationHTML, generateLecturerRescheduleNotificationHTML, generatePlainTextEmail, generateRescheduleHTMLEmail } from "./generateEmail";
+import { EmailData, generateCancelHTMLEmail, generateContactNotificationHTML, generateHTMLEmail, generateLecturerCancelNotificationHTML, generateLecturerNotificationHTML, generateLecturerRescheduleNotificationHTML, generatePlainTextEmail, generateRescheduleHTMLEmail, generateWorkshopHTMLEmail, generateWorkshopPlainTextEmail } from "./generateEmail";
 import { BookingPayload } from "@/types/booking";
 import { loadServerMessages } from "../../messages/server";
 
@@ -61,14 +61,64 @@ interface RescheduleUserParams extends BaseEmailParams {
 	managementUrl: string;
 }
 
+interface WorkshopConfirmationParams extends BaseEmailParams {
+    firstName: string;
+    lastName: string;
+    programCode: string; // e.g., "WS-101" or "BIZNITE-01"
+    eventDate: string;   // Formatted date string
+    eventTime: string;   // e.g., "19:00 - 21:00"
+	eventTimeFinish: string; // e.g., "21:00"
+	eventName: string; // e.g., "Effective Communication Skills"
+    userZoomLink: string;
+    icsContent: string;  // The generated calendar file content
+}
+
 export const EmailService = {
+	
+   // Inside EmailService object in email.service.ts
+// Inside EmailService
+async sendWorkshopConfirmation({ locale, firstName, lastName, programCode, eventDate, eventTime, eventTimeFinish, userZoomLink, messages, icsContent, fromEmail, toEmail, eventName}: WorkshopConfirmationParams) {
+    
+    const data: EmailData = {
+        firstName,
+        lastName,
+        email: toEmail,
+        phone: "",
+        message: "",
+        date: eventDate,
+        time: eventTime,
+		timeFinish: eventTimeFinish,
+		eventName:eventName
+       
+    };
+
+
+    const htmlContent = generateWorkshopHTMLEmail(locale, data, programCode, userZoomLink, messages);
+
+
+
+    return resend.emails.send({
+        from: fromEmail,
+        to: toEmail,
+        subject: locale === "ja" ? `【参加確定】J-Globalビジネススクール` : `Confirmation: J-Global Business School`,
+        html: htmlContent,
+        attachments: [{ filename: "workshop.ics", content: icsContent }],
+    });
+},
+
+   
 	/**
 	 * Sends confirmation and ICS file to the User
 	 */
 	async sendUserConfirmation({ locale, userData, userZoomLink, managementUrl, messages, icsContent, fromEmail, toEmail }: UserConfirmationParams) {
 		const greetingName = locale === "ja" ? userData.lastName : userData.firstName;
-		const plainText = generatePlainTextEmail(locale, greetingName, userData, userZoomLink, managementUrl, messages);
-		const htmlContent = generateHTMLEmail(locale, greetingName, userData, userZoomLink, managementUrl, messages);
+		const emailData: EmailData = {
+			...userData,
+			timeFinish: userData.timeFinish || "",
+			eventName: userData.eventName || "" // Add eventName to EmailData
+		};
+		const plainText = generatePlainTextEmail(locale, greetingName, emailData, userZoomLink, managementUrl, messages);
+		const htmlContent = generateHTMLEmail(locale, greetingName, emailData, userZoomLink, managementUrl, messages);
 
 		return resend.emails.send({
 			from: fromEmail,
@@ -90,7 +140,12 @@ export const EmailService = {
 	 * Notifies Lecturer of a new booking
 	 */
 	async sendLecturerNotification({ userData, messages, fromEmail, toEmail }: { userData: BookingPayload; messages: ServerMessages; fromEmail: string; toEmail: string }) {
-		const htmlContent = generateLecturerNotificationHTML(userData, messages);
+		const emailData: EmailData = {
+			...userData,
+			timeFinish: userData.timeFinish || "",
+			eventName: userData.eventName || "" // Add eventName to EmailData
+		};
+		const htmlContent = generateLecturerNotificationHTML(emailData, messages);
 		return resend.emails.send({
 			from: fromEmail,
 			to: toEmail,

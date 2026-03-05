@@ -47,5 +47,5 @@ export default async function ProgramPage({ params }: { params: Promise<{ locale
 	}
 
 	// 3. Render the Component
-	return <WorkshopDetail showSubtitle={false} levelLabel={false} workshop={workshop} code={properSlug} />;
+	return <WorkshopDetail showSubtitle={false} levelLabel={false} workshop={workshop} code={properSlug} isBiznite={true} />;
 }

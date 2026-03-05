@@ -191,5 +191,19 @@
         "perkCoaching2": "コーチングセッション２回",
         "taxIncl": "{price} 円(税込)/月",
         "oneTime": "{price}円(税込)"
+    },
+    "workshopHero": {
+        "modal": {
+            "description": "参加登録を確定するために、以下の情報をご入力ください。",
+            "firstName": "名",
+            "lastName": "姓",
+            "email": "メールアドレス",
+            "confirm": "参加登録を確定する",
+            "successTitle": "登録が完了しました！",
+            "successSubtitle": "ご登録ありがとうございます。確認メールを数分以内にお送りいたします。",
+            "eventDetails": "イベント詳細",
+            "meetingLink": "参加リンク (Zoom)",
+            "closeButton": "閉じる"
+        }
     }
 }

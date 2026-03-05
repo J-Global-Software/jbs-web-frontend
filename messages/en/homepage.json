@@ -191,5 +191,19 @@
         "perkCoaching2": "2 coaching sessions",
         "taxIncl": "{price} JPY (Tax Incl.)",
         "oneTime": "{price} JPY (One-time payment)"
+    },
+    "workshopHero": {
+        "modal": {
+            "description": "Please enter your details to confirm your seat.",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "confirm": "Confirm Registration",
+            "successTitle": "You're all set!",
+            "successSubtitle": "Registration successful. A confirmation email has been sent to your inbox.",
+            "eventDetails": "Event Details",
+            "meetingLink": "Meeting Link",
+            "closeButton": "Got it, thanks!"
+        }
     }
 }

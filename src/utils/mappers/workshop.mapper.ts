@@ -45,6 +45,7 @@ export class WorkshopMapper {
 		if (!record) return fallbackWorkshop;
 
 		const portals = records[0].portalData || {};
+
 		const portalValues = Object.values(portals);
 
 		// Adjust index based on your portal order in FileMaker layout
@@ -81,11 +82,32 @@ export class WorkshopMapper {
 						const eventTitle = (event[nameKey] as string | undefined)?.replace(/^\d+\.\s*/, "");
 						return eventTitle === title && event["WorkshopEvent::EventDate"];
 					})
-					.map((event) => ({
-						id: String(event["WorkshopEvent::ID"] || ""),
-						date: String(event["WorkshopEvent::EventDate"] || ""),
-						startTime: String(event["WorkshopEvent::StartTime"] || ""),
-					}));
+					.map((event) => {
+    const startStr = String(event["WorkshopEvent::StartTime"] || "00:00:00");
+    const durationMins = Number(event["WorkshopEvent::Duration"] || 0);
+
+    // Create a dummy date to perform time math
+    // FileMaker time "20:00:00" -> Date object
+    const [hours, minutes, seconds] = startStr.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, seconds || 0);
+
+    // Add the duration (e.g., 75 minutes)
+    date.setMinutes(date.getMinutes() + durationMins);
+
+    // Format back to HH:mm
+    const endTime = date.toTimeString().slice(0, 5); 
+    const startTimeClean = startStr.slice(0, 5); // "20:00"
+
+    return {
+        id: String(event["WorkshopEvent::ID"] || ""),
+        date: String(event["WorkshopEvent::EventDate"] || ""),
+        startTime: startTimeClean,
+        endTime: endTime, // New field: "21:15"
+        zoomLink: String(event["WorkshopEvent::ZoomLink"] || ""),
+		eventId: String(event["WorkshopEvent::ID"] || "")
+    };
+})
 
 				return { title, content, dates: matchingDates };
 			})

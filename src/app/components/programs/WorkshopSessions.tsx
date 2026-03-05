@@ -6,7 +6,7 @@ import { FaChevronDown, FaClock, FaCalendarAlt, FaStream } from "react-icons/fa"
 export type WorkshopSession = {
 	title: string;
 	content: string[];
-	dates: { id: string; date: string; startTime: string }[];
+	dates: { id: string; date: string; startTime: string, endTime:string, zoomLink:string, eventId: string }[];
 };
 
 interface WorkshopSessionsProps {

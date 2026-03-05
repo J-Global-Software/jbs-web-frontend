@@ -49,12 +49,16 @@ export interface BookingPayload {
 	// Frontend specific fields (e.g., from <input type="date" />)
 	date: string; // Format: "YYYY-MM-DD"
 	time: string; // Format: "HH:mm"
+	timeFinish?: string; // Format: "HH:mm"
+	eventName?: string; // Optional, only for workshops
 
 	// Optional integration IDs if passed from client (usually generated on server though)
 	calendarId?: string;
 	zoomId?: string;
 	zoomUrl?: string;
 }
+
+
 
 /**
  * Useful if you want a version where all fields are optional
