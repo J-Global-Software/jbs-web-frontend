@@ -11,6 +11,7 @@ interface PricingTier {
 	price: string;
 	total: string;
 	perks: string[];
+	link: string;
 }
 
 interface Plan {
@@ -39,18 +40,48 @@ export default function PricingSection() {
 			name: "Express",
 			features: t("expressFeatures"),
 			accent: "#F6C358",
-			monthly: { price: "5,000", total: t("taxIncl", { price: "5,000" }), perks: [] },
-			biannual: { price: "4,500", total: t("oneTime", { price: "27,000" }), perks: [t("perkLearningPlan"), t("perkCoaching1")] },
-			annual: { price: "4,000", total: t("oneTime", { price: "48,000" }), perks: [t("perkLearningPlan"), t("perkCoaching2")] },
+			monthly: {
+				price: "5,000",
+				total: t("taxIncl", { price: "5,000" }),
+				perks: [],
+				link: "https://buy.stripe.com/7sI9Dy4sUfc098s8wx",
+			},
+			biannual: {
+				price: "4,500",
+				total: t("oneTime", { price: "27,000" }),
+				perks: [t("perkLearningPlan"), t("perkCoaching1")],
+				link: "https://buy.stripe.com/28o9Dy1gI7Jy5Wg9AC",
+			},
+			annual: {
+				price: "4,000",
+				total: t("oneTime", { price: "48,000" }),
+				perks: [t("perkLearningPlan"), t("perkCoaching2")],
+				link: "https://buy.stripe.com/28o1724sUe7W0BW7sv",
+			},
 		},
 		unlimited: {
 			name: "Unlimited Salon",
 			features: t("unlimitedFeatures"),
 			accent: "#B184DB",
 			featured: true,
-			monthly: { price: "10,000", total: t("taxIncl", { price: "10,000" }), perks: [] },
-			biannual: { price: "8,500", total: t("oneTime", { price: "51,000" }), perks: [t("perkLearningPlan"), t("perkCoaching1")] },
-			annual: { price: "7,000", total: t("oneTime", { price: "84,000" }), perks: [t("perkLearningPlan"), t("perkCoaching2")] },
+			monthly: {
+				price: "10,000",
+				total: t("taxIncl", { price: "10,000" }),
+				perks: [],
+				link: "https://buy.stripe.com/8wM2b6e3ufc0esMdQU",
+			},
+			biannual: {
+				price: "8,500",
+				total: t("oneTime", { price: "51,000" }),
+				perks: [t("perkLearningPlan"), t("perkCoaching1")],
+				link: "https://buy.stripe.com/7sIaHCcZqgg4acw005",
+			},
+			annual: {
+				price: "7,000",
+				total: t("oneTime", { price: "84,000" }),
+				perks: [t("perkLearningPlan"), t("perkCoaching2")],
+				link: "https://buy.stripe.com/dR68zu1gIbZO3O88wC",
+			},
 		},
 	};
 
@@ -97,14 +128,12 @@ function PricingCard({ plan, cycle }: PricingCardProps) {
 	return (
 		<div className={clsx("relative group flex flex-col p-8 md:p-10 rounded-4xl transition-all duration-500 bg-white/80 backdrop-blur-md border", plan.featured ? "border-[#215ca5] shadow-2xl scale-105 z-20" : "border-gray-100 shadow-xl z-10 hover:border-[#215ca5]/30")} data-aos={plan.featured ? "fade-left" : "fade-right"}>
 			{plan.featured && <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#215ca5] text-white px-6 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-lg">{t("popular")}</div>}
-
 			<div className="mb-8 text-center md:text-left">
 				<h3 className="text-2xl font-black mb-2" style={{ color: plan.accent }}>
 					{plan.name}
 				</h3>
 				<p className="text-gray-500 font-medium">{plan.features}</p>
 			</div>
-
 			<div className="mb-8 text-center md:text-left">
 				<div className="flex items-baseline justify-center md:justify-start gap-1">
 					<span className="text-5xl font-black text-[#0c2a45]">{data.price}</span>
@@ -112,7 +141,6 @@ function PricingCard({ plan, cycle }: PricingCardProps) {
 				</div>
 				<p className="text-xs font-bold text-[#215ca5]/60 mt-1 uppercase tracking-tighter">{data.total}</p>
 			</div>
-
 			<div className="flex-grow space-y-4 mb-10">
 				<div className="h-px bg-linear-to-r from-[#215ca5]/20 to-transparent" />
 				{data.perks.length > 0 ? (
@@ -128,8 +156,9 @@ function PricingCard({ plan, cycle }: PricingCardProps) {
 					<p className="text-gray-400 italic text-sm">{t("standardAccess")}</p>
 				)}
 			</div>
-
-			<button className={clsx("w-full py-4 rounded-2xl font-black text-lg transition-all duration-300 shadow-lg active:scale-95", plan.featured ? "bg-linear-to-r from-[#215ca5] to-[#0c2a45] text-white hover:shadow-[#215ca5]/40" : "bg-white border-2 border-[#215ca5] text-[#215ca5] hover:bg-[#215ca5] hover:text-white")}>{t("buyNow")}</button>
+			<a href={data.link} target="_blank" rel="noopener noreferrer" className={clsx("w-full py-4 rounded-2xl font-black text-lg transition-all duration-300 shadow-lg active:scale-95 text-center block", plan.featured ? "bg-linear-to-r from-[#215ca5] to-[#0c2a45] text-white hover:shadow-[#215ca5]/40" : "bg-white border-2 border-[#215ca5] text-[#215ca5] hover:bg-[#215ca5] hover:text-white")}>
+				{t("buyNow")}
+			</a>{" "}
 		</div>
 	);
 }
