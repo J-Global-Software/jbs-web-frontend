@@ -8,6 +8,8 @@ import { SessionService } from "@/services/session.service";
 import { setSessionCookie } from "@/utils/session-cookies.util";
 import { getErrorStatus } from "@/utils/errors";
 
+export const runtime = process.env.NODE_ENV === "test" ? "edge" : "nodejs";
+
 const redis = Redis.fromEnv();
 const limiter = new Ratelimit({
 	redis,
