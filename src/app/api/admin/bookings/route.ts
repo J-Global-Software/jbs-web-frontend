@@ -2,8 +2,6 @@
 import { cookies } from "next/headers";
 import { query } from "@/utils/neon";
 
-export const runtime = process.env.NODE_ENV === "test" ? "edge" : "nodejs";
-
 export async function GET() {
 	const session = (await cookies()).get("admin_session")?.value;
 

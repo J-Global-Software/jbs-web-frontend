@@ -1,5 +1,3 @@
-export const runtime = process.env.NODE_ENV === "test" ? "edge" : "nodejs";
-
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 

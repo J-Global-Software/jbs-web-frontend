@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FileMakerService } from "@/services/filemaker.service";
 
-export const runtime = process.env.NODE_ENV === "test" ? "edge" : "nodejs";
-
 // 1. Define the layout name here if this is a specific route
 const LAYOUT_NAME = "LearningProgramApi";
 

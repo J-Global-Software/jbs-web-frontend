@@ -4,8 +4,6 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { BookingService } from "@/services/booking.service";
 import { getErrorStatus } from "@/utils/errors";
 
-export const runtime = process.env.NODE_ENV === "test" ? "edge" : "nodejs";
-
 // Use a separate limiter for management lookups
 const redis = Redis.fromEnv();
 const limiter = new Ratelimit({

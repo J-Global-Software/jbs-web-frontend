@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FileMakerService } from "@/services/filemaker.service";
 import { getErrorStatus } from "@/utils/errors";
-export const runtime = process.env.NODE_ENV === "test" ? "edge" : "nodejs";
 
 export async function GET(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
 	try {
