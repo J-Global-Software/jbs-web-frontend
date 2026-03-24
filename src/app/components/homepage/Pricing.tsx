@@ -2,7 +2,12 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Check } from "lucide-react";
+import { getLink } from "@/lib/links";
+import { useLocale } from "next-intl";
+import Link from "next/link";
 import clsx from "clsx";
+import { Linden_Hill } from "next/font/google";
+
 
 // 1. Define the specific shape of the price data
 type PlanCycle = "monthly" | "biannual" | "annual";
@@ -30,56 +35,57 @@ type PricingData = Record<PlanCycle, PricingTier> & Plan;
 
 export default function PricingSection() {
 	const t = useTranslations("homepage.pricing");
+	const locale = useLocale();
 	const [billingCycle, setBillingCycle] = useState<PlanCycle>("monthly");
 
 	const cycles: PlanCycle[] = ["monthly", "biannual", "annual"];
 
-	// 2. Apply the Plan type to your object
-	const plans: Record<"express" | "unlimited", Plan> = {
-		express: {
-			name: "Express",
-			features: t("expressFeatures"),
-			accent: "#F6C358",
+	// Apply the Plan type to your object
+	const plans: Record<"freeTrial" | "unlimited", Plan> = {
+		freeTrial: {
+			name: t("freeTrial.name"),
+			features: t("freeTrial.features"),
+    		accent: "#F6C358",
 			monthly: {
-				price: "5,000",
-				total: t("taxIncl", { price: "5,000" }),
-				perks: [],
-				link: "https://buy.stripe.com/7sI9Dy4sUfc098s8wx",
+				price: "¥0",
+				total: "for 14 days",
+				perks: t.raw("freeTrial.perks"),
+				link: getLink("freeTrial", locale),
 			},
-			biannual: {
-				price: "4,500",
-				total: t("oneTime", { price: "27,000" }),
-				perks: [t("perkLearningPlan"), t("perkCoaching1")],
-				link: "https://buy.stripe.com/28o9Dy1gI7Jy5Wg9AC",
+				biannual: {
+				price: "¥0",
+				total: "for 14 days",
+				perks: t.raw("freeTrial.perks"),
+				link: getLink("freeTrial", locale),
 			},
-			annual: {
-				price: "4,000",
-				total: t("oneTime", { price: "48,000" }),
-				perks: [t("perkLearningPlan"), t("perkCoaching2")],
-				link: "https://buy.stripe.com/28o1724sUe7W0BW7sv",
-			},
+				annual: {
+				price: "¥0",
+				total: "for 14 days",
+				perks: t.raw("freeTrial.perks"),
+				link: getLink("freeTrial", locale),
+			}
 		},
 		unlimited: {
-			name: "Unlimited Salon",
-			features: t("unlimitedFeatures"),
+			name: t("unlimited.name"),
+			features: t("unlimited.features"),
 			accent: "#B184DB",
 			featured: true,
 			monthly: {
-				price: "10,000",
+				price: "¥10,000",
 				total: t("taxIncl", { price: "10,000" }),
-				perks: [],
+				perks: t.raw("unlimited.perks"),
 				link: "https://buy.stripe.com/8wM2b6e3ufc0esMdQU",
 			},
 			biannual: {
-				price: "8,500",
-				total: t("oneTime", { price: "51,000" }),
-				perks: [t("perkLearningPlan"), t("perkCoaching1")],
+				price: "¥9,000",
+				total: t("oneTime", { price: "54,000" }),
+				perks: t.raw("unlimited.perks"),
 				link: "https://buy.stripe.com/7sIaHCcZqgg4acw005",
 			},
 			annual: {
-				price: "7,000",
-				total: t("oneTime", { price: "84,000" }),
-				perks: [t("perkLearningPlan"), t("perkCoaching2")],
+				price: "¥8,000",
+				total: t("oneTime", { price: "96,000" }),
+				perks: t.raw("unlimited.perks"),
 				link: "https://buy.stripe.com/dR68zu1gIbZO3O88wC",
 			},
 		},
@@ -104,7 +110,7 @@ export default function PricingSection() {
 				</div>
 
 				<div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-					<PricingCard plan={plans.express} cycle={billingCycle} />
+					<PricingCard plan={plans.freeTrial} cycle={billingCycle} />
 					<PricingCard plan={plans.unlimited} cycle={billingCycle} />
 				</div>
 			</div>
@@ -122,13 +128,24 @@ interface PricingCardProps {
 
 function PricingCard({ plan, cycle }: PricingCardProps) {
 	// Accessing the specific cycle data safely
-	const data = plan[cycle];
+	const data = plan.name === "Free Trial"
+  	? plan.monthly
+  	: plan[cycle];
 	const t = useTranslations("homepage.pricing");
+	const billingLabel =
+	plan.name === t("freeTrial.name")
+		? t("noCard")
+		: cycle === "monthly"
+		? t("billedMonthly")
+		: cycle === "biannual"
+		? t("billedBiannual")
+		: t("billedAnnual");
+	
 
 	return (
 		<div className={clsx("relative group flex flex-col p-8 md:p-10 rounded-4xl transition-all duration-500 bg-white/80 backdrop-blur-md border", plan.featured ? "border-[#215ca5] shadow-2xl scale-105 z-20" : "border-gray-100 shadow-xl z-10 hover:border-[#215ca5]/30")} data-aos={plan.featured ? "fade-left" : "fade-right"}>
-			{plan.featured && <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#215ca5] text-white px-6 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-lg">{t("popular")}</div>}
-			<div className="mb-8 text-center md:text-left">
+			{plan.featured && <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#215ca5] text-white px-6 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-lg">{t("fullMembership")}</div>}
+			<div className="mb-5 text-center md:text-left">
 				<h3 className="text-2xl font-black mb-2" style={{ color: plan.accent }}>
 					{plan.name}
 				</h3>
@@ -137,9 +154,11 @@ function PricingCard({ plan, cycle }: PricingCardProps) {
 			<div className="mb-8 text-center md:text-left">
 				<div className="flex items-baseline justify-center md:justify-start gap-1">
 					<span className="text-5xl font-black text-[#0c2a45]">{data.price}</span>
-					<span className="text-gray-400 font-bold text-lg">JPY/mo</span>
+					{plan.name !== "Free Trial" && (
+					<span className="text-gray-400 font-bold text-lg">/Month (Tax Incl.)</span>
+					)}
 				</div>
-				<p className="text-xs font-bold text-[#215ca5]/60 mt-1 uppercase tracking-tighter">{data.total}</p>
+				<p className="text-xs font-bold text-[#215ca5]/60 mt-1 uppercase tracking-tighter">{billingLabel}</p>
 			</div>
 			<div className="flex-grow space-y-4 mb-10">
 				<div className="h-px bg-linear-to-r from-[#215ca5]/20 to-transparent" />
@@ -156,9 +175,37 @@ function PricingCard({ plan, cycle }: PricingCardProps) {
 					<p className="text-gray-400 italic text-sm">{t("standardAccess")}</p>
 				)}
 			</div>
-			<a href={data.link} target="_blank" rel="noopener noreferrer" className={clsx("w-full py-4 rounded-2xl font-black text-lg transition-all duration-300 shadow-lg active:scale-95 text-center block", plan.featured ? "bg-linear-to-r from-[#215ca5] to-[#0c2a45] text-white hover:shadow-[#215ca5]/40" : "bg-white border-2 border-[#215ca5] text-[#215ca5] hover:bg-[#215ca5] hover:text-white")}>
-				{t("buyNow")}
-			</a>{" "}
+			{data.link.startsWith("http") ? (
+			<a
+				href={data.link}
+				target="_blank"
+				rel="noopener noreferrer"
+				className={clsx(
+					"w-full py-4 rounded-2xl font-black text-lg transition-all duration-300 shadow-lg active:scale-95 text-center block",
+					plan.featured
+						? "bg-linear-to-r from-[#215ca5] to-[#0c2a45] text-white hover:shadow-[#215ca5]/40"
+						: "bg-white border-2 border-[#215ca5] text-[#215ca5] hover:bg-[#215ca5] hover:text-white"
+				)}
+			>
+				{plan.name === t("freeTrial.name")
+					? t("startFreeTrial")
+					: t("getStarted")}
+			</a>
+		) : (
+			<Link
+				href={data.link}
+				className={clsx(
+					"w-full py-4 rounded-2xl font-black text-lg transition-all duration-300 shadow-lg active:scale-95 text-center block",
+					plan.featured
+						? "bg-linear-to-r from-[#215ca5] to-[#0c2a45] text-white hover:shadow-[#215ca5]/40"
+						: "bg-white border-2 border-[#215ca5] text-[#215ca5] hover:bg-[#215ca5] hover:text-white"
+				)}
+			>
+				{plan.name === t("freeTrial.name")
+					? t("startFreeTrial")
+					: t("getStarted")}
+			</Link>
+		)}
 		</div>
 	);
 }

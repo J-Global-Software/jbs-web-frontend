@@ -18,6 +18,8 @@ import JBSWorkshopsStructure from "../components/homepage/WorkshopStructure";
 import { Link } from "@/i18n/navigation";
 import { AppLocale } from "@/i18n/config";
 import PricingSection from "../components/homepage/Pricing";
+import ProgramsTabs from "@/app/components/homepage/ProgramsTabs";
+import Navbar from "@/app/components/Navbar";
 
 // app/[locale]/page.tsx
 export async function generateMetadata(props: { params: Promise<{ locale: AppLocale }> }, parent: ResolvingMetadata) {
@@ -166,34 +168,33 @@ export default function HomePage() {
 	};
 	return (
 		<>
+			
 			<HeroSection />
-			<JGlobalBusinessSchool />
+			<div id="why-jbs" className="scroll-mt-24">
+				<JGlobalBusinessSchool />
+			</div>
 			<JGlobalAchievements />
 			<LogoSection />
 			<FreeTrial />
-			<div className="bg-[#dbe9ff] pt-20">
+			<div id="programs" className="bg-[#dbe9ff] pt-20 scroll-mt-16">
 				<div className="bg-[url('/img/bg_continuation.png')] bg-cover bg-center bg-no-repeat">
 					<h1 className="text-2xl md:text-5xl text-center flex justify-center lg:text-5xl font-extrabold tracking-tight text-gray-600 mb-10">
 						<span className="bg-clip-text  relative z-10"> {tHome("programsSectionSubtitle")}</span>
 					</h1>
-					{/* Content */}
-					<div data-aos="fade-right" data-aos-duration="600">
-						<CardGridSection {...globalPrograms} align="left" />
-					</div>
-
-					<div data-aos="fade-left" data-aos-duration="600">
-						<CardGridSection {...globalTeamwork} align="right" />
-					</div>
-					<div data-aos="fade-right" data-aos-duration="600">
-						<CardGridSection {...globalLeadership} align="left" />
-					</div>
+					<ProgramsTabs 
+						levelsData={[globalPrograms, globalTeamwork, globalLeadership]} 
+					/>
 				</div>
 			</div>{" "}
+			<div id="pricing" className="scroll-mt-16">
 			<PricingSection />
+			</div>
 			<JBSWorkshopsBenefits />
 			<JBSWorkshopsStructure />
 			<LecturerIntroduction />
-			<Instructors />
+			<div id="instructors" className="scroll-mt-24">
+				<Instructors />
+			</div>
 			<FeturedIn />
 			<Footer />
 			<Link

@@ -187,7 +187,6 @@ export const BookingService = {
 					locale,
 					firstName: oldBooking.first_name,
 					lastName: oldBooking.last_name,
-					email: oldBooking.email,
 					oldEventDate: new Date(oldBooking.event_date),
 					newStart,
 					newEnd,
