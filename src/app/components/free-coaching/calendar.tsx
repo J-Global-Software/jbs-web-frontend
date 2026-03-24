@@ -194,7 +194,13 @@ export default function BookingCalendar({ selectedDate, onDateSelect, selectedSl
 								{t("common.retry")}
 							</button>
 						</div>
+					) : !selectedDate ? (
+						// 1. Initial State: No date has been clicked yet
+						<div className="col-span-2 flex flex-col items-center justify-center py-10 text-center">
+							<p className="text-gray-500 font-medium">{t("manage.pleaseSelectDate")}</p>
+						</div>
 					) : previewSlots.length === 0 ? (
+						// 2. Empty State: Date is selected, but truly no slots exist
 						<div className="col-span-2 text-gray-400 font-bold text-center py-10">{t("booking.noSlots")}</div>
 					) : (
 						<>

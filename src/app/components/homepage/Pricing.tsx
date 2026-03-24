@@ -35,30 +35,7 @@ export default function PricingSection() {
 	const cycles: PlanCycle[] = ["monthly", "biannual", "annual"];
 
 	// 2. Apply the Plan type to your object
-	const plans: Record<"express" | "unlimited", Plan> = {
-		express: {
-			name: "Express",
-			features: t("expressFeatures"),
-			accent: "#F6C358",
-			monthly: {
-				price: "5,000",
-				total: t("taxIncl", { price: "5,000" }),
-				perks: [],
-				link: "https://buy.stripe.com/7sI9Dy4sUfc098s8wx",
-			},
-			biannual: {
-				price: "4,500",
-				total: t("oneTime", { price: "27,000" }),
-				perks: [t("perkLearningPlan"), t("perkCoaching1")],
-				link: "https://buy.stripe.com/28o9Dy1gI7Jy5Wg9AC",
-			},
-			annual: {
-				price: "4,000",
-				total: t("oneTime", { price: "48,000" }),
-				perks: [t("perkLearningPlan"), t("perkCoaching2")],
-				link: "https://buy.stripe.com/28o1724sUe7W0BW7sv",
-			},
-		},
+	const plans: Record<"unlimited", Plan> = {
 		unlimited: {
 			name: "Unlimited Salon",
 			features: t("unlimitedFeatures"),
@@ -103,8 +80,7 @@ export default function PricingSection() {
 					</div>
 				</div>
 
-				<div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-					<PricingCard plan={plans.express} cycle={billingCycle} />
+				<div className="grid  gap-8 max-w-5xl mx-auto">
 					<PricingCard plan={plans.unlimited} cycle={billingCycle} />
 				</div>
 			</div>

@@ -35,7 +35,8 @@
         "cancelTitle": "予約をキャンセル",
         "cancelWarning": "本当に予約をキャンセルしますか？この操作は元に戻せません。",
         "keepBooking": "予約を保持",
-        "yesCancel": "はい、キャンセルします"
+        "yesCancel": "はい、キャンセルします",
+        "pleaseSelectDate": "カレンダーからご希望の日付をお選びください。"
     },
     "calendar": {
         "sun": "日",
