@@ -62,51 +62,44 @@ interface RescheduleUserParams extends BaseEmailParams {
 }
 
 interface WorkshopConfirmationParams extends BaseEmailParams {
-    firstName: string;
-    lastName: string;
-    programCode: string; // e.g., "WS-101" or "BIZNITE-01"
-    eventDate: string;   // Formatted date string
-    eventTime: string;   // e.g., "19:00 - 21:00"
+	firstName: string;
+	lastName: string;
+	programCode: string; // e.g., "WS-101" or "BIZNITE-01"
+	eventDate: string; // Formatted date string
+	eventTime: string; // e.g., "19:00 - 21:00"
 	eventTimeFinish: string; // e.g., "21:00"
 	eventName: string; // e.g., "Effective Communication Skills"
-    userZoomLink: string;
-    icsContent: string;  // The generated calendar file content
+	userZoomLink: string;
+	icsContent: string; // The generated calendar file content
 }
 
 export const EmailService = {
-	
-   // Inside EmailService object in email.service.ts
-// Inside EmailService
-async sendWorkshopConfirmation({ locale, firstName, lastName, programCode, eventDate, eventTime, eventTimeFinish, userZoomLink, messages, icsContent, fromEmail, toEmail, eventName}: WorkshopConfirmationParams) {
-    
-    const data: EmailData = {
-        firstName,
-        lastName,
-        email: toEmail,
-        phone: "",
-        message: "",
-        date: eventDate,
-        time: eventTime,
-		timeFinish: eventTimeFinish,
-		eventName:eventName
-       
-    };
+	// Inside EmailService object in email.service.ts
+	// Inside EmailService
+	async sendWorkshopConfirmation({ locale, firstName, lastName, programCode, eventDate, eventTime, eventTimeFinish, userZoomLink, messages, icsContent, fromEmail, toEmail, eventName }: WorkshopConfirmationParams) {
+		const data: EmailData = {
+			firstName,
+			lastName,
+			email: toEmail,
+			phone: "",
+			message: "",
+			date: eventDate,
+			time: eventTime,
+			timeFinish: eventTimeFinish,
+			eventName: eventName,
+		};
 
+		const htmlContent = generateWorkshopHTMLEmail(locale, data, programCode, userZoomLink, messages);
 
-    const htmlContent = generateWorkshopHTMLEmail(locale, data, programCode, userZoomLink, messages);
+		return resend.emails.send({
+			from: fromEmail,
+			to: toEmail,
+			subject: locale === "ja" ? `【参加確定】J-Globalビジネススクール` : `Confirmation: J-Global Business School`,
+			html: htmlContent,
+			attachments: [{ filename: "workshop.ics", content: icsContent }],
+		});
+	},
 
-
-
-    return resend.emails.send({
-        from: fromEmail,
-        to: toEmail,
-        subject: locale === "ja" ? `【参加確定】J-Globalビジネススクール` : `Confirmation: J-Global Business School`,
-        html: htmlContent,
-        attachments: [{ filename: "workshop.ics", content: icsContent }],
-    });
-},
-
-   
 	/**
 	 * Sends confirmation and ICS file to the User
 	 */
@@ -115,7 +108,7 @@ async sendWorkshopConfirmation({ locale, firstName, lastName, programCode, event
 		const emailData: EmailData = {
 			...userData,
 			timeFinish: userData.timeFinish || "",
-			eventName: userData.eventName || "" // Add eventName to EmailData
+			eventName: userData.eventName || "", // Add eventName to EmailData
 		};
 		const plainText = generatePlainTextEmail(locale, greetingName, emailData, userZoomLink, managementUrl, messages);
 		const htmlContent = generateHTMLEmail(locale, greetingName, emailData, userZoomLink, managementUrl, messages);
@@ -139,13 +132,13 @@ async sendWorkshopConfirmation({ locale, firstName, lastName, programCode, event
 	/**
 	 * Notifies Lecturer of a new booking
 	 */
-	async sendLecturerNotification({ userData, messages, fromEmail, toEmail }: { userData: BookingPayload; messages: ServerMessages; fromEmail: string; toEmail: string }) {
+	async sendLecturerNotification({ userData, messages, fromEmail, toEmail, userZoomLink }: { userData: BookingPayload; messages: ServerMessages; fromEmail: string; toEmail: string; userZoomLink: string }) {
 		const emailData: EmailData = {
 			...userData,
 			timeFinish: userData.timeFinish || "",
-			eventName: userData.eventName || "" // Add eventName to EmailData
+			eventName: userData.eventName || "", // Add eventName to EmailData
 		};
-		const htmlContent = generateLecturerNotificationHTML(emailData, messages);
+		const htmlContent = generateLecturerNotificationHTML(emailData, messages, userZoomLink);
 		return resend.emails.send({
 			from: fromEmail,
 			to: toEmail,
