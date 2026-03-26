@@ -34,22 +34,23 @@ export const BookingService = {
 				// 4 & 5. External Events (Zoom & Google Calendar)
 				const zoomTopic = `(JBS) Free Coaching X ${payload.firstName} ${payload.lastName}`;
 
-				const zoomData = await createZoomMeeting(zoomTopic, start, 30, [
-					{
-						email: payload.email,
-						firstName: payload.firstName,
-						lastName: payload.lastName,
-					},
+				const [zoomData, gCalEvent] = await Promise.all([
+					createZoomMeeting(zoomTopic, start, 30, [
+						{
+							email: payload.email,
+							firstName: payload.firstName,
+							lastName: payload.lastName,
+						},
+					]),
+					createBookingEvent({
+						summary: zoomTopic,
+						description: `Free coaching with ${payload.firstName} ${payload.lastName}\nEmail: ${payload.email}\nPhone: ${payload.phone}`,
+						start,
+						end,
+					}),
 				]);
-				const userZoomLink = zoomData.registrantLinks[payload.email];
 
-				// 3. Create the Calendar event using the link
-				const gCalEvent = await createBookingEvent({
-					summary: zoomTopic,
-					description: `Free coaching with ${payload.firstName} ${payload.lastName}\nEmail: ${payload.email}\nPhone: ${payload.phone}\nMessage: ${payload.message}\nZoom Link: ${userZoomLink}`,
-					start,
-					end,
-				});
+				const userZoomLink = zoomData.registrantLinks[payload.email];
 
 				// 6. Save to DB
 				const booking = await BookingRepository.createInitial({
@@ -94,7 +95,6 @@ export const BookingService = {
 							messages,
 							fromEmail: process.env.FROM_EMAIL || "",
 							toEmail: process.env.LECTURER_EMAIL || "",
-							userZoomLink,
 						}),
 					]);
 				} catch (emailError) {
