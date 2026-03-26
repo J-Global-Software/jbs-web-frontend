@@ -37,8 +37,7 @@
         "cancelTitle": "Cancel Booking",
         "cancelWarning": "Are you sure you want to cancel your booking? This action cannot be undone.",
         "keepBooking": "Keep Booking",
-        "yesCancel": "Yes, Cancel",
-        "pleaseSelectDate": " Please select your desired date on the calendar."
+        "yesCancel": "Yes, Cancel"
     },
     "calendar": {
         "sun": "Sun",

@@ -12,6 +12,7 @@ export default function Page() {
 	const scrolled = useScroll(10);
 
 	const tHome = useTranslations("homepage");
+	const tNav = useTranslations("homepage.navbar");
 
 	return (
 		<div className="relative min-h-screen overflow-hidden">
@@ -26,14 +27,30 @@ export default function Page() {
 					style={{ opacity: 0.7 }}
 				/>
 			</div>
-
 			{/* Navbar */}
 			<header className={`fixed top-0 left-0 right-0 z-50 mx-auto flex w-full items-center justify-between px-6 py-2 transition-colors duration-300 ${scrolled ? "bg-white shadow-md" : "bg-transparent"}`}>
 				<div className="max-w-7xl flex w-full items-center justify-between mx-auto">
 					<Link href="/" className="flex items-center">
 						<Image src="/logo.avif" alt="Prebuilt UI Logo" width={120} height={40} className="h-auto w-24 sm:w-32 md:w-32 object-contain" priority />
 					</Link>
-					<div className="flex items-center space-x-4">
+					<div className="flex items-center gap-6">
+						{/* Navigation Links */}
+						<nav className="hidden md:flex items-center gap-6 text-base font-semibold">
+							<a href="#why-jbs" className="hover:text-[#1f497c] transition">
+								{tNav("why")}
+							</a>
+							<a href="#programs" className="hover:text-[#1f497c] transition">
+								{tNav("programs")}
+							</a>
+							<a href="#pricing" className="hover:text-[#1f497c] transition">
+								{tNav("pricing")}
+							</a>
+							<a href="#instructors" className="hover:text-[#1f497c] transition">
+								{tNav("instructors")}
+							</a>
+						</nav>
+
+						{/* Language Switcher */}
 						<LanguageSwitcher />
 					</div>
 				</div>
@@ -48,8 +65,13 @@ export default function Page() {
 							blue: (chunks) => <span className="text-[#1f497c]">{chunks}</span>,
 							br: () => <br />,
 							div: (chunks) => <span>{chunks}</span>,
+							u: (chunks) => <u>{chunks}</u>,
+							i: (chunks) => <i>{chunks}</i>,
 						})}
 					</h1>
+					<p className="mt-6 max-w-xl text-lg text-gray-200">
+						{tHome("HeroSection.subheading")}
+					</p>
 
 					<div className="mt-8 flex flex-wrap justify-center gap-10 md:gap-4 sm:justify-start">
 						<div>
@@ -58,7 +80,7 @@ export default function Page() {
 							</Link>
 						</div>
 						<div>
-							<a href="#why-us" className="rounded-full border border-gray-300 px-6 py-3 font-medium text-white transition text-xl hover:border-indigo-500 hover:text-indigo-600">
+							<a href="#programs" className="rounded-full border border-gray-300 px-6 py-3 font-medium text-white transition text-xl hover:border-indigo-500 hover:text-indigo-600">
 								{tHome("HeroSection.heroSecondaryCTA")}
 							</a>
 						</div>

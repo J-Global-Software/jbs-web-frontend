@@ -1,9 +1,9 @@
 {
     "HeroSection": {
-        "heading": "Welcome to<br></br><blue>J Global</blue><br></br>Business School",
-        "subheading": "Empowering a new generation of global leaders through mentorship and innovation.",
-        "heroCTA": "Click here for free trial",
-        "heroSecondaryCTA": "Learn More"
+        "heading": "Build the global skills <br></br>Japan’s top companies <br></br><blue><u><i>are hiring for.</i></u></blue>",
+        "subheading": "Bilingual live workshops, personal coaching, and real intercultural skill-building — designed for professionals working in Japan, available entirely online.",
+        "heroCTA": "Start Free Trial",
+        "heroSecondaryCTA": "Explore Programs"
     },
     "FreeTrialSection": {
         "backgroundAlt": "Background image",
@@ -176,21 +176,51 @@
     "learnMore": "Learn more",
     "freeCoaching": "Free Coaching",
     "pricing": {
-        "title": "Plan Prices",
-        "subtitle": "Choose the best plan to master your global business skills.",
-        "cycle_monthly": "Monthly",
-        "cycle_biannual": "6 Months",
-        "cycle_annual": "Annual",
-        "popular": "Most Popular",
-        "buyNow": "Buy Now",
-        "standardAccess": "Standard monthly access",
-        "expressFeatures": "Up to 4 workshops per month",
-        "unlimitedFeatures": "Unlimited Workshops",
-        "perkLearningPlan": "Personalized annual learning plan",
-        "perkCoaching1": "1 coaching session",
-        "perkCoaching2": "2 coaching sessions",
-        "taxIncl": "{price} JPY (Tax Incl.)",
-        "oneTime": "{price} JPY (One-time payment)"
+    "title": "Plan Prices",
+    "subtitle": "Choose the best plan to master your global business skills.",
+
+    "cycle_monthly": "Monthly",
+    "cycle_biannual": "6 Months",
+    "cycle_annual": "Annual",
+
+    "fullMembership": "Full Membership",
+
+    "taxIncl": "{price} JPY (Tax Incl.)",
+    "oneTime": "{price} JPY (One-time payment)",
+
+    "standardAccess": "Standard monthly access",
+
+    "startFreeTrial": "Start Free Trial →",
+    "getStarted": "Get Started →",
+
+    "noCard": "No credit card required",
+    "billedMonthly": "Billed monthly",
+    "billedBiannual": "Billed every 6 months (save 10%)",
+    "billedAnnual": "Billed annually (save 20%)",
+
+    "freeTrial": {
+        "name": "Free Trial",
+        "features": "Explore the full platform for 14 days. No card, no commitment.",
+        "perks": [
+        "Full access to all workshops",
+        "Free 1-on-1 coaching session",
+        "Live Country Biz Nights",
+        "On-demand recordings",
+        "Business game access"
+        ]
+    },
+
+    "unlimited": {
+        "name": "Unlimited Salon",
+        "features": "For professionals serious about accelerating their global career.",
+        "perks": [
+            "Unlimited workshops every month",
+            "All three skill levels — full access",
+            "Weekly live Country Biz Nites",
+            "Bi-weekly business game sessions",
+            "Ongoing 1-on-1 coaching access"
+        ]
+    }
     },
     "workshopHero": {
         "modal": {
@@ -205,5 +235,13 @@
             "meetingLink": "Meeting Link",
             "closeButton": "Got it, thanks!"
         }
+    },
+    "navbar": {
+        "why": "Why JBS",
+        "programs": "Programs",
+        "pricing": "Pricing",
+        "instructors": "Instructors",
+        "freeTrial": "Free Trial",
+        "login": "Login"
     }
 }
