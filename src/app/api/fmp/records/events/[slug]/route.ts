@@ -1,92 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
+import { FileMakerService } from "@/services/filemaker.service";
+import { getErrorStatus } from "@/utils/errors";
 
-let cachedToken: string | null = null;
-let tokenExpiresAt = 0;
-
-const FILEMAKER_API_VERSION = "v1";
-
-async function getToken() {
-	if (cachedToken && Date.now() < tokenExpiresAt) {
-		return cachedToken; // ✅ use cached token if still valid
-	}
-
-	const { FILEMAKER_USER, FILEMAKER_PASS, FILEMAKER_URL, FILEMAKER_DB } = process.env;
-	if (!FILEMAKER_USER || !FILEMAKER_PASS || !FILEMAKER_URL || !FILEMAKER_DB) {
-		throw new Error("Missing one or more FileMaker environment variables.");
-	}
-
-	const auth = Buffer.from(`${FILEMAKER_USER}:${FILEMAKER_PASS?.replace(/\\n/g, "\n")}`).toString("base64");
-	const sessionUrl = `${FILEMAKER_URL}/fmi/data/${FILEMAKER_API_VERSION}/databases/${FILEMAKER_DB}/sessions`;
-
-	const res = await fetch(sessionUrl, {
-		method: "POST",
-		headers: { "Content-Type": "application/json", Authorization: `Basic ${auth}` },
-	});
-
-	if (!res.ok) {
-		const errorText = await res.text();
-		throw new Error(`Failed to get token: ${res.status} ${errorText}`);
-	}
-
-	const data = await res.json();
-	if (!data?.response?.token) throw new Error(`Token missing in response: ${JSON.stringify(data)}`);
-
-	cachedToken = data.response.token;
-	tokenExpiresAt = Date.now() + 14 * 60 * 1000; // valid for 14 minutes
-
-	return cachedToken;
-}
-
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
 	try {
-		const url = new URL(req.url);
-		const pathSegments = url.pathname.split("/").filter(Boolean);
-		const id = pathSegments[pathSegments.length - 1];
+		const { slug } = await context.params;
 
-		if (!id) throw new Error("Missing 'id' parameter in request URL.");
-
-		const token = await getToken();
-
-		const { FILEMAKER_URL, FILEMAKER_DB } = process.env;
-		if (!FILEMAKER_URL || !FILEMAKER_DB) {
-			throw new Error("Missing FILEMAKER_URL or FILEMAKER_DB environment variable.");
-		}
-
-		const body = {
-			query: [{ ID: `=${id}` }],
-			sort: [{ fieldName: "ID", sortOrder: "ascend" }],
-		};
-
-		const apiUrl = `${FILEMAKER_URL}/fmi/data/${FILEMAKER_API_VERSION}/databases/${FILEMAKER_DB}/layouts/WorkshopEventApi/_find`;
-
-		const res = await fetch(apiUrl, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify(body),
+		// Direct Service call targeting the WorkshopEventApi layout
+		// We use '==' to ensure an exact match for the ID/Slug
+		const data = await FileMakerService.find("WorkshopEventApi", {
+			ID: `==${slug}`,
 		});
 
-		const text = await res.text();
-		let data;
-		try {
-			data = JSON.parse(text);
-		} catch {
-			throw new Error(`Failed to parse FileMaker response: ${text.slice(0, 200)}`);
+		// If no records are found, FileMakerService.find returns an empty array
+		if (!data || data.length === 0) {
+			return NextResponse.json({ error: "Event not found" }, { status: 404 });
 		}
 
-		if (!res.ok) {
-			return NextResponse.json({
-				error: "FileMaker API error",
-				status: res.status,
-				details: data,
-			});
-		}
-
-		return NextResponse.json(data);
+		// Return the specific event record
+		return NextResponse.json(data[0]);
 	} catch (error: unknown) {
-		const message = error instanceof Error ? error.message : "An unexpected error occurred";
-		return NextResponse.json({ error: message, status: 500 });
+		const message = error instanceof Error ? error.message : "Internal Server Error";
+		const status = getErrorStatus(message);
+
+		console.error(`[Event Route Error]: ${message}`);
+
+		return NextResponse.json({ error: message }, { status });
 	}
 }

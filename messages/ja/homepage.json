@@ -8,8 +8,8 @@
     "FreeTrialSection": {
         "backgroundAlt": "背景画像",
         "title": "まずは無料体験",
-        "feature1": "\\ 二週間無料体験！12/31まで /",
-        "feature2": "\\ 二週間無料体験！12/31まで /",
+        "feature1": "二週間無料体験！",
+        "feature2": "二週間無料体験！",
         "cta": "2分で簡単に登録"
     },
     "LecturerIntroduction": {
@@ -174,5 +174,74 @@
     "miniMBAAddition": "各トピックの他に、ロールプレイングゲームやミニインターンシップなどもあり実践しながら楽しく学ぶことができます。",
     "sixWaysLearning": "2つのトピックからなる6つの学習テーマ",
     "learnMore": "詳しく見る",
-    "freeCoaching": "無料予約！"
+    "freeCoaching": "無料予約！",
+    "pricing": {
+        "title": "料金プラン",
+        "subtitle": "あなたに最適なプランを選んで、グローバルスキルを習得しましょう。",
+
+        "cycle_monthly": "月払い",
+        "cycle_biannual": "半年払い",
+        "cycle_annual": "年払い",
+
+        "fullMembership": "フルメンバーシップ",
+
+        "taxIncl": "{price}円（税込）/月",
+        "oneTime": "{price}円（税込）",
+
+        "standardAccess": "標準アクセス",
+
+        "startFreeTrial": "無料体験を始める →",
+        "getStarted": "今すぐ始める →",
+
+        "noCard": "クレジットカード不要",
+        "billedMonthly": "毎月請求",
+        "billedBiannual": "6ヶ月ごとに請求（10%お得）",
+        "billedAnnual": "年払い（20%お得）",
+
+        "freeTrial": {
+            "name": "無料トライアル",
+            "features": "14日間すべての機能を体験できます。クレジットカード不要。",
+            "perks": [
+            "すべてのワークショップにアクセス可能",
+            "無料の1対1コーチングセッション",
+            "ライブ Country Biz Nights に参加可能",
+            "オンデマンド動画視聴",
+            "ビジネスゲームに参加可能"
+            ]
+        },
+
+        "unlimited": {
+            "name": "無制限プラン",
+            "features": "本気でグローバルキャリアを伸ばしたい方向けのプランです。",
+            "perks": [
+            "毎月無制限でワークショップに参加可能",
+            "3つすべてのスキルレベルにフルアクセス",
+            "毎週の Country Biz Nites に参加可能",
+            "隔週のビジネスゲームセッション",
+            "継続的な1対1コーチングサポート"
+            ]
+        }
+    },
+    "workshopHero": {
+        "modal": {
+            "description": "参加登録を確定するために、以下の情報をご入力ください。",
+            "firstName": "名",
+            "lastName": "姓",
+            "email": "メールアドレス",
+            "confirm": "参加登録を確定する",
+            "successTitle": "登録が完了しました！",
+            "successSubtitle": "ご登録ありがとうございます。確認メールを数分以内にお送りいたします。",
+            "eventDetails": "イベント詳細",
+            "meetingLink": "参加リンク (Zoom)",
+            "closeButton": "閉じる"
+        }
+    },
+    "navbar": {
+        "why": "JBSとは",
+        "programs": "プログラム",
+        "pricing": "料金",
+        "instructors": "講師",
+        "freeTrial": "無料体験",
+        "login": "ログイン"
+    }
 }

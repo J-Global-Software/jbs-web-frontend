@@ -45,3 +45,12 @@ export const LINKS: Record<string, LinkEntry> = {
 		},
 	},
 };
+export function getLink(key: keyof typeof LINKS, lang: string = "ja") {
+	const link = LINKS[key];
+
+	if (!link) {
+		throw new Error(`Link key "${key}" not found`);
+	}
+
+	return link.langUrls?.[lang] || link.url;
+}

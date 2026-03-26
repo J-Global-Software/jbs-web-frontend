@@ -1,38 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { FaChevronDown, FaRegClock } from "react-icons/fa";
+import { FaChevronDown, FaClock, FaCalendarAlt, FaStream } from "react-icons/fa";
 
 export type WorkshopSession = {
 	title: string;
 	content: string[];
-	dates: { id: string; date: string; startTime: string }[];
+	dates: { id: string; date: string; startTime: string, endTime:string, zoomLink:string, eventId: string }[];
 };
 
 interface WorkshopSessionsProps {
 	sessions: WorkshopSession[];
 	locale: string;
-	translations: {
-		workshop: string;
-		close: string;
-		whatYouWillLearn: string;
-		availableDates: string;
-		date: string;
-		dates: string;
-		registerToWorkshop: string;
-		jan: string;
-		feb: string;
-		mar: string;
-		apr: string;
-		may: string;
-		jun: string;
-		jul: string;
-		aug: string;
-		sep: string;
-		oct: string;
-		nov: string;
-		dec: string;
-	};
+	translations: Record<string, string>; // Replaces the specific object list
 }
 
 export default function WorkshopSessions({ sessions, locale, translations }: WorkshopSessionsProps) {
@@ -42,207 +22,180 @@ export default function WorkshopSessions({ sessions, locale, translations }: Wor
 		setOpenIndex(openIndex === index ? null : index);
 	};
 
-	const accentColors = ["from-slate-600 to-slate-700", "from-stone-600 to-stone-700", "from-neutral-600 to-neutral-700", "from-gray-600 to-gray-700"];
+	const processContent = (rawContent: string[]) => {
+		if (!rawContent) return [];
+		return rawContent.flatMap((line) => {
+			if (line.length < 20 || !/\d+\./.test(line)) return [line];
+			const parts = line
+				.split(/(?=\b\d+[\.\)]\s)/)
+				.map((p) => p.trim())
+				.filter(Boolean);
+			return parts.map((p) => p.replace(/^,\s*/, "").replace(/,\s*$/, ""));
+		});
+	};
 
 	return (
-		<>
+		<div className="space-y-6">
 			{sessions.map((session, i) => {
 				const isOpen = openIndex === i;
+				const processedContent = processContent(session.content);
 
 				return (
 					<div
 						id={`workshop-accordion-${i}`}
-						key={i}
+						key={`session-${i}`}
 						className={`
-							group rounded-3xl overflow-hidden 
-							bg-linear-to-brrom-white to-gray-50/30
-							border transition-all duration-300 ease-out
-							${isOpen ? "shadow-2xl border-gray-300 ring-1 ring-gray-900/5" : "shadow-md border-gray-200/60 hover:shadow-xl hover:border-gray-300/80"}
-						`}
+                            group rounded-2xl overflow-hidden 
+                            border transition-all duration-300 ease-out
+                            ${isOpen ? "bg-white border-blue-200 shadow-xl shadow-blue-900/5 ring-1 ring-blue-100" : "bg-white border-slate-200 hover:border-blue-300 hover:shadow-md"}
+                        `}
 					>
-						<button onClick={() => toggleAccordion(i)} aria-expanded={isOpen} aria-controls={`workshop-content-${i}`} className="w-full text-left">
-							<div className="p-8 sm:p-10">
-								<div className="flex items-start justify-between gap-6">
-									<div className="flex-1 min-w-0">
-										<div className="flex items-center gap-4 mb-4">
-											<div
-												className={`
-													h-12 w-1 rounded-full bg-linear-to-b ${accentColors[i % 4]}
-													transition-all duration-300
-													${isOpen ? "h-16" : "group-hover:h-14"}
-												`}
-											/>
-											<div>
-												<span className="block text-xs font-semibold text-gray-400 uppercase tracking-[0.2em] mb-1">
-													{translations.workshop} {String(i + 1).padStart(2, "0")}
-												</span>
-												<div className="h-px w-12 bg-linear-to-r from-gray-300 to-transparent" />
-											</div>
-										</div>
+						{/* Header / Trigger */}
+						<button onClick={() => toggleAccordion(i)} aria-expanded={isOpen} aria-controls={`workshop-content-${i}`} className="w-full text-left focus:outline-none">
+							<div className="p-6 md:p-8 flex items-start gap-6 md:gap-8">
+								{/* Number Badge */}
+								<div
+									className={`
+                                    hidden md:flex flex-col items-center justify-center shrink-0 w-16 h-16 rounded-2xl 
+                                    transition-colors duration-300
+                                    ${isOpen ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30" : "bg-slate-100 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500"}
+                                `}
+								>
+									<span className="text-2xl font-bold leading-none">{String(i + 1).padStart(2, "0")}</span>
+								</div>
 
-										<h3
-											className={`
-												text-3xl font-light text-gray-900 mb-5 
-												leading-tight tracking-tight
-												transition-colors duration-300
-												${isOpen ? "text-gray-900" : "group-hover:text-gray-700"}
-											`}
-										>
-											{session.title}
-										</h3>
+								{/* Title Area */}
+								<div className="flex-1 min-w-0 pt-1">
+									<div className="md:hidden text-xs font-bold text-blue-600 mb-1 uppercase tracking-wider">
+										{translations.workshop} {String(i + 1).padStart(2, "0")}
 									</div>
+									<h3
+										className={`
+                                        text-xl md:text-2xl font-bold leading-tight transition-colors duration-300
+                                        ${isOpen ? "text-slate-900" : "text-slate-700 group-hover:text-blue-700"}
+                                    `}
+									>
+										{session.title}
+									</h3>
+									{!isOpen && <p className="mt-2 text-sm text-slate-500 line-clamp-1">{translations.readMore || "View details..."}</p>}
+								</div>
 
-									<div className="flex flex-col items-center gap-2 pt-2">
-										<div
-											className={`
-												w-12 h-12 rounded-full 
-												border-2 transition-all duration-300 ease-out
-												flex items-center justify-center
-												${isOpen ? "border-gray-900 bg-gray-900 scale-110" : "border-gray-300 bg-white group-hover:border-gray-400 group-hover:scale-105"}
-											`}
-										>
-											<FaChevronDown
-												className={`
-													w-3.5 h-3.5 transition-all duration-300
-													${isOpen ? "rotate-180 text-white" : "text-gray-500 group-hover:text-gray-700"}
-												`}
-												aria-hidden="true"
-											/>
-										</div>
-										{isOpen && <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wider">{translations.close}</span>}
-									</div>
+								<div
+									className={`
+                                    w-10 h-10 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300
+                                    ${isOpen ? "bg-slate-100 border-slate-200 rotate-180 text-slate-900" : "bg-transparent border-slate-100 text-slate-400 group-hover:border-blue-200 group-hover:text-blue-500"}
+                                `}
+								>
+									<FaChevronDown className="w-3.5 h-3.5" />
 								</div>
 							</div>
 						</button>
 
+						{/* Expandable Content */}
 						<div
 							id={`workshop-content-${i}`}
 							className={`
-								transition-all duration-500 ease-in-out 
-								${isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"} 
-								overflow-hidden
-							`}
+                                overflow-hidden transition-all duration-500 ease-in-out
+                                ${isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}
+                            `}
 						>
-							<div className="px-8 sm:px-10 pb-10 bg-linear-to-b from-gray-50/50 to-white">
-								<div className="h-px bg-linear-to-r from-transparent via-gray-200 to-transparent mb-8" />
+							<div className="px-6 md:px-8 pb-8 md:pl-[7.5rem]">
+								<div className="pt-6 border-t border-slate-100 space-y-10">
+									{/* --- AGENDA TIMELINE --- */}
+									<div>
+										<h4 className="flex items-center gap-2 text-sm font-bold text-slate-900 uppercase tracking-wider mb-6">
+											<FaStream className="text-blue-500" />
+											{translations.whatYouWillLearn}
+										</h4>
 
-								<div className="mb-8">
-									<h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">{translations.whatYouWillLearn}</h4>
-									<div className="space-y-3">
-										{session.content
-											?.flatMap((item) =>
-												item
-													.split(/(?=●|・|\b\d+\.\s)/)
-													.map((line) => line.trim())
-													.filter(Boolean)
-											)
-											.map((line, j) => {
-												const isBullet = /^(●|・)/.test(line);
-												const text = isBullet ? line.replace(/^(●|・)/, "").trim() : line;
+										<div className="relative border-l-2 border-slate-100 ml-3 space-y-0">
+											{processedContent.map((line, j) => {
+												const listMatch = line.match(/^(\d+)[.)]\s*/) || line.match(/^[•●・\-\*]\s*/);
+												const isListItem = !!listMatch;
+												const itemNumber = listMatch && listMatch[1] ? listMatch[1] : null;
+
+												let cleanText = line
+													.replace(/^[•●・\-\*]+/, "")
+													.replace(/^\d+[.)]\s*/, "")
+													.trim();
+												if (!cleanText) return null;
+
+												const timeMatch = cleanText.match(/(?:[-–—]\s*)(\d+\s*(?:minutes?|mins?|min|分).*?)$/i);
+												const time = timeMatch ? timeMatch[1] : null;
+
+												if (time) {
+													cleanText = cleanText.replace(/(?:[-–—]\s*)\d+\s*(?:minutes?|mins?|min|分).*?$/i, "").trim();
+												}
 
 												return (
-													<div key={j} className="flex items-start gap-3">
-														<div className={`shrink-0 w-1.5 h-1.5 rounded-full mt-2 ${isBullet ? "bg-gray-400" : "bg-transparent"}`} />
-														<span className="text-base text-gray-700 leading-relaxed">{text}</span>
+													<div key={`content-${i}-${j}`} className="relative pl-8 pb-6 last:pb-0">
+														<div
+															className={`
+                                                            absolute -left-[10px] top-1.5 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center z-10
+                                                            ${isListItem ? (itemNumber ? "bg-blue-100 ring-1 ring-blue-50" : "bg-slate-200") : "bg-blue-500/20"}
+                                                        `}
+														>
+															{itemNumber ? <span className="text-[9px] font-bold text-blue-600">{itemNumber}</span> : <div className={`rounded-full ${isListItem ? "w-1.5 h-1.5 bg-slate-400" : "w-2 h-2 bg-blue-500"}`}></div>}
+														</div>
+
+														<div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+															<span className={`text-slate-700 leading-relaxed ${isListItem ? "text-[15px] font-medium" : "text-base font-bold text-slate-900"}`}>{cleanText}</span>
+															{time && (
+																<span className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-50 border border-slate-100 text-[11px] font-semibold text-slate-500 whitespace-nowrap">
+																	<FaClock className="text-slate-300" />
+																	{time}
+																</span>
+															)}
+														</div>
 													</div>
 												);
 											})}
+										</div>
 									</div>
-								</div>
 
-								<div className="mb-10">
-									<div className="flex items-center gap-3 mb-6">
-										<div className="h-8 w-1 rounded-full bg-linear-to-b from-gray-600 to-gray-700" />
-										<h4 className="text-xs font-semibold text-gray-400 uppercase tracking-[0.2em]">{translations.availableDates}</h4>
-										<span className="text-xs font-light text-gray-400 ml-1">
-											({session.dates.length} {session.dates.length === 1 ? translations.date : translations.dates})
-										</span>
-									</div>
-									<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-										{session.dates.map((date, j) => {
-											const parsedDate = new Date(`${date.date} ${date.startTime}`);
-											const monthNames = [translations.jan, translations.feb, translations.mar, translations.apr, translations.may, translations.jun, translations.jul, translations.aug, translations.sep, translations.oct, translations.nov, translations.dec];
-											const month = monthNames[parsedDate.getMonth()];
-											const day = locale === "ja" ? `${parsedDate.getDate()}日` : parsedDate.getDate();
-											let hours = parsedDate.getHours();
-											const minutes = parsedDate.getMinutes().toString().padStart(2, "0");
-											const ampm = locale === "en" ? (hours >= 12 ? "PM" : "AM") : "";
-											hours = hours % 12 || 12;
+									{/* --- DATES SECTION --- */}
+									<div>
+										<h4 className="flex items-center gap-2 text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">
+											<FaCalendarAlt className="text-teal-500" />
+											{translations.availableDates}
+										</h4>
+										<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+											{session.dates.map((d, j) => {
+												const parsedDate = new Date(`${d.date} ${d.startTime}`);
+												const monthKey = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"][parsedDate.getMonth()] as keyof typeof translations;
 
-											const handleClick = async () => {
-												try {
-													const res = await fetch(`/api/fmp/records/events/${date.id}`, { method: "GET" });
-													const data = await res.json();
-													if (!res.ok) {
-														alert(`Error: ${data.error || "Failed to fetch workshop"}`);
-														return;
-													}
-													console.log("Workshop data:", data);
-												} catch (err) {
-													console.error("Failed to fetch:", err);
-													alert("Failed to load workshop data");
-												}
-											};
+												const month = translations[monthKey];
+												const dayNum = parsedDate.getDate();
+												const dayDisplay = locale === "ja" ? `${dayNum}日` : dayNum;
 
-											return (
-												<button
-													key={j}
-													onClick={handleClick}
-													className="
-														group relative px-4 py-3.5 rounded-xl
-														bg-white border border-gray-200
-														hover:border-gray-300 hover:shadow-md
-														active:scale-[0.98]
-														transition-all duration-200
-														text-left
-													"
-												>
-													<div className="flex items-center gap-3">
-														<div className="shrink-0 h-10 rounded-lg bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:border-gray-200 transition-colors">
-															<FaRegClock className="w-4 h-4 text-gray-400" />
+												let hours = parsedDate.getHours();
+												const minutes = parsedDate.getMinutes().toString().padStart(2, "0");
+												const ampm = locale === "en" ? (hours >= 12 ? "PM" : "AM") : "";
+												if (locale === "en") hours = hours % 12 || 12;
+
+												return (
+													<div key={d.id || `date-${i}-${j}`} className="relative flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-200 hover:border-blue-500 hover:ring-1 hover:ring-blue-500 hover:bg-blue-50/10 transition-all duration-200">
+														<div className="shrink-0 flex flex-col items-center justify-center w-10 h-10 bg-slate-50 rounded-lg border border-slate-100 text-slate-600 font-bold">
+															<span className="text-[9px] uppercase leading-none mb-0.5">{month}</span>
+															<span className="text-base leading-none">{dayNum}</span>
 														</div>
 														<div className="flex-1 min-w-0">
-															<div className="text-sm font-medium text-gray-900">
-																{month} {day}
-															</div>
-															<div className="text-xs font-light text-gray-500">
+															<div className="text-sm font-bold text-slate-900 truncate">{locale === "ja" ? `${month}${dayDisplay}` : `${month} ${dayDisplay}`}</div>
+															<div className="text-xs text-slate-500">
 																{hours}:{minutes} {ampm}
 															</div>
 														</div>
 													</div>
-												</button>
-											);
-										})}
+												);
+											})}
+										</div>
 									</div>
 								</div>
-
-								<div className="h-px bg-linear-to-r from-transparent via-gray-200 to-transparent mb-8" />
-
-								<button
-									className="
-										group relative w-full 
-										bg-linear-to-r from-gray-800 to-gray-900 
-										text-white font-medium py-4 rounded-xl 
-										hover:from-gray-900 hover:to-black
-										active:scale-[0.99]
-										transition-all duration-200 
-										shadow-lg hover:shadow-xl
-										overflow-hidden
-									"
-								>
-									<span className="relative z-10 flex items-center justify-center gap-2">
-										<span>{translations.registerToWorkshop}</span>
-										<svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-										</svg>
-									</span>
-									<div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-								</button>
 							</div>
 						</div>
 					</div>
 				);
 			})}
-		</>
+		</div>
 	);
 }
