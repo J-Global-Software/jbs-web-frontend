@@ -108,7 +108,7 @@ async sendWorkshopConfirmation({ locale, firstName, lastName, programCode, event
 		const emailData: EmailData = {
 			...userData,
 			timeFinish: userData.timeFinish || "",
-			eventName: userData.eventName || "" // Add eventName to EmailData
+			eventName: userData.eventName || "", // Add eventName to EmailData
 		};
 		const plainText = generatePlainTextEmail(locale, greetingName, emailData, userZoomLink, managementUrl, messages);
 		const htmlContent = generateHTMLEmail(locale, greetingName, emailData, userZoomLink, managementUrl, messages);
@@ -138,9 +138,9 @@ async sendWorkshopConfirmation({ locale, firstName, lastName, programCode, event
 		const emailData: EmailData = {
 			...userData,
 			timeFinish: userData.timeFinish || "",
-			eventName: userData.eventName || "" // Add eventName to EmailData
+			eventName: userData.eventName || "", // Add eventName to EmailData
 		};
-		const htmlContent = generateLecturerNotificationHTML(emailData, messages);
+		const htmlContent = generateLecturerNotificationHTML(emailData, messages, userZoomLink);
 		return resend.emails.send({
 			from: fromEmail,
 			to: toEmail,
