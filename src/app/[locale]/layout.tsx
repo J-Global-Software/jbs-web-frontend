@@ -3,13 +3,13 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "@/app/globals.css";
 import Aoscompo from "../utils/aos";
-import { Inter } from "next/font/google";
+import { Noto_Sans, Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 
-const inter = Inter({
-	subsets: ["latin"],
+const poppins = Poppins({
 	weight: ["400", "500", "600", "700"],
-	variable: "--font-inter", // optional for Tailwind usage
+	subsets: ["latin"],
+	variable: "--font-main", // 3. Give it a clear variable name
 });
 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
@@ -20,9 +20,10 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 	}
 
 	return (
-		<html lang={locale} className={inter.variable}>
-			<body className={inter.className}>
-				<NextIntlClientProvider>
+		<html lang={locale} className={poppins.variable}>
+			{/* The className here applies Noto Sans to the whole page */}
+			<body className={poppins.className}>
+				<NextIntlClientProvider locale={locale}>
 					<Aoscompo>{children}</Aoscompo>
 				</NextIntlClientProvider>
 				<Toaster richColors closeButton />

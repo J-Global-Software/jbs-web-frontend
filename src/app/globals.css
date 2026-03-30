@@ -1,22 +1,24 @@
 @import "tailwindcss";
-
 :root {
 	--background: #ffffff;
 	--foreground: #171717;
-	--font-noto: "Noto Sans JP", sans-serif;
+	/* Map your Next.js font variable here */
+	--font-main: var(--font-main);
 }
 
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
-	--font-sans: var(--font-geist-sans);
-	--font-mono: var(--font-geist-mono);
+
+	/* 1. This makes `font-sans` use your new font */
+	--font-sans: var(--font-main), ui-sans-serif, system-ui;
 }
 
 body {
 	background: var(--background);
 	color: var(--foreground);
-	font-family: var(--font-noto);
+	/* 2. Set the global default font */
+	font-family: var(--font-main), sans-serif;
 }
 
 .flag-dropdown {
@@ -72,5 +74,5 @@ body {
 }
 
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }

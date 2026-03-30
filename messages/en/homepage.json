@@ -155,14 +155,15 @@
     "programsSectionSubtitle": "Three levels of global skill learning",
     "heroDescription": "Welcome to\nJ-Global\nBusiness School!",
     "clickFreeTrial": "Click for free trial",
-    "whyChooseUs": "Why Choose J-Global",
-    "reason": "Build intercultural leadership and communication skills for diverse roles in Japan. Choose from programs that strengthen your competencies and advance your career in both foreign and Japanese organizations.",
+    "whyChooseUs": "Why JBS",
+    "mainTitle": "Skills that move careers in <blue>Japan's global economy.</blue>",
+    "reason": "Built by practitioners with 15+ years of cross-cultural consulting across 100+ Japanese and international companies.",
     "skillsReasonablePrice": "Effective skills at a reasonable price",
-    "skillsReasonablePriceDescription": "Learn the practical skills you need now, such as cross-cultural teamwork, project management, or becoming a global leader, by choosing from a variety of programs including our Mini MBA,. New options are added monthly.",
+    "skillsReasonablePriceDescription": "World-class intercultural and leadership training at a fraction of traditional MBA costs. From ¥8,000/month on the annual plan — and a free two-week trial to start with no card needed.",
     "customizedLearning": "Customized to suit your learning needs",
-    "customizedLearningDescription": "A professional coach helps you analyze your strengths and concerns, and creates a study plan of workshops tailored to your needs. Build your skills using a variety of activities such as e-learning, mini internships or business games.  ",
+    "customizedLearningDescription": "Not a one-size-fits-all course. Start with a personal coaching session to map a path through the 175+ workshops that matches your actual career goals and schedule.",
     "interculturalMindset": "Intercultural mindset to boost your career",
-    "interculturalMindsetDescription": "Understand how to identify and fix intercultural gaps in your workplace such as how to do effective teamwork with Japanese colleagues. Learn how global business differs from Japan and build trust and influence with Japanese bosses, partners or clients.",
+    "interculturalMindsetDescription": "Our “J-Global best-mix” approach fuses the strengths of Japanese and overseas business styles — giving you the edge whether you work in a Japanese firm or a global MNC in Japan.",
     "achievements": "Achievements of J-Global",
     "achievementsDescription": "J-Global, the company that provides this program, has received high acclaim for its consulting and globalization workshops for over 100 Japanese companies.",
     "achievementsSection1": "Over the years,J-Global has learned how companies and people can achieve global transformation. And now, we share that knowledge with you through our workshops and e-learning.",
@@ -176,51 +177,43 @@
     "learnMore": "Learn more",
     "freeCoaching": "Free Coaching",
     "pricing": {
-    "title": "Plan Prices",
-    "subtitle": "Choose the best plan to master your global business skills.",
-
-    "cycle_monthly": "Monthly",
-    "cycle_biannual": "6 Months",
-    "cycle_annual": "Annual",
-
-    "fullMembership": "Full Membership",
-
-    "taxIncl": "{price} JPY (Tax Incl.)",
-    "oneTime": "{price} JPY (One-time payment)",
-
-    "standardAccess": "Standard monthly access",
-
-    "startFreeTrial": "Start Free Trial →",
-    "getStarted": "Get Started →",
-
-    "noCard": "No credit card required",
-    "billedMonthly": "Billed monthly",
-    "billedBiannual": "Billed every 6 months (save 10%)",
-    "billedAnnual": "Billed annually (save 20%)",
-
-    "freeTrial": {
-        "name": "Free Trial",
-        "features": "Explore the full platform for 14 days. No card, no commitment.",
-        "perks": [
-        "Full access to all workshops",
-        "Free 1-on-1 coaching session",
-        "Live Country Biz Nights",
-        "On-demand recordings",
-        "Business game access"
-        ]
-    },
-
-    "unlimited": {
-        "name": "Unlimited Salon",
-        "features": "For professionals serious about accelerating their global career.",
-        "perks": [
-            "Unlimited workshops every month",
-            "All three skill levels — full access",
-            "Weekly live Country Biz Nites",
-            "Bi-weekly business game sessions",
-            "Ongoing 1-on-1 coaching access"
-        ]
-    }
+        "title": "Plan Prices",
+        "subtitle": "Choose the best plan to master your global business skills.",
+        "cycle_monthly": "Monthly",
+        "cycle_biannual": "6 Months",
+        "cycle_annual": "Annual",
+        "fullMembership": "Full Membership",
+        "taxIncl": "{price} JPY (Tax Incl.)",
+        "oneTime": "{price} JPY (One-time payment)",
+        "standardAccess": "Standard monthly access",
+        "startFreeTrial": "Start Free Trial →",
+        "getStarted": "Get Started →",
+        "noCard": "No credit card required",
+        "billedMonthly": "Billed monthly",
+        "billedBiannual": "Billed every 6 months (save 10%)",
+        "billedAnnual": "Billed annually (save 20%)",
+        "freeTrial": {
+            "name": "Free Trial",
+            "features": "Explore the full platform for 14 days. No card, no commitment.",
+            "perks": [
+                "Full access to all workshops",
+                "Free 1-on-1 coaching session",
+                "Live Country Biz Nights",
+                "On-demand recordings",
+                "Business game access"
+            ]
+        },
+        "unlimited": {
+            "name": "Unlimited Salon",
+            "features": "For professionals serious about accelerating their global career.",
+            "perks": [
+                "Unlimited workshops every month",
+                "All three skill levels — full access",
+                "Weekly live Country Biz Nites",
+                "Bi-weekly business game sessions",
+                "Ongoing 1-on-1 coaching access"
+            ]
+        }
     },
     "workshopHero": {
         "modal": {
