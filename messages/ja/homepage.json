@@ -1,9 +1,9 @@
 {
     "HeroSection": {
-        "heading": "週1からでも、変化が見える。<br></br><blue>J-Global</blue><br></br>ビジネススクールで、次のステージへ",
-        "subheading": "スキルと挑戦で、世界をつなぐ新世代リーダーに。",
-        "heroCTA": "まずは無料体験へ",
-        "heroSecondaryCTA": "詳しく見る"
+        "heading": "重要なのは「英語力」じゃない！<br></br>日本人がグローバルスキルを<br></br>身につけるための<br></br><blue><u><i>ビジネススクール</i></u></blue>",
+        "subheading": "「グローバルに活躍したい」\n「英語を使ってキャリアアップしたい」\n「英語は苦手だけど海外とのやり取りがある」\nそんな方が待ち望んだビジネススクール！\n日本と海外の違いを熟知した講師による、グローバルな環境で働くためのスキルが身につくプログラムをお届けします。",
+        "heroCTA": "無料体験はこちら",
+        "heroSecondaryCTA": "プログラムを見る"
     },
     "FreeTrialSection": {
         "backgroundAlt": "背景画像",
@@ -155,8 +155,9 @@
     "programsSectionSubtitle": "グローバルスキル習得までの３ステップ",
     "heroDescription": "J-Global\nビジネススクールへ\nようこそ!",
     "clickFreeTrial": "無料トライアルはこちら",
-    "whyChooseUs": "J-Globalビジネススクールとは?",
-    "reason": "現役のビジネスコーチが教えるMini MBAや、世界に通用するプレゼンテーション方法、グローバルなマーケティング方法などグローバルビジネスプログラムをビジネス英語と同時にオンラインで学びます。",
+    "whyChooseUs": "JBSが選ばれる理由",
+    "mainTitle": "英語が苦手な人ほど知ってほしい、これからの<blue>グローバル社会を生き抜くスキル</blue>",
+    "reason": "日本企業の文化と、グローバルに働く際に知っておくべき文化は、大きく異なります。J Globalのプログラムは、100社以上の日本企業および国際企業で15年以上にわたり異文化コンサルティングに携わってきた専門家によって作られました。",
     "skillsReasonablePrice": "充実したプログラムとリーズナブルな料金",
     "skillsReasonablePriceDescription": "異文化チームワーク、プロジfdkクトマネジメント、駐在員、海外営業など、自分に今必要なスキルを的確に学ぶことができる充実のプログラム。\n新しいプログラムが毎月追加されます。",
     "customizedLearning": "自分に合ったカスタマイズされた学習内容",
@@ -178,47 +179,39 @@
     "pricing": {
         "title": "料金プラン",
         "subtitle": "あなたに最適なプランを選んで、グローバルスキルを習得しましょう。",
-
         "cycle_monthly": "月払い",
         "cycle_biannual": "半年払い",
         "cycle_annual": "年払い",
-
         "fullMembership": "フルメンバーシップ",
-
         "taxIncl": "{price}円（税込）/月",
         "oneTime": "{price}円（税込）",
-
         "standardAccess": "標準アクセス",
-
         "startFreeTrial": "無料体験を始める →",
         "getStarted": "今すぐ始める →",
-
         "noCard": "クレジットカード不要",
         "billedMonthly": "毎月請求",
         "billedBiannual": "6ヶ月ごとに請求（10%お得）",
         "billedAnnual": "年払い（20%お得）",
-
         "freeTrial": {
             "name": "無料トライアル",
             "features": "14日間すべての機能を体験できます。クレジットカード不要。",
             "perks": [
-            "すべてのワークショップにアクセス可能",
-            "無料の1対1コーチングセッション",
-            "ライブ Country Biz Nights に参加可能",
-            "オンデマンド動画視聴",
-            "ビジネスゲームに参加可能"
+                "すべてのワークショップにアクセス可能",
+                "無料の1対1コーチングセッション",
+                "ライブ Country Biz Nights に参加可能",
+                "オンデマンド動画視聴",
+                "ビジネスゲームに参加可能"
             ]
         },
-
         "unlimited": {
             "name": "無制限プラン",
             "features": "本気でグローバルキャリアを伸ばしたい方向けのプランです。",
             "perks": [
-            "毎月無制限でワークショップに参加可能",
-            "3つすべてのスキルレベルにフルアクセス",
-            "毎週の Country Biz Nites に参加可能",
-            "隔週のビジネスゲームセッション",
-            "継続的な1対1コーチングサポート"
+                "毎月無制限でワークショップに参加可能",
+                "3つすべてのスキルレベルにフルアクセス",
+                "毎週の Country Biz Nites に参加可能",
+                "隔週のビジネスゲームセッション",
+                "継続的な1対1コーチングサポート"
             ]
         }
     },
@@ -237,10 +230,10 @@
         }
     },
     "navbar": {
-        "why": "JBSとは",
-        "programs": "プログラム",
-        "pricing": "料金",
-        "instructors": "講師",
+        "why": "JBSについて",
+        "programs": "コース紹介",
+        "pricing": "料金プラン",
+        "instructors": "講師紹介",
         "freeTrial": "無料体験",
         "login": "ログイン"
     }
