@@ -1,8 +1,8 @@
 import { FileMakerService } from "@/services/filemaker.service";
 import Link from "next/link";
 import { FaGlobeAmericas, FaArrowRight } from "react-icons/fa";
-import WorkshopDetailHeader from "@/app/components/programs/WorkshopDetailHeader";
-import Footer from "@/app/components/Footer";
+import WorkshopDetailHeader from "@/app/(frontend)/components/programs/WorkshopDetailHeader";
+import Footer from "@/app/(frontend)/components/Footer";
 
 type Program = {
 	recordId: string;

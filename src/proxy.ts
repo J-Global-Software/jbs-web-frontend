@@ -3,20 +3,18 @@ import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
-
-function isAdminLogin(pathname: string) {
-	return pathname === "/admin/login" || pathname === "/admin/login/" || pathname === "/en/admin/login" || pathname === "/en/admin/login/";
-}
-
-function isAdminRoute(pathname: string) {
-	return pathname === "/admin" || pathname === "/admin/" || pathname.startsWith("/admin/") || pathname === "/en/admin" || pathname === "/en/admin/" || pathname.startsWith("/en/admin/");
-}
-
 export default function proxy(req: NextRequest) {
-	// 3️ Everything else
-	return intlMiddleware(req);
+    // 1. Check if the path starts with /admin or /api/payload
+    const { pathname } = req.nextUrl;
+    if (pathname.startsWith('/admin') || pathname.startsWith('/api/payload')) {
+        return NextResponse.next();
+    }
+
+    // 2. Everything else goes to intl
+    return intlMiddleware(req);
 }
 
 export const config = {
-	matcher: ["/", "/en/:path*", "/((?!_next|_vercel|api|.*\\..*).*)"],
+    // Add 'admin' and 'api' to the exclusion list in the matcher
+    matcher: ["/((?!api|_next|_vercel|admin|.*\\..*).*)"],
 };

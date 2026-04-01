@@ -1,11 +1,6 @@
-import HeroSection from "@/app/components/homepage/HeroSection";
-import JGlobalBusinessSchool from "@/app/components/homepage/WhyUs";
-import JGlobalAchievements from "@/app/components/homepage/Achievements";
-import FreeTrial from "@/app/components/homepage/FreeTrial";
-import CardGridSection, { CardGridData } from "@/app/components/homepage/CardGridSection";
+
 import { BookOpen, Briefcase } from "lucide-react";
-import LecturerIntroduction from "@/app/components/homepage/LecturerIntroduction";
-import Instructors from "@/app/components/homepage/Instructors";
+
 
 import type { ResolvingMetadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
@@ -18,9 +13,14 @@ import JBSWorkshopsStructure from "../components/homepage/WorkshopStructure";
 import { Link } from "@/i18n/navigation";
 import { AppLocale } from "@/i18n/config";
 import PricingSection from "../components/homepage/Pricing";
-import ProgramsTabs from "@/app/components/homepage/ProgramsTabs";
-import Navbar from "@/app/components/Navbar";
+
 import ContinuousLearningCycle from "../components/homepage/HowItWorks";
+import JGlobalBusinessSchool from "../components/homepage/WhyUs";
+import HeroSection from "../components/homepage/HeroSection";
+import { CardGridData } from "../components/homepage/CardGridSection";
+import LecturerIntroduction from "../components/homepage/LecturerIntroduction";
+import Instructors from "../components/homepage/Instructors";
+import ProgramsTabs from "../components/homepage/ProgramsTabs";
 
 // app/[locale]/page.tsx
 export async function generateMetadata(props: { params: Promise<{ locale: AppLocale }> }, parent: ResolvingMetadata) {

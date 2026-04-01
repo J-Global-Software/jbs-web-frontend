@@ -1,10 +1,10 @@
 "use client";
 
-import Footer from "@/app/components/Footer";
-import BookingCalendar from "@/app/components/free-coaching/calendar";
-import Header from "@/app/components/Header";
-import { SuccessView } from "@/app/components/ui/successView";
-import { useBooking } from "@/app/hoooks/useBooking";
+import Footer from "@/app/(frontend)/components/Footer";
+import BookingCalendar from "@/app/(frontend)/components/free-coaching/calendar";
+import Header from "@/app/(frontend)/components/Header";
+import { SuccessView } from "@/app/(frontend)/components/ui/successView";
+import { useBooking } from "@/app/(frontend)/hoooks/useBooking";
 import { format } from "date-fns";
 import { ja, enUS } from "date-fns/locale";
 import { useTranslations, useLocale } from "next-intl";

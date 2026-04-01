@@ -1,43 +1,42 @@
 import { FileMakerService } from "@/services/filemaker.service";
 import { fallbackWorkshop, WorkshopMapper } from "@/utils/mappers/workshop.mapper";
-import WorkshopDetail from "@/app/[locale]/programs/WorkshopDetails";
 import { redirect } from "next/navigation";
+import WorkshopDetail from "../../WorkshopDetails";
 
-interface PageParams {
-	locale: string;
-	slug: string;
-}
-
-export default async function ProgramPage({ params }: { params: Promise<PageParams> }) {
+export default async function ProgramPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
 	const { locale, slug } = await params;
 	const finalLocale = (locale as "en" | "ja") || "ja";
 	const properSlug = slug.toUpperCase();
 
-	// 1. Redirect logic
+	// 1. Logic & Redirects
+	// Ensuring URLs are always uppercase for consistency (e.g., /c01 -> /C01)
 	if (slug !== properSlug) {
 		redirect(`/${finalLocale}/programs/global-communication/${properSlug}`);
 	}
 
+	// 2. Data Fetching & Mapping
 	let workshop;
-
 	try {
-		// 2. Direct Service Call
-		// We use '==' for an exact match in FileMaker
+		// Calling Service directly with exact match query
 		const records = await FileMakerService.find("LearningProgramApi", {
 			LearningProgramCode: `==${properSlug}`,
 		});
 
 		if (!records || records.length === 0) {
-			console.warn(`No program found for code: ${properSlug}`);
+			console.warn(`Program not found in FileMaker: ${properSlug}`);
 			workshop = fallbackWorkshop;
 		} else {
-			// 3. Map the first record found
+			// Map the first record found to the frontend structure
 			workshop = WorkshopMapper.toFrontend(records, finalLocale, properSlug);
 		}
 	} catch (error: unknown) {
-		console.error("Data Fetch Error:", error instanceof Error ? error.message : "Unknown");
+		const message = error instanceof Error ? error.message : "Unknown error";
+		console.error("Critical Page Data Fetch Error:", message);
+
+		// Fallback ensures the page doesn't crash if FileMaker is down
 		workshop = fallbackWorkshop;
 	}
 
+	// 3. Render the Component
 	return <WorkshopDetail workshop={workshop} code={properSlug} />;
 }

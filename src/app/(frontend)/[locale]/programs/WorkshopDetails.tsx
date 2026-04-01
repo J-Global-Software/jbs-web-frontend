@@ -1,11 +1,11 @@
 "use client";
 
-import Footer from "@/app/components/Footer";
+import Footer from "@/app/(frontend)/components/Footer";
 import { FaBullseye, FaUsers, FaLanguage, FaCheck, FaUserTie, FaCalendarAlt } from "react-icons/fa";
 import { useLocale, useTranslations } from "next-intl";
-import WorkshopDetailHeader from "@/app/components/programs/WorkshopDetailHeader";
-import WorkshopHero from "@/app/components/programs/WorkshopHero";
-import WorkshopSessions from "@/app/components/programs/WorkshopSessions";
+import WorkshopDetailHeader from "@/app/(frontend)/components/programs/WorkshopDetailHeader";
+import WorkshopHero from "@/app/(frontend)/components/programs/WorkshopHero";
+import WorkshopSessions from "@/app/(frontend)/components/programs/WorkshopSessions";
 import { useMemo } from "react";
 
 // UPDATED: Added missing properties to match the expected component types
