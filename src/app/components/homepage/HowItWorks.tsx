@@ -109,7 +109,7 @@ export default function GrandPlanetaryCycle() {
 			<div className="max-w-7xl mx-auto mb-5 text-center">
 				<span className="inline-block px-4 py-1.5 mb-4 text-sm font-bold tracking-widest uppercase rounded-full bg-blue-50 text-blue-600">How It Works</span>
 				<h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-8">
-					The Continuous <span className="text-blue-500">Learning Cycle.</span>
+					The Continuous <span className="text-blue-500">Learning Cycle</span>
 				</h2>
 				<p className="text-lg md:text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed">Four integrated components that reinforce each other — skills build through workshops, deepen through e-learning, accelerate through coaching, and embed through community.</p>
 			</div>
