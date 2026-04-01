@@ -12,28 +12,11 @@ function isAdminRoute(pathname: string) {
 	return pathname === "/admin" || pathname === "/admin/" || pathname.startsWith("/admin/") || pathname === "/en/admin" || pathname === "/en/admin/" || pathname.startsWith("/en/admin/");
 }
 
-export default function middleware(req: NextRequest) {
-	const { pathname } = req.nextUrl;
-
-	// 1️⃣ Always allow admin login
-	if (isAdminLogin(pathname)) {
-		return intlMiddleware(req);
-	}
-
-	// 2️⃣ Protect admin routes
-	const isLoggedIn = req.cookies.get("admin_session");
-
-	if (isAdminRoute(pathname) && !isLoggedIn) {
-		const isEnglish = pathname.startsWith("/en");
-		const loginPath = isEnglish ? "/en/admin/login/" : "/admin/login/";
-
-		return NextResponse.redirect(new URL(loginPath, req.url));
-	}
-
-	// 3️⃣ Everything else
+export default function proxy(req: NextRequest) {
+	// 3️ Everything else
 	return intlMiddleware(req);
 }
 
 export const config = {
-	matcher: ["/", "/en/:path*", "/admin/:path*", "/((?!_next|_vercel|api|.*\\..*).*)"],
+	matcher: ["/", "/en/:path*", "/((?!_next|_vercel|api|.*\\..*).*)"],
 };
