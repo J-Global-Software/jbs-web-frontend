@@ -75,12 +75,12 @@ export default function Page() {
 
 					<div className="mt-8 flex flex-wrap justify-center gap-10 md:gap-4 sm:justify-start">
 						<div>
-							<Link href={getLink("freeTrial", currentLocale)} className="mt-10 rounded-full bg-[#d74100] px-6 py-3 text-xl font-semibold text-white shadow-lg transition hover:bg-indigo-700">
+							<Link href={`/${currentLocale}/free-trial-onboarding`} className="mt-10 rounded-full bg-[#d74100] px-6 py-3 text-xl font-semibold text-white shadow-lg transition hover:bg-[#b73600]">
 								{tHome("HeroSection.heroCTA")}
 							</Link>
 						</div>
 						<div>
-							<a href="#programs" className="rounded-full border border-gray-300 px-6 py-3 font-medium text-white transition text-xl hover:border-indigo-500 hover:text-indigo-600">
+							<a href="#programs" className="rounded-full border border-gray-300 px-6 py-3 font-medium text-white transition text-xl hover:border-[#215ca5] hover:bg-[#215ca5]/10 hover:text-[#215ca5]">
 								{tHome("HeroSection.heroSecondaryCTA")}
 							</a>
 						</div>
