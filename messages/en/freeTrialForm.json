@@ -5,5 +5,180 @@
     "message": "Message",
     "submit": "Submit",
     "success": "Your application has been submitted successfully!",
-    "error": "Something went wrong. Please try again."
+    "error": "Something went wrong. Please try again.",
+    "onboarding": {
+        "logoAlt": "J-Global Business School",
+        "goToHomepage": "Go to homepage",
+        "progress": {
+            "stepOf": "Step {step} of {total}"
+        },
+        "buttons": {
+            "back": "← Back",
+            "continue": "Continue →",
+            "complete": "Complete"
+        },
+        "fields": {
+            "firstName": "First Name *",
+            "lastName": "Last Name *",
+            "workEmail": "Work Email *",
+            "company": "Company",
+            "englishLevel": "English proficiency level",
+            "englishLevelPlaceholder": "Select level",
+            "weeklyHours": "Hours available per week",
+            "weeklyHoursPlaceholder": "Select hours",
+            "hearAboutUs": "How did you hear about us?",
+            "hearAboutUsPlaceholder": "Select an option",
+            "notes": "Anything specific you want to work on? (optional)"
+        },
+        "steps": {
+            "1": {
+                "title": "Let's set up your free trial!",
+                "subtitle": "Takes about 2 minutes. Helps us personalise your experience from day one."
+            },
+            "2": {
+                "title": "Who are you?",
+                "subtitle": "We'll recommend the best starting point based on your situation."
+            },
+            "3": {
+                "title": "What's your main goal?",
+                "subtitle": "We'll highlight the most relevant workshops during your trial."
+            },
+            "4": {
+                "title": "Your experience & schedule?",
+                "subtitle": "Help us match you to sessions at the right level and time."
+            },
+            "5": {
+                "title": "One last thing!",
+                "subtitle": "Then your trial is ready to go."
+            }
+        },
+        "errors": {
+            "stepOneRequired": "Please fill in all required fields to continue.",
+            "invalidEmail": "Please enter a valid work email address.",
+            "stepTwoRequired": "Please select one option to continue.",
+            "stepThreeRequired": "Please select at least one option to continue.",
+            "stepFourRequired": "Please complete all fields in this step to continue.",
+            "stepFiveSourceRequired": "Please choose how you heard about us before completing.",
+            "stepFivePolicyRequired": "Please check the box to agree before completing."
+        },
+        "stepThree": {
+            "helper": "Select all that apply."
+        },
+        "stepFour": {
+            "scheduleTitle": "When do you prefer to study?"
+        },
+        "completion": {
+            "title": "All done!",
+            "welcome": "You're in, {name} — welcome to JBS!",
+            "fallbackName": "there",
+            "description": "Your free 14-day trial is ready. We've noted your goals and will have a personalised learning path waiting when you log in. Jon will be in touch to schedule your free 1-on-1 coaching session.",
+            "accessTrial": "Access My Trial Now →",
+            "bookCoachingPrompt": "Want to book coaching first?",
+            "scheduleCall": "Schedule a call →"
+        },
+        "policy": {
+            "text": "I agree to J-Global using my details to create my trial account and send onboarding information.<br></br>I can unsubscribe at any time. <link>Privacy Policy</link>"
+        },
+        "roleOptions": {
+            "nonJapaneseProfessional": {
+                "title": "Non-Japanese professional working in Japan",
+                "subtitle": "Navigating Japanese corporate culture from the outside"
+            },
+            "japaneseProfessionalGlobalRole": {
+                "title": "Japanese professional in a global or mixed role",
+                "subtitle": "Working with overseas teams, foreign clients, or in an international company"
+            },
+            "midCareerLeadership": {
+                "title": "Mid-career professional aiming for leadership",
+                "subtitle": "Moving into management or expanding strategic influence"
+            },
+            "globalCommunicationInJapanese": {
+                "title": "I need to do some communication globally but I want to do it in Japanese",
+                "subtitle": "Build global communication skills while mainly operating in Japanese"
+            },
+            "globalSkillsJapaneseBase": {
+                "title": "I need global communication skills, but I prefer learning in Japanese",
+                "subtitle": "Strengthen international communication while keeping Japanese as your base language"
+            },
+            "other": {
+                "title": "Other / I'm exploring",
+                "subtitle": "Not sure yet — I want to see what's available"
+            }
+        },
+        "goalOptions": {
+            "betterCommunication": {
+                "title": "Better communication",
+                "subtitle": "Confidence in meetings, presentations, and daily global work"
+            },
+            "interculturalUnderstanding": {
+                "title": "Intercultural understanding",
+                "subtitle": "Navigate Japanese or overseas business culture"
+            },
+            "teamworkCollaboration": {
+                "title": "Teamwork & collaboration",
+                "subtitle": "Lead and work within diverse, global teams"
+            },
+            "leadershipStrategy": {
+                "title": "Leadership & strategy",
+                "subtitle": "Coaching, performance management, strategic vision"
+            },
+            "englishConfidence": {
+                "title": "English confidence",
+                "subtitle": "Build fluency in professional English contexts"
+            },
+            "careerProgression": {
+                "title": "Career progression",
+                "subtitle": "Skills to get promoted or land a global role"
+            },
+            "globalSuccessInJapanese": {
+                "title": "Succeed globally while mainly using Japanese",
+                "subtitle": "Build practical global skills without relying on English every day"
+            }
+        },
+        "englishLevelOptions": [
+            "Zero",
+            "Beginner",
+            "Intermediate",
+            "Upper Intermediate",
+            "Advanced / Near-Native"
+        ],
+        "weeklyHoursOptions": [
+            "1-2 hours",
+            "3-4 hours",
+            "5+ hours"
+        ],
+        "scheduleOptions": {
+            "earlyMornings": {
+                "title": "Early Mornings",
+                "subtitle": "Before Work, 6-9am",
+                "badge": "AM"
+            },
+            "midday": {
+                "title": "Midday",
+                "subtitle": "Midday Sessions",
+                "badge": "Noon"
+            },
+            "evenings": {
+                "title": "Evenings",
+                "subtitle": "After Work, 7-10pm",
+                "badge": "PM"
+            },
+            "weekends": {
+                "title": "Weekends",
+                "subtitle": "Saturday or Sunday",
+                "badge": "Sat/Sun"
+            }
+        },
+        "hearAboutUsOptions": {
+            "googleSearch": "Google Search",
+            "colleagueOrFriend": "Colleague or Friend",
+            "linkedIn": "LinkedIn",
+            "xTwitter": "X (Twitter)",
+            "facebook": "Facebook",
+            "instagram": "Instagram",
+            "article": "Article",
+            "recommendation": "Recommendation",
+            "other": "Other"
+        }
+    }
 }

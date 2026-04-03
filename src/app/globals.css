@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 :root {
 	--background: #ffffff;
 	--foreground: #171717;
@@ -75,4 +76,21 @@ body {
 
 html {
 	scroll-behavior: smooth;
+}
+
+.icon-mask {
+	/* 1. Make the original image invisible but keep its space */
+	object-position: -9999px;
+
+	/* 2. Set the color you actually want */
+	background-color: #666666;
+
+	/* 3. Apply the mask using the CSS variable from the inline style */
+	-webkit-mask-image: var(--icon-url);
+	mask-image: var(--icon-url);
+
+	-webkit-mask-size: contain;
+	mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
 }

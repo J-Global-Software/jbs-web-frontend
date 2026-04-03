@@ -1,4 +1,4 @@
-import { Workshop, WorkshopSession } from "@/app/[locale]/programs/WorkshopDetails";
+import { Workshop, WorkshopSession } from "@/app/(frontend)/[locale]/programs/WorkshopDetails";
 
 /** * Define the structure of the FileMaker record to avoid 'any'
  */
