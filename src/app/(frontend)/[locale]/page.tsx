@@ -34,7 +34,7 @@ async function getPayloadData(locale: AppLocale) {
 	console.log(`[PAYLOAD_DEBUG] Starting fetch at ${baseUrl} with locale: ${locale}`);
 
 	try {
-		const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(`${baseUrl}/api/pages?where[slug][equals]=/&locale=${locale}&depth=1`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
+		const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(`${baseUrl}/api/pages?where[slug][equals]=home&locale=${locale}&depth=1`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
 
 		// Log Status Codes immediately
 		console.log(`[PAYLOAD_DEBUG] Response Statuses - Page: ${pageRes.status}, Footer: ${footerRes.status}, Navbar: ${navbarRes.status}`);
