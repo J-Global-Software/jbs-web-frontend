@@ -24,3 +24,34 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
 	return { locale, messages };
 });
+
+/*
+// i18n/request.ts
+import { getRequestConfig } from "next-intl/server";
+import { hasLocale } from "next-intl";
+import { routing } from "./routing";
+import { getPayload } from 'payload';
+import configPromise from '../../payload.config';
+
+export default getRequestConfig(async ({ requestLocale }) => {
+    const requested = await requestLocale;
+    const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
+
+    // Initialize Payload
+    const payload = await getPayload({ config: configPromise });
+
+    // Fetch the Global "translations"
+    // Payload automatically returns the localized version when you pass the 'locale' option
+  const data = await (payload as any).findGlobal({
+    slug: 'translations', 
+    locale: locale,
+});
+
+    // 'data' will contain your homepage, authentication, etc. groups 
+    // exactly how they are structured in your Payload schema.
+    return {
+        locale,
+        messages: data
+    };
+});
+*/
