@@ -29,7 +29,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: AppLoc
 }
 
 async function getPayloadData(locale: AppLocale) {
-	const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+	const baseUrl = process.env.NEXT_PUBLIC_PAYLOAD_URL;
 
 	// Fetch Page content and Global Navbar/Footer
 	const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(`${baseUrl}/api/pages?where[slug][equals]=/&locale=${locale}&depth=1`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
