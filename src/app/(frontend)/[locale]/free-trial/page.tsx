@@ -1,5 +1,3 @@
-"use client";
-
 import OnboardingForm from "@/app/components/free-trial-onboarding/OnboardingForm";
 
 export default function OnboardingPage() {

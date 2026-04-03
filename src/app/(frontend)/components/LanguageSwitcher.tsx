@@ -81,11 +81,12 @@ export default function LanguageSwitcher() {
 					<Link target="_blank" href={getLink("fmp", currentLocale)} className="px-5 py-2.5 rounded-full border border-[#d74100] bg-white text-[#d74100] text-sm font-bold hover:bg-[#285677]/10 transition">
 						{t("login")}
 					</Link>
+				</div>
 
-					{/* Modal */}
-					<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={t("joinPrograms")}>
-						<ApplicationForm onClose={() => setIsModalOpen(false)} />
-					</Modal>
+				<div className="flex gap-3">
+					<Link target="_blank" href="/free-trial" className="px-5 py-2.5 rounded-full border border-[#d74100] bg-[#d74100] text-white text-sm font-bold hover:bg-[#285677]/10 transition">
+						{t("freeTrial")} &nbsp; →
+					</Link>
 				</div>
 			</div>
 

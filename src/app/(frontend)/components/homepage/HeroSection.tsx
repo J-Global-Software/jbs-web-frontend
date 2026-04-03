@@ -110,7 +110,7 @@ export default function HeroSection({ data, navbarData, locale }: HeroSectionPro
 					</p>
 
 					<div className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:justify-start">
-						<Link href={getLink("freeTrial", currentLocale)} className="group inline-flex items-center gap-2 rounded-full bg-[#d74100] px-6 py-3 text-lg font-semibold text-white shadow-lg transition-all hover:bg-[#b03601]">
+						<Link href="/free-trial" className="group inline-flex items-center gap-2 rounded-full bg-[#d74100] px-6 py-3 text-lg font-semibold text-white shadow-lg transition-all hover:bg-[#b03601]">
 							<span>{heroCTA}</span>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 transition-transform duration-300 ease-in-out group-hover:translate-x-1">
 								<path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
