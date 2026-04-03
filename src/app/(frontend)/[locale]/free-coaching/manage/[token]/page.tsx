@@ -7,13 +7,14 @@ import { FaSpinner } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTranslations, useLocale } from "next-intl";
 import { HiOutlineUser, HiOutlineCalendarDays, HiOutlineVideoCamera, HiOutlineArrowLeft, HiOutlineXMark, HiOutlineArrowPath } from "react-icons/hi2";
-import { ErrorState } from "@/app/components/ui/errorState";
-import { SuccessView } from "@/app/components/ui/successView";
+
 import { TimeSlot } from "@/types/bookingFrontend";
-import { useManageBooking } from "@/app/hoooks/useManageBooking";
-import { LoadingSpinner } from "@/app/components/ui/loading-spinner";
-import BookingCalendar from "@/app/components/free-coaching/calendar";
-import Header from "@/app/components/Header";
+import { LoadingSpinner } from "@/app/(frontend)/components/ui/loading-spinner";
+import { SuccessView } from "@/app/(frontend)/components/ui/successView";
+import Header from "@/app/(frontend)/components/Header";
+import BookingCalendar from "@/app/(frontend)/components/free-coaching/calendar";
+import { ErrorState } from "@/app/(frontend)/components/ui/errorState";
+import { useManageBooking } from "@/app/(frontend)/hoooks/useManageBooking";
 
 /**
  * Interface for InfoRow to ensure strict typing

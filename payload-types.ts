@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    pages: Page;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +89,14 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'ja') | ('en' | 'ja')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    navbar: Navbar;
+    footer: Footer;
+  };
+  globalsSelect: {
+    navbar: NavbarSelect<false> | NavbarSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+  };
   locale: 'en' | 'ja';
   widgets: {
     collections: CollectionsWidget;
@@ -163,6 +171,250 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  /**
+   * Internal page title (e.g., Home Page)
+   */
+  title: string;
+  /**
+   * URL slug (e.g., "home" or "pricing")
+   */
+  slug: string;
+  layout: (
+    | {
+        /**
+         * Accepts HTML like <br> and <blue>
+         */
+        heading?: string | null;
+        subheading?: string | null;
+        heroCTA?: string | null;
+        heroSecondaryCTA?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero';
+      }
+    | {
+        mainTitle?: string | null;
+        reasonText?: string | null;
+        whyChooseUs?: string | null;
+        reasons?:
+          | {
+              title?: string | null;
+              description?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'whyChooseUs';
+      }
+    | {
+        title?: string | null;
+        introText?: string | null;
+        benefitsList?:
+          | {
+              benefitWord?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        contentList?:
+          | {
+              listItem?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        scheduleLabels?: {
+          classSchedule?: string | null;
+          morningTime?: string | null;
+          afternoonTime?: string | null;
+          eveningTime?: string | null;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'benefits';
+      }
+    | {
+        badge?: string | null;
+        title?: string | null;
+        lecturer?: {
+          name?: string | null;
+          role?: string | null;
+          bio?: string | null;
+          universityName?: string | null;
+          universityRole?: string | null;
+        };
+        cta?: {
+          text?: string | null;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'lecturerIntroduction';
+      }
+    | {
+        badge?: string | null;
+        title?: string | null;
+        publications?:
+          | {
+              name: string;
+              description?: string | null;
+              articles?:
+                | {
+                    title?: string | null;
+                    url: string;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'pressSection';
+      }
+    | {
+        title?: string | null;
+        subtitle?: string | null;
+        labels?: {
+          monthly?: string | null;
+          biannual?: string | null;
+          annual?: string | null;
+          taxIncl?: string | null;
+          noCard?: string | null;
+          billedMonthly?: string | null;
+          billedBiannual?: string | null;
+          billedAnnual?: string | null;
+        };
+        freeTrial?: {
+          name?: string | null;
+          price?: string | null;
+          buttonText?: string | null;
+          features?:
+            | {
+                category?: string | null;
+                text?: string | null;
+                isIncluded?: boolean | null;
+                subtext?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        unlimited?: {
+          name?: string | null;
+          buttonText?: string | null;
+          cycles?: {
+            monthly?: {
+              price?: string | null;
+              link?: string | null;
+              features?:
+                | {
+                    category?: string | null;
+                    text?: string | null;
+                    isIncluded?: boolean | null;
+                    id?: string | null;
+                  }[]
+                | null;
+            };
+            biannual?: {
+              price?: string | null;
+              link?: string | null;
+              features?:
+                | {
+                    category?: string | null;
+                    text?: string | null;
+                    isIncluded?: boolean | null;
+                    id?: string | null;
+                  }[]
+                | null;
+            };
+            annual?: {
+              price?: string | null;
+              link?: string | null;
+              features?:
+                | {
+                    category?: string | null;
+                    text?: string | null;
+                    isIncluded?: boolean | null;
+                    id?: string | null;
+                  }[]
+                | null;
+            };
+          };
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'pricing';
+      }
+    | {
+        title?: string | null;
+        feature1?: string | null;
+        feature2?: string | null;
+        cta?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'freeTrialSection';
+      }
+    | {
+        badge?: string | null;
+        title?: string | null;
+        description?: string | null;
+        steps?:
+          | {
+              title?: string | null;
+              subtitle?: string | null;
+              description?: string | null;
+              icon?: ('users' | 'monitor' | 'compass' | 'messages') | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'learningCycle';
+      }
+    | {
+        title?: string | null;
+        subtitle?: string | null;
+        steps?:
+          | {
+              day?: string | null;
+              title?: string | null;
+              description?: string | null;
+              icon?: ('zap' | 'userCheck' | 'globe' | 'shieldCheck') | null;
+              id?: string | null;
+            }[]
+          | null;
+        ctaTitle?: string | null;
+        ctaDescription?: string | null;
+        ctaButtonText?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'roadmap';
+      }
+    | {
+        title?: string | null;
+        team?:
+          | {
+              name: string;
+              role?: string | null;
+              /**
+               * The filename of the static image (e.g., sarah-birchley.jpg)
+               */
+              staticImageKey?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'instructorsSection';
+      }
+  )[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -192,6 +444,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -277,6 +533,269 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  layout?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              heroCTA?: T;
+              heroSecondaryCTA?: T;
+              id?: T;
+              blockName?: T;
+            };
+        whyChooseUs?:
+          | T
+          | {
+              mainTitle?: T;
+              reasonText?: T;
+              whyChooseUs?: T;
+              reasons?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        benefits?:
+          | T
+          | {
+              title?: T;
+              introText?: T;
+              benefitsList?:
+                | T
+                | {
+                    benefitWord?: T;
+                    id?: T;
+                  };
+              contentList?:
+                | T
+                | {
+                    listItem?: T;
+                    id?: T;
+                  };
+              scheduleLabels?:
+                | T
+                | {
+                    classSchedule?: T;
+                    morningTime?: T;
+                    afternoonTime?: T;
+                    eveningTime?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        lecturerIntroduction?:
+          | T
+          | {
+              badge?: T;
+              title?: T;
+              lecturer?:
+                | T
+                | {
+                    name?: T;
+                    role?: T;
+                    bio?: T;
+                    universityName?: T;
+                    universityRole?: T;
+                  };
+              cta?:
+                | T
+                | {
+                    text?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        pressSection?:
+          | T
+          | {
+              badge?: T;
+              title?: T;
+              publications?:
+                | T
+                | {
+                    name?: T;
+                    description?: T;
+                    articles?:
+                      | T
+                      | {
+                          title?: T;
+                          url?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        pricing?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              labels?:
+                | T
+                | {
+                    monthly?: T;
+                    biannual?: T;
+                    annual?: T;
+                    taxIncl?: T;
+                    noCard?: T;
+                    billedMonthly?: T;
+                    billedBiannual?: T;
+                    billedAnnual?: T;
+                  };
+              freeTrial?:
+                | T
+                | {
+                    name?: T;
+                    price?: T;
+                    buttonText?: T;
+                    features?:
+                      | T
+                      | {
+                          category?: T;
+                          text?: T;
+                          isIncluded?: T;
+                          subtext?: T;
+                          id?: T;
+                        };
+                  };
+              unlimited?:
+                | T
+                | {
+                    name?: T;
+                    buttonText?: T;
+                    cycles?:
+                      | T
+                      | {
+                          monthly?:
+                            | T
+                            | {
+                                price?: T;
+                                link?: T;
+                                features?:
+                                  | T
+                                  | {
+                                      category?: T;
+                                      text?: T;
+                                      isIncluded?: T;
+                                      id?: T;
+                                    };
+                              };
+                          biannual?:
+                            | T
+                            | {
+                                price?: T;
+                                link?: T;
+                                features?:
+                                  | T
+                                  | {
+                                      category?: T;
+                                      text?: T;
+                                      isIncluded?: T;
+                                      id?: T;
+                                    };
+                              };
+                          annual?:
+                            | T
+                            | {
+                                price?: T;
+                                link?: T;
+                                features?:
+                                  | T
+                                  | {
+                                      category?: T;
+                                      text?: T;
+                                      isIncluded?: T;
+                                      id?: T;
+                                    };
+                              };
+                        };
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        freeTrialSection?:
+          | T
+          | {
+              title?: T;
+              feature1?: T;
+              feature2?: T;
+              cta?: T;
+              id?: T;
+              blockName?: T;
+            };
+        learningCycle?:
+          | T
+          | {
+              badge?: T;
+              title?: T;
+              description?: T;
+              steps?:
+                | T
+                | {
+                    title?: T;
+                    subtitle?: T;
+                    description?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        roadmap?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              steps?:
+                | T
+                | {
+                    day?: T;
+                    title?: T;
+                    description?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              ctaTitle?: T;
+              ctaDescription?: T;
+              ctaButtonText?: T;
+              id?: T;
+              blockName?: T;
+            };
+        instructorsSection?:
+          | T
+          | {
+              title?: T;
+              team?:
+                | T
+                | {
+                    name?: T;
+                    role?: T;
+                    staticImageKey?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -314,6 +833,94 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar".
+ */
+export interface Navbar {
+  id: number;
+  links?: {
+    why?: string | null;
+    programs?: string | null;
+    pricing?: string | null;
+    instructors?: string | null;
+    freeTrial?: string | null;
+    login?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  companyName?: string | null;
+  officeAddress?: string | null;
+  contactEmail?: string | null;
+  phoneNumber?: string | null;
+  labels?: {
+    company?: string | null;
+    office?: string | null;
+    contact?: string | null;
+    links?: string | null;
+    contactUs?: string | null;
+    privacyPolicy?: string | null;
+    companyProfile?: string | null;
+    copyright?: string | null;
+    email?: string | null;
+    call?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar_select".
+ */
+export interface NavbarSelect<T extends boolean = true> {
+  links?:
+    | T
+    | {
+        why?: T;
+        programs?: T;
+        pricing?: T;
+        instructors?: T;
+        freeTrial?: T;
+        login?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  companyName?: T;
+  officeAddress?: T;
+  contactEmail?: T;
+  phoneNumber?: T;
+  labels?:
+    | T
+    | {
+        company?: T;
+        office?: T;
+        contact?: T;
+        links?: T;
+        contactUs?: T;
+        privacyPolicy?: T;
+        companyProfile?: T;
+        copyright?: T;
+        email?: T;
+        call?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

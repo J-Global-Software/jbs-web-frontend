@@ -1,4 +1,3 @@
-import { BookingRepository } from "../repositories/booking.repository";
 import { BookingPolicy } from "../utils/validation/booking.policy";
 import { EmailService } from "./email.service";
 import { generateICS } from "./generateEmail";
@@ -8,6 +7,7 @@ import { checkCalendarConflict, createBookingEvent, deleteCalendarEvent, getCale
 import { createZoomMeeting, deleteZoomMeeting } from "@/utils/zoom";
 import { loadServerMessages } from "../../messages/server";
 import { convertJSTToUserTimezone, hashCode, weeklySlots } from "@/utils/slots";
+import { BookingRepository } from "@/repositories/booking.repository";
 
 export const BookingService = {
 	/**

@@ -1,9 +1,9 @@
 "use client";
 
-import { useScroll } from "@/app/hoooks/useScroll";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import LanguageSwitcher from "../LanguageSwitcher";
+import { useScroll } from "../../hoooks/useScroll";
 
 export default function WorkshopDetailHeader() {
 	const scrolled = useScroll(10);

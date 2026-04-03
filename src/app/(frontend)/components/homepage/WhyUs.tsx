@@ -1,91 +1,115 @@
-import { useTranslations } from "next-intl";
+"use client";
+
 import Image from "next/image";
+import parse, { domToReact, HTMLReactParserOptions } from "html-react-parser";
+import { clsx } from "clsx";
 
-export default function JGlobalBusinessSchool() {
-	const tHome = useTranslations("homepage");
+interface WhyUsProps {
+    data?: {
+        whyChooseUs?: string;     // Badge text
+        mainTitle?: string;       // Rich text with <blue>
+        reasonText?: string;          // Main description
+        reasons?: {               // The 3 cards
+            title: string;
+            description: string;
+        }[];
+    };
+}
 
-	return (
-		<div id="why-us" className="relative overflow-hidden">
-			{/* Hero Section */}
-			<section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-15 pt-15 text-center">
-				<div className="flex flex-col items-center" data-aos="fade-up" data-aos-duration="800">
-					{/* The "Why Choose Us" Badge/Eyebrow */}
-					<span className="inline-block px-4 py-1.5 mb-4 text-sm font-bold tracking-widest uppercase rounded-full bg-blue-50 text-[#215ca5]">{tHome("whyChooseUs")}</span>
+export default function JGlobalBusinessSchool({ data }: WhyUsProps) {
+    // Fallbacks to keep the UI from breaking if CMS data is missing
+    const badgeText = data?.whyChooseUs ;
+    const mainTitle = data?.mainTitle ;
+    const descriptionText = data?.reasonText ;
 
-					{/* The New Main Title */}
-					<h2 className="text-3xl max-w-5xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-8">
-						{tHome.rich("mainTitle", {
-							blue: (chunks) => <span className="text-[#215ca5]">{chunks}</span>,
-						})}
-					</h2>
-				</div>
+    
+    // Mapping icons to the array index (or you can add an icon picker in Payload later)
+    const iconConfig = [
+        { src: "/icons/piggy-bank.png", bg: "bg-[#e8eef7]" },
+        { src: "/icons/laptop.png", bg: "bg-[#edf0f5]" },
+        { src: "/icons/language.png", bg: "bg-[#e4ebf3]" },
+    ];
 
-				{/* The Description */}
-				<p className="text-xl md:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto relative" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
-					{tHome("reason")}
-				</p>
-			</section>
+    // Parser options for the <blue> tag in the title
+    const options: HTMLReactParserOptions = {
+        replace: (domNode: any) => {
+            if (domNode.type === 'tag' && domNode.name === "blue") {
+                return (
+                    <span className="text-[#215ca5]">
+                        {domToReact(domNode.children, options)}
+                    </span>
+                );
+            }
+        },
+    };
 
-			{/* Features Grid */}
-			<section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-					{[
-						{
-							title: tHome("skillsReasonablePrice"),
-							text: tHome("skillsReasonablePriceDescription"),
-							color: "blue",
-							href: "#",
-							iconBg: "bg-[#ffc576]",
-							textColor: "text-blue-600",
-							iconSrc: "/icons/piggy-bank.png",
-							gradient: "from-blue-100 to-blue-50",
-						},
-						{
-							title: tHome("customizedLearning"),
-							text: tHome("customizedLearningDescription"),
-							color: "indigo",
-							href: "#",
-							iconBg: "bg-[#FF7F7F]",
-							textColor: "text-[#3a70c6]",
-							iconSrc: "/icons/laptop.png",
-							gradient: "from-blue-100 to-blue-50",
-						},
-						{
-							title: tHome("interculturalMindset"),
-							text: tHome("interculturalMindsetDescription"),
-							color: "purple",
-							href: "#",
-							iconBg: "bg-[#85b5ff]",
-							textColor: "text-purple-600",
-							iconSrc: "/icons/language.png",
-							gradient: "from-blue-100 to-blue-50",
-						},
-					].map(({ title, text, iconBg, iconSrc }, i) => (
-						<div key={i} className="relative group bg-white p-8 rounded-3xl border border-gray-100 shadow-lg overflow-hidden flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay={200 + i * 200} data-aos-duration="500">
-							{/* Decorative corner accent */}
+    return (
+        <div id="why-us" className="relative overflow-hidden">
+            {/* Header Section */}
+            <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-15 pt-15 text-center">
+                <div className="flex flex-col items-center">
+                    
+                    {/* Badge */}
+                    <div className="inline-flex items-center gap-2 px-5 py-2 mb-6 rounded-full border border-[#215ca5]/20 bg-[#215ca5]/5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#215ca5]" />
+                        <span className="text-xs font-bold tracking-[0.18em] uppercase text-[#215ca5]">
+                            {badgeText}
+                        </span>
+                    </div>
 
-							<div className="flex items-center">
-								{/* Icon with subtle glow */}
-								<div className={`relative w-20 h-20 ${iconBg} mr-4 rounded-full flex items-center justify-center shadow-md`}>
-									<Image src={iconSrc} alt={`${title} icon`} width={35} height={35} className="z-10" />
-									<div className="absolute inset-0 rounded-xl opacity-10 bg-white" />
-								</div>
+                    {/* Title with Parsed <blue> tag */}
+                    <h2 className="text-3xl max-w-5xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-8 leading-tight">
+                        {parse(mainTitle!, options)}
+                    </h2>
+                </div>
 
-								{/* Title with decorative underline */}
-								<div className="relative">
-									<h3 className="text-md text-start font-bold text-[#285677] max-w-[200px]">{title}</h3>
-								</div>
-							</div>
-							<p className="mt-4 text-sm text-gray-500">{text}</p>
+                {/* Description - Using whitespace-pre-line to handle \n from CMS */}
+                <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto whitespace-pre-line">
+                    {descriptionText}
+                </p>
+            </section>
 
-							{/* Subtle bottom accent */}
-							<div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-gray-100/50 to-transparent" />
-						</div>
-					))}
-				</div>
-			</section>
+            {/* Features Grid */}
+            <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {data?.reasons?.map((reason, i) => {
+                        // Reuse icons in a loop if there are more than 3 reasons
+                        const icon = iconConfig[i % iconConfig.length];
+                        
+                        return (
+                            <div
+                                key={i}
+                                className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-[#215ca5]/20 transition-all duration-300 flex flex-col p-7"
+                            >
+                                {/* Icon Container */}
+                                <div className={clsx("w-12 h-12 rounded-xl flex items-center justify-center mb-5", icon.bg)}>
+                                    <Image 
+                                        className="icon-mask" 
+                                        src={icon.src} 
+                                        alt="" 
+                                        width={24} 
+                                        height={24} 
+                                        style={{ ['--icon-url' as any]: `url(${icon.src})` }} 
+                                    />
+                                </div>
 
-			{/* Decorative bottom element */}
-		</div>
-	);
+                                {/* Title */}
+                                <h3 className="text-sm font-bold text-[#1a3558] mb-3 leading-snug">
+                                    {reason.title}
+                                </h3>
+
+                                {/* Faint Rule */}
+                                <div className="h-px bg-[#215ca5]/10 mb-3" />
+
+                                {/* Body Text */}
+                                <p className="text-sm text-gray-500 leading-relaxed whitespace-pre-line">
+                                    {reason.description}
+                                </p>
+                            </div>
+                        );
+                    })}
+                </div>
+            </section>
+        </div>
+    );
 }

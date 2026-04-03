@@ -1,14 +1,14 @@
 import React from "react";
 import { Phone, Mail } from "lucide-react";
 import { useTranslations } from "next-intl";
-import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import Footer from "@/app/components/Footer";
-import ContactForm from "@/app/components/contact-us/contactForm";
 import { AppLocale } from "@/i18n/config";
 import { ResolvingMetadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
+import Footer from "../../components/Footer";
+import ContactForm from "../../components/contact-us/contactForm";
 
 export async function generateMetadata(props: { params: Promise<{ locale: AppLocale }> }, parent: ResolvingMetadata) {
 	return generatePageMetadata(props, parent, "seo");

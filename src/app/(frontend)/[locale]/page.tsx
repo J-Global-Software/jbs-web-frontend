@@ -1,6 +1,4 @@
-
-import { BookOpen, Briefcase } from "lucide-react";
-
+import { BookOpen, Briefcase, Calendar, Clock, Languages } from "lucide-react";
 
 import type { ResolvingMetadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
@@ -21,6 +19,8 @@ import { CardGridData } from "../components/homepage/CardGridSection";
 import LecturerIntroduction from "../components/homepage/LecturerIntroduction";
 import Instructors from "../components/homepage/Instructors";
 import ProgramsTabs from "../components/homepage/ProgramsTabs";
+import FreeTrialSection from "../components/for-hr-managers/free-trial";
+import FreeTrial from "../components/homepage/FreeTrial";
 
 // app/[locale]/page.tsx
 export async function generateMetadata(props: { params: Promise<{ locale: AppLocale }> }, parent: ResolvingMetadata) {
@@ -38,162 +38,58 @@ export async function generateMetadata(props: { params: Promise<{ locale: AppLoc
 	return generatePageMetadata(props, parent, "seo");
 }
 
-export default function HomePage() {
-	const tLevels = useTranslations("levels");
-	const tHome = useTranslations("homepage");
+async function getPayloadData(locale: AppLocale) {
+	const baseUrl = process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://localhost:3000";
 
-	const globalPrograms: CardGridData = {
-		level: tLevels("level1"),
-		title: tLevels("globalCommunication"),
-		description: tLevels("globalCommunicationDescription"),
-		stats: [
-			{ icon: <BookOpen className="w-4 h-4" />, label: tLevels("programsCount", { count: 24 }) },
-			{ icon: <Briefcase className="w-4 h-4" />, label: tLevels("workshopsCount", { count: 70 }) },
-		],
-		cards: [
-			{
-				id: "CO1",
-				title: tLevels("C01"),
-				image: "/img/globals/C01.webp",
-				link: "/programs/global-communication/C01",
-			},
-			{
-				id: "CO2",
-				title: tLevels("C02"),
-				image: "/img/globals/C02.webp",
-				link: "/programs/global-communication/C02",
-			},
-			{
-				id: "CO3",
-				title: tLevels("C03"),
-				image: "/img/globals/C03.webp",
-				link: "/programs/global-communication/C03",
-			},
-			{
-				id: "CO4",
-				title: tLevels("C04"),
-				image: "/img/globals/C04.webp",
-				link: "/programs/global-communication/C04",
-			},
-			{
-				id: "BIZNITE",
-				title: tLevels("countryBizNites"),
-				image: "/img/globals/country-biz-nites.jpg",
-				link: "/programs/intercultural-biz-nites",
-			},
-		],
-	};
+	// Fetch Page content and Global Navbar/Footer
+	const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(`${baseUrl}/api/pages?where[slug][equals]=/&locale=${locale}&depth=1`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
 
-	const globalTeamwork: CardGridData = {
-		level: tLevels("level2"),
-		title: tLevels("globalTeamwork"),
-		description: tLevels("globalTeamworkDescription"),
-		stats: [
-			{ icon: <BookOpen className="w-4 h-4" />, label: tLevels("programsCount", { count: 23 }) },
-			{ icon: <Briefcase className="w-4 h-4" />, label: tLevels("workshopsCount", { count: 65 }) },
-		],
-		cards: [
-			{
-				id: "L12",
-				title: tLevels("L12"),
-				image: "/img/globals/L12.webp",
-				link: "/programs/global-teamwork/L12",
-			},
-			{
-				id: "CO6",
-				title: tLevels("C06"),
-				image: "/img/globals/C06.webp",
-				link: "/programs/global-teamwork/C06",
-			},
-			{
-				id: "F01",
-				title: tLevels("F01"),
-				image: "/img/globals/F01.webp",
-				link: "/programs/global-teamwork/F01",
-			},
-			{
-				id: "F08",
-				title: tLevels("F08"),
-				image: "/img/globals/F08.webp",
-				link: "/programs/global-teamwork/F08",
-			},
-			{
-				id: "C09",
-				title: tLevels("C09"),
-				image: "/img/globals/C09.webp",
-				link: "/programs/global-teamwork/C09",
-			},
-		],
-	};
+	const pageData = await pageRes.json();
+	const footerData = await footerRes.json();
+	const navbarData = await navbarRes.json();
 
-	const globalLeadership: CardGridData = {
-		level: tLevels("level3"),
-		title: tLevels("globalLeadership"),
-		description: tLevels("globalLeadershipDescription"),
-		stats: [
-			{ icon: <BookOpen className="w-4 h-4" />, label: tLevels("programsCount", { count: 14 }) },
-			{ icon: <Briefcase className="w-4 h-4" />, label: tLevels("workshopsCount", { count: 40 }) },
-		],
-		cards: [
-			{
-				id: "L01",
-				title: tLevels("L01"),
-				image: "/img/globals/L01.webp",
-				link: "/programs/global-leadership/L01",
-			},
-			{
-				id: "L08",
-				title: tLevels("L08"),
-				image: "/img/globals/L08.webp",
-				link: "/programs/global-leadership/L08",
-			},
-			{
-				id: "I01",
-				title: tLevels("I01"),
-				image: "/img/globals/C06.webp",
-				link: "/programs/global-leadership/I01",
-			},
-			{
-				id: "L02",
-				title: tLevels("L02"),
-				image: "/img/globals/L02.webp",
-				link: "/programs/global-leadership/L02-2",
-			},
-			{
-				id: "L03",
-				title: tLevels("L03"),
-				image: "/img/globals/C09.webp",
-				link: "/programs/global-leadership/L03-2",
-			},
-		],
+	return {
+		page: pageData.docs?.[0] || null,
+		footerData: footerData,
+		navbar: navbarData,
 	};
+}
+
+export default async function HomePage({ params }: { params: Promise<{ locale: AppLocale }> }) {
+	const { locale } = await params;
+	const { page, footerData, navbar } = await getPayloadData(locale);
+
+	// 2. Extract Blocks from Payload Layout
+	// This allows your non-tech team to edit these specific sections
+	const heroContent = page?.layout?.find((b: any) => b.blockType === "hero");
+	const pricingContent = page?.layout?.find((b: any) => b.blockType === "pricing");
+	const whyUsContent = page?.layout?.find((b: any) => b.blockType === "whyChooseUs");
+	const learningCycle = page?.layout?.find((b: any) => b.blockType === "learningCycle");
+	const roadmap = page?.layout?.find((b: any) => b.blockType === "roadmap");
+	const lecturer = page?.layout?.find((b: any) => b.blockType === "lecturerIntroduction");
+	const instructors = page?.layout?.find((b: any) => b.blockType === "instructorsSection");
+	const pressSection = page?.layout?.find((b: any) => b.blockType === "pressSection");
+
 	return (
 		<>
-			<HeroSection />
+			<HeroSection data={heroContent} locale={locale} navbarData={navbar} />
 			<LogoSection />
 			<div id="why-jbs" className="scroll-mt-24">
-				<JGlobalBusinessSchool />
+				<JGlobalBusinessSchool data={whyUsContent} />
 			</div>
-			<ContinuousLearningCycle />
-			<div id="programs" className="bg-[#dbe9ff] pt-20 scroll-mt-16">
-				<div className="bg-[url('/img/bg_continuation.png')] bg-cover bg-center bg-no-repeat">
-					<h1 className="text-2xl md:text-5xl text-center flex justify-center lg:text-5xl font-extrabold tracking-tight text-gray-600 mb-10">
-						<span className="bg-clip-text  relative z-10"> {tHome("programsSectionSubtitle")}</span>
-					</h1>
-					<ProgramsTabs levelsData={[globalPrograms, globalTeamwork, globalLeadership]} />
-				</div>
-			</div>{" "}
+			<ContinuousLearningCycle data={learningCycle} />
+			<FreeTrial data={roadmap} />
+
 			<div id="pricing" className="scroll-mt-16">
-				<PricingSection />
+				<PricingSection data={pricingContent} />
 			</div>
-			<JBSWorkshopsBenefits />
-			<JBSWorkshopsStructure />
-			<LecturerIntroduction />
+
+			<LecturerIntroduction data={lecturer} />
 			<div id="instructors" className="scroll-mt-24">
-				<Instructors />
+				<Instructors data={instructors} />
 			</div>
-			<FeturedIn />
-			<Footer />
+			<FeturedIn data={pressSection} />
+			<Footer data={footerData} />
 		</>
 	);
 }

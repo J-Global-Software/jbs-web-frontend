@@ -1,10 +1,10 @@
 import { FileMakerService } from "@/services/filemaker.service";
 import { fallbackWorkshop, WorkshopMapper } from "@/utils/mappers/workshop.mapper";
-import WorkshopDetail from "@/app/[locale]/programs/WorkshopDetails";
 import { redirect } from "next/navigation";
 import { generatePageMetadata } from "@/lib/seo";
 import { ResolvingMetadata } from "next";
 import { AppLocale } from "@/i18n/config";
+import WorkshopDetail from "../../WorkshopDetails";
 
 export async function generateMetadata(props: { params: Promise<{ locale: AppLocale }> }, parent: ResolvingMetadata) {
 	return generatePageMetadata(props, parent, "seo");

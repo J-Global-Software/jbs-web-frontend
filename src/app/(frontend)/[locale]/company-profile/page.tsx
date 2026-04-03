@@ -1,14 +1,14 @@
 // app/[locale]/company/page.tsx
 // Modern, professional, styled Company Overview (next-intl + Tailwind)
 
-import Footer from "@/app/components/Footer";
-import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import { AppLocale } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 import { generatePageMetadata } from "@/lib/seo";
 import { ResolvingMetadata } from "next";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import Footer from "../../components/Footer";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
 
 export async function generateMetadata(props: { params: Promise<{ locale: AppLocale }> }, parent: ResolvingMetadata) {
 	return generatePageMetadata(props, parent, "seo");

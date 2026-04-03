@@ -2,11 +2,11 @@
 import { getTranslations } from "next-intl/server";
 import type { ResolvingMetadata } from "next";
 import { Link } from "@/i18n/navigation";
-import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import Image from "next/image";
-import Footer from "@/app/components/Footer";
 import { generatePageMetadata } from "@/lib/seo";
 import { AppLocale } from "@/i18n/config";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
+import Footer from "../../components/Footer";
 
 export async function generateMetadata(props: { params: Promise<{ locale: AppLocale }> }, parent: ResolvingMetadata) {
 	return generatePageMetadata(props, parent, "seo");

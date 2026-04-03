@@ -1,6 +1,6 @@
 import { FileMakerService } from "@/services/filemaker.service";
 import { fallbackWorkshop, WorkshopMapper } from "@/utils/mappers/workshop.mapper";
-import WorkshopDetail from "@/app/[locale]/programs/WorkshopDetails";
+import WorkshopDetail from "../../WorkshopDetails";
 import { redirect } from "next/navigation";
 
 export default async function ProgramPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
