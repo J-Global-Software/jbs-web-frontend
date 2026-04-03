@@ -31,45 +31,18 @@ export async function generateMetadata(props: { params: Promise<{ locale: AppLoc
 async function getPayloadData(locale: AppLocale) {
 	const baseUrl = process.env.NEXT_PUBLIC_PAYLOAD_URL;
 
-	console.log(`[PAYLOAD_DEBUG] Starting fetch at ${baseUrl} with locale: ${locale}`);
+	// Fetch Page content and Global Navbar/Footer
+	const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(`${baseUrl}/api/pages?where[slug][equals]=/&locale=${locale}&depth=1`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
 
-	try {
-		const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(`${baseUrl}/api/pages?where[slug][equals]=home&locale=${locale}&depth=1`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
+	const pageData = await pageRes.json();
+	const footerData = await footerRes.json();
+	const navbarData = await navbarRes.json();
 
-		// Log Status Codes immediately
-		console.log(`[PAYLOAD_DEBUG] Response Statuses - Page: ${pageRes.status}, Footer: ${footerRes.status}, Navbar: ${navbarRes.status}`);
-
-		// Helper to safely parse and log errors per request
-		const getData = async (res: Response, name: string) => {
-			if (!res.ok) {
-				const errorText = await res.text();
-				console.error(`[PAYLOAD_DEBUG] ${name} Fetch Error (${res.status}):`, errorText);
-				return null;
-			}
-			return await res.json();
-		};
-
-		const pageData = await getData(pageRes, "Page");
-		const footerData = await getData(footerRes, "Footer");
-		const navbarData = await getData(navbarRes, "Navbar");
-
-		console.log(`[PAYLOAD_DEBUG] Successfully parsed JSON for all endpoints.`);
-
-		// Final check on the structure of the page data
-		if (pageData && !pageData.docs) {
-			console.warn(`[PAYLOAD_DEBUG] Warning: pageData.docs is undefined. Full pageData:`, JSON.stringify(pageData));
-		}
-
-		return {
-			page: pageData?.docs?.[0] || null,
-			footerData: footerData,
-			navbar: navbarData,
-		};
-	} catch (error) {
-		// This catches network-level errors (e.g., DNS issues, baseUrl being undefined)
-		console.error(`[PAYLOAD_DEBUG] CRITICAL FETCH ERROR:`, error);
-		throw error;
-	}
+	return {
+		page: pageData.docs?.[0] || null,
+		footerData: footerData,
+		navbar: navbarData,
+	};
 }
 
 export default async function HomePage({ params }: { params: Promise<{ locale: AppLocale }> }) {
