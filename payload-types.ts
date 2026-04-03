@@ -409,6 +409,26 @@ export interface Page {
         blockName?: string | null;
         blockType: 'instructorsSection';
       }
+    | {
+        badge?: string | null;
+        title?: string | null;
+        items?:
+          | {
+              quote?: string | null;
+              authorName?: string | null;
+              authorRole?: string | null;
+              stars?: number | null;
+              /**
+               * The single letter shown in the colored box (e.g., S)
+               */
+              initial?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'testimonials';
+      }
   )[];
   updatedAt: string;
   createdAt: string;
@@ -785,6 +805,24 @@ export interface PagesSelect<T extends boolean = true> {
                     name?: T;
                     role?: T;
                     staticImageKey?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        testimonials?:
+          | T
+          | {
+              badge?: T;
+              title?: T;
+              items?:
+                | T
+                | {
+                    quote?: T;
+                    authorName?: T;
+                    authorRole?: T;
+                    stars?: T;
+                    initial?: T;
                     id?: T;
                   };
               id?: T;

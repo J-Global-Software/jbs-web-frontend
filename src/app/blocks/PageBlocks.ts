@@ -423,3 +423,58 @@ export const PressBlock: Block = {
 		},
 	],
 };
+
+export const TestimonialsBlock: Block = {
+	slug: "testimonials",
+	fields: [
+		{
+			name: "badge",
+			type: "text",
+			localized: true,
+			defaultValue: "Student Voices",
+		},
+		{
+			name: "title",
+			type: "text",
+			localized: true,
+			defaultValue: "What members say after <accent>joining.</accent>",
+		},
+		{
+			name: "items",
+			type: "array",
+			minRows: 1,
+			fields: [
+				{
+					name: "quote",
+					type: "textarea",
+					localized: true,
+				},
+				{
+					name: "authorName",
+					type: "text",
+					localized: true,
+				},
+				{
+					name: "authorRole",
+					type: "text",
+					localized: true,
+				},
+				{
+					name: "stars",
+					type: "number",
+					defaultValue: 5,
+					min: 1,
+					max: 5,
+				},
+				{
+					name: "initial",
+					type: "text",
+					maxLength: 2,
+					admin: {
+						description: "The single letter shown in the colored box (e.g., S)",
+					},
+				},
+			],
+		},
+	],
+};
