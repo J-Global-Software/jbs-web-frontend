@@ -1,25 +1,15 @@
-import { BookOpen, Briefcase, Calendar, Clock, Languages } from "lucide-react";
-
 import type { ResolvingMetadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
 import LogoSection from "../components/homepage/LogoSection";
-import { useTranslations } from "next-intl";
 import FeturedIn from "../components/homepage/FeaturedIn";
 import Footer from "../components/Footer";
-import JBSWorkshopsBenefits from "../components/homepage/Benefits";
-import JBSWorkshopsStructure from "../components/homepage/WorkshopStructure";
-import { Link } from "@/i18n/navigation";
 import { AppLocale } from "@/i18n/config";
 import PricingSection from "../components/homepage/Pricing";
-
 import ContinuousLearningCycle from "../components/homepage/HowItWorks";
 import JGlobalBusinessSchool from "../components/homepage/WhyUs";
 import HeroSection from "../components/homepage/HeroSection";
-import { CardGridData } from "../components/homepage/CardGridSection";
 import LecturerIntroduction from "../components/homepage/LecturerIntroduction";
 import Instructors from "../components/homepage/Instructors";
-import ProgramsTabs from "../components/homepage/ProgramsTabs";
-import FreeTrialSection from "../components/for-hr-managers/free-trial";
 import FreeTrial from "../components/homepage/FreeTrial";
 
 // app/[locale]/page.tsx
