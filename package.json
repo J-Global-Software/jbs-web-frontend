@@ -12,6 +12,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@neondatabase/serverless": "^1.0.2",
+    "@next/third-parties": "^16.2.2",
     "@payloadcms/db-postgres": "^3.81.0",
     "@payloadcms/next": "^3.81.0",
     "@payloadcms/richtext-lexical": "^3.81.0",

@@ -1,5 +1,5 @@
 // src/payload/collections/Pages.ts
-import { BenefitsBlock, FreeTrialSectionBlock, HeroBlock, InstructorsBlock, LearningCycleBlock, LecturerIntroductionBlock, PressBlock, PricingBlock, RoadmapBlock, TestimonialsBlock, WhyChooseUsBlock } from "@/app/blocks/PageBlocks";
+import { BenefitsBlock, FreeTrialSectionBlock, HeroBlock, InstructorsBlock, LearningCycleBlock, LecturerIntroductionBlock, PressBlock, PricingBlock, ProgramsBlock, RoadmapBlock, TestimonialsBlock, WhyChooseUsBlock } from "@/app/blocks/PageBlocks";
 import { CollectionConfig } from "payload";
 
 export const Pages: CollectionConfig = {
@@ -32,7 +32,7 @@ export const Pages: CollectionConfig = {
 			name: "layout",
 			type: "blocks",
 			required: true,
-			blocks: [HeroBlock, WhyChooseUsBlock, BenefitsBlock, LecturerIntroductionBlock, PressBlock, PricingBlock, FreeTrialSectionBlock, LearningCycleBlock, RoadmapBlock, InstructorsBlock, TestimonialsBlock],
+			blocks: [HeroBlock, WhyChooseUsBlock, BenefitsBlock, LecturerIntroductionBlock, PressBlock, PricingBlock, FreeTrialSectionBlock, LearningCycleBlock, RoadmapBlock, InstructorsBlock, TestimonialsBlock, ProgramsBlock],
 		},
 	],
 };
