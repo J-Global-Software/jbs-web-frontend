@@ -57,6 +57,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: A
 
 	// 2. Extract Blocks from Payload Layout
 	// This allows your non-tech team to edit these specific sections
+
+	const layout = page?.layout || [];
 	const heroContent = page?.layout?.find((b: any) => b.blockType === "hero");
 	const pricingContent = page?.layout?.find((b: any) => b.blockType === "pricing");
 	const whyUsContent = page?.layout?.find((b: any) => b.blockType === "whyChooseUs");
@@ -67,6 +69,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: A
 	const pressSection = page?.layout?.find((b: any) => b.blockType === "pressSection");
 	const testimonials = page?.layout?.find((b: any) => b.blockType === "testimonials");
 	const programs = page?.layout?.find((b: any) => b.blockType === "programs");
+
+	console.log(
+		"Blocks found in Prod:",
+		layout.map((b: any) => b.blockType),
+	);
 
 	return (
 		<>
