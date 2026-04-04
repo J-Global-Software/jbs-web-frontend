@@ -429,6 +429,33 @@ export interface Page {
         blockName?: string | null;
         blockType: 'testimonials';
       }
+    | {
+        badge?: string | null;
+        title?: string | null;
+        description?: string | null;
+        levels?:
+          | {
+              levelLabel: string;
+              levelTitle?: string | null;
+              levelDescription?: string | null;
+              programs?:
+                | {
+                    title?: string | null;
+                    link?: string | null;
+                    /**
+                     * e.g. /img/globals/C01.webp
+                     */
+                    imagePath?: string | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'programs';
+      }
   )[];
   updatedAt: string;
   createdAt: string;
@@ -823,6 +850,31 @@ export interface PagesSelect<T extends boolean = true> {
                     authorRole?: T;
                     stars?: T;
                     initial?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        programs?:
+          | T
+          | {
+              badge?: T;
+              title?: T;
+              description?: T;
+              levels?:
+                | T
+                | {
+                    levelLabel?: T;
+                    levelTitle?: T;
+                    levelDescription?: T;
+                    programs?:
+                      | T
+                      | {
+                          title?: T;
+                          link?: T;
+                          imagePath?: T;
+                          id?: T;
+                        };
                     id?: T;
                   };
               id?: T;
