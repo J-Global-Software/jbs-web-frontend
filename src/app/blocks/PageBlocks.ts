@@ -478,3 +478,72 @@ export const TestimonialsBlock: Block = {
 		},
 	],
 };
+
+export const ProgramsBlock: Block = {
+	slug: "programs",
+	fields: [
+		{
+			name: "badge",
+			type: "text",
+			localized: true,
+			defaultValue: "Programs",
+		},
+		{
+			name: "title",
+			type: "text",
+			localized: true,
+			defaultValue: "Four levels of global skill learning.",
+		},
+		{
+			name: "description",
+			type: "textarea",
+			localized: true,
+		},
+		{
+			name: "levels",
+			type: "array",
+			minRows: 1,
+			maxRows: 4,
+			fields: [
+				{
+					name: "levelLabel", // e.g., "Level 0 - JP-Only"
+					type: "text",
+					required: true,
+					localized: true,
+				},
+				{
+					name: "levelTitle", // e.g., "The Silent Navigator"
+					type: "text",
+					localized: true,
+				},
+				{
+					name: "levelDescription",
+					type: "textarea",
+					localized: true,
+				},
+				{
+					name: "programs",
+					type: "array",
+					fields: [
+						{
+							name: "title",
+							type: "text",
+							localized: true,
+						},
+						{
+							name: "link",
+							type: "text",
+						},
+						{
+							name: "imagePath", // Changed to text to store the string path
+							type: "text",
+							admin: {
+								description: "e.g. /img/globals/C01.webp",
+							},
+						},
+					],
+				},
+			],
+		},
+	],
+};

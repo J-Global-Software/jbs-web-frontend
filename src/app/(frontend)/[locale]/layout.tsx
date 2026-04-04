@@ -5,6 +5,7 @@ import "@/app/globals.css";
 import Aoscompo from "../utils/aos";
 import { Noto_Sans, Poppins } from "next/font/google";
 import { Toaster } from "sonner";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const poppins = Poppins({
 	weight: ["400", "500", "600", "700"],
@@ -28,6 +29,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 				</NextIntlClientProvider>
 				<Toaster richColors closeButton />
 			</body>
+			<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
 		</html>
 	);
 }
