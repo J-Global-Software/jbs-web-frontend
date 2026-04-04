@@ -36,7 +36,7 @@ async function getPayloadData(locale: AppLocale) {
 	const baseUrl = process.env.NEXT_PUBLIC_PAYLOAD_URL;
 
 	// Fetch Page content and Global Navbar/Footer
-	const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(`${baseUrl}/api/pages?where[slug][equals]=home&locale=${locale}&depth=1`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
+	const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(`${baseUrl}/api/pages?where[slug][equals]=home&locale=${locale}&depth=1`, { cache: "no-store" }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
 
 	const pageData = await pageRes.json();
 	const footerData = await footerRes.json();
