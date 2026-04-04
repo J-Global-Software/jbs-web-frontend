@@ -50,7 +50,9 @@ async function getPayloadData(locale: AppLocale) {
 }
 
 export default async function HomePage({ params }: { params: Promise<{ locale: AppLocale }> }) {
-	const { locale } = await params;
+	// CRITICAL: Next 16 requires explicit await of the params object
+	const resolvedParams = await params;
+	const locale = resolvedParams.locale;
 	const { page, footerData, navbar } = await getPayloadData(locale);
 
 	// 2. Extract Blocks from Payload Layout
