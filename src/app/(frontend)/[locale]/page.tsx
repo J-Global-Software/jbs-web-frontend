@@ -16,6 +16,8 @@ import { CardGridData } from "../components/homepage/CardGridSection";
 import ProgramsTabs from "../components/homepage/ProgramsTabs";
 import SingleRowTestimonials from "../components/homepage/Testimonials";
 
+export const dynamic = "force-dynamic";
+
 // app/[locale]/page.tsx
 export async function generateMetadata(props: { params: Promise<{ locale: AppLocale }> }, parent: ResolvingMetadata) {
 	/*
@@ -34,19 +36,41 @@ export async function generateMetadata(props: { params: Promise<{ locale: AppLoc
 
 async function getPayloadData(locale: AppLocale) {
 	const baseUrl = process.env.NEXT_PUBLIC_PAYLOAD_URL;
+	const url = `${baseUrl}/api/pages?where[slug][equals]=home&locale=${locale}&depth=2`;
 
-	// Fetch Page content and Global Navbar/Footer
-	const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(`${baseUrl}/api/pages?where[slug][equals]=home&locale=${locale}&depth=2`, { cache: "no-store" }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
+	console.log("--- DEBUG: Fetching from URL ---", url);
 
-	const pageData = await pageRes.json();
-	const footerData = await footerRes.json();
-	const navbarData = await navbarRes.json();
+	try {
+		const [pageRes, footerRes, navbarRes] = await Promise.all([fetch(url, { cache: "no-store" }), fetch(`${baseUrl}/api/globals/footer?locale=${locale}`, { next: { revalidate: 60 } }), fetch(`${baseUrl}/api/globals/navbar?locale=${locale}`, { next: { revalidate: 60 } })]);
 
-	return {
-		page: pageData.docs?.[0] || null,
-		footerData: footerData,
-		navbar: navbarData,
-	};
+		const pageData = await pageRes.json();
+		const footerData = await footerRes.json();
+		const navbarData = await navbarRes.json();
+
+		// --- FULL RESPONSE LOGGING ---
+		// This will show you exactly what the API returned before any logic touches it
+		console.log("--- DEBUG: RAW PAGE DATA START ---");
+		console.log(JSON.stringify(pageData, null, 2));
+		console.log("--- DEBUG: RAW PAGE DATA END ---");
+
+		if (pageData.docs?.[0]?.layout) {
+			console.log(
+				"--- DEBUG: BLOCK TYPES RECEIVED ---",
+				pageData.docs[0].layout.map((b: any) => b.blockType),
+			);
+		} else {
+			console.warn("--- DEBUG: No layout found in pageData.docs[0] ---");
+		}
+
+		return {
+			page: pageData.docs?.[0] || null,
+			footerData: footerData,
+			navbar: navbarData,
+		};
+	} catch (error) {
+		console.error("--- DEBUG: FETCH ERROR ---", error);
+		return { page: null, footerData: null, navbar: null };
+	}
 }
 
 export default async function HomePage({ params }: { params: Promise<{ locale: AppLocale }> }) {
