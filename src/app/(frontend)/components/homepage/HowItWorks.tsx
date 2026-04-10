@@ -35,6 +35,7 @@ const ORBIT_RADIUS = 140;
 export default function GrandPlanetaryCycle({ data }: LearningCycleProps) {
 	const [activeIdx, setActiveIdx] = useState(0);
 	const [isPaused, setIsPaused] = useState(false);
+	const [isCompactLayout, setIsCompactLayout] = useState(false);
 
 	// Prepare dynamic data from Payload
 	const steps = data?.steps || [];
@@ -48,12 +49,30 @@ export default function GrandPlanetaryCycle({ data }: LearningCycleProps) {
 		return () => clearInterval(interval);
 	}, [isPaused, activeIdx, steps.length]);
 
+	useEffect(() => {
+		const mediaQuery = window.matchMedia("(max-width: 639px)");
+		const syncLayout = () => setIsCompactLayout(mediaQuery.matches);
+
+		syncLayout();
+		mediaQuery.addEventListener("change", syncLayout);
+
+		return () => mediaQuery.removeEventListener("change", syncLayout);
+	}, []);
+
 	if (!steps || steps.length === 0) return null;
 
-	const orbitSize = ORBIT_RADIUS * 2 + 100;
+	const orbitRadius = isCompactLayout ? 82 : ORBIT_RADIUS;
+	const orbitSize = orbitRadius * 2 + (isCompactLayout ? 72 : 100);
+	const outerOrbitSize = orbitRadius * (isCompactLayout ? 2.7 : 2.4);
+	const innerOrbitSize = orbitRadius * 2;
+	const hubSize = isCompactLayout ? 88 : 120;
+	const activePlanetSize = isCompactLayout ? 60 : 80;
+	const inactivePlanetSize = isCompactLayout ? 52 : 70;
+	const pulseSize = isCompactLayout ? 52 : 70;
+	const iconSize = isCompactLayout ? 18 : 25;
 
 	return (
-		<section className="py-15 px-4 overflow-hidden">
+		<section className="overflow-hidden px-4 py-10 sm:py-15">
 			<style jsx>{`
 				@keyframes orbit-pulse {
 					0% {
@@ -71,26 +90,26 @@ export default function GrandPlanetaryCycle({ data }: LearningCycleProps) {
 			`}</style>
 
 			{/* Header */}
-			<div className="max-w-7xl mx-auto mb-4 text-center">
-				<div className="inline-flex items-center gap-2 px-5 py-2 mb-3 rounded-full border border-[#215ca5]/20 bg-[#215ca5]/5">
+			<div className="mx-auto mb-4 max-w-7xl text-center">
+				<div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#215ca5]/20 bg-[#215ca5]/5 px-4 py-2 sm:px-5">
 					<span className="w-1.5 h-1.5 rounded-full bg-[#215ca5]" />
 					<span className="text-xs font-bold tracking-[0.18em] uppercase text-[#215ca5]">{data?.badge}</span>
 				</div>
-				<h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-3">{data?.title}</h2>
-				<p className="text-base md:text-lg text-slate-500 max-w-3xl mx-auto leading-relaxed whitespace-pre-line">{data?.description}</p>
+				<h2 className="mb-3 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">{data?.title}</h2>
+				<p className="mx-auto max-w-3xl whitespace-pre-line text-sm leading-relaxed text-slate-500 sm:text-base md:text-lg">{data?.description}</p>
 			</div>
 
-			<div onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)} className="max-w-7xl mx-auto rounded-[3rem] px-6 py-6 lg:px-8">
-				<div className="flex flex-col lg:flex-row items-center w-full gap-4">
+			<div onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)} className="mx-auto max-w-7xl rounded-[2rem] px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
+				<div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:gap-4">
 					{/* Orbit Visualization */}
-					<div className="w-full lg:w-[52%] flex justify-center items-center">
-						<div className="relative flex-shrink-0 flex items-center justify-center" style={{ width: orbitSize, height: orbitSize }}>
-							<div className="absolute border border-slate-300/70 rounded-full pointer-events-none" style={{ width: ORBIT_RADIUS * 2.4, height: ORBIT_RADIUS * 2.4 }} />
-							<div className="absolute border border-dashed border-slate-400/70 rounded-full pointer-events-none" style={{ width: ORBIT_RADIUS * 2, height: ORBIT_RADIUS * 2 }} />
+					<div className="flex w-full items-center justify-center lg:w-[52%]">
+						<div className="relative flex flex-shrink-0 items-center justify-center" style={{ width: orbitSize, height: orbitSize }}>
+							<div className="absolute rounded-full border border-slate-300/70 pointer-events-none" style={{ width: outerOrbitSize, height: outerOrbitSize }} />
+							<div className="absolute rounded-full border border-dashed border-slate-400/70 pointer-events-none" style={{ width: innerOrbitSize, height: innerOrbitSize }} />
 
 							{/* Central Hub */}
-							<div className="absolute bg-white rounded-full flex flex-col items-center justify-center text-center p-4 border border-slate-100 shadow-sm z-10" style={{ width: 120, height: 120 }}>
-								<span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 leading-relaxed">
+							<div className="absolute z-10 flex rounded-full border border-slate-100 bg-white p-3 text-center shadow-sm" style={{ width: hubSize, height: hubSize }}>
+								<span className="m-auto text-[7px] font-black uppercase leading-relaxed tracking-[0.2em] text-slate-400 sm:text-[9px] sm:tracking-[0.3em]">
 									Continuous
 									<br />
 									Learning
@@ -103,8 +122,8 @@ export default function GrandPlanetaryCycle({ data }: LearningCycleProps) {
 							{steps.map((item, idx) => {
 								const angle = ANGLES[idx] || 0;
 								const rad = (angle * Math.PI) / 180;
-								const x = Math.cos(rad) * ORBIT_RADIUS;
-								const y = Math.sin(rad) * ORBIT_RADIUS;
+								const x = Math.cos(rad) * orbitRadius;
+								const y = Math.sin(rad) * orbitRadius;
 								const isActive = activeIdx === idx;
 								const Icon = iconMap[item.icon] || Users;
 
@@ -121,19 +140,30 @@ export default function GrandPlanetaryCycle({ data }: LearningCycleProps) {
 										}}
 										className="group focus:outline-none flex flex-col items-center"
 									>
-										{isActive && <div className="absolute rounded-full animate-orbit-pulse pointer-events-none border border-[#215ca5]" style={{ width: 70, height: 70 }} />}
+										{isActive && <div className="absolute rounded-full animate-orbit-pulse border border-[#215ca5] pointer-events-none" style={{ width: pulseSize, height: pulseSize }} />}
 										<div
 											className="flex items-center justify-center rounded-full border-2 border-white transition-all duration-500 shadow-md"
 											style={{
-												width: isActive ? 80 : 70,
-												height: isActive ? 80 : 70,
+												width: isActive ? activePlanetSize : inactivePlanetSize,
+												height: isActive ? activePlanetSize : inactivePlanetSize,
 												backgroundColor: isActive ? BRAND : "#e8eef7",
 											}}
 										>
-											<Icon style={{ width: 25, height: 25, color: isActive ? "#fff" : "#5a7fac" }} />
+											<Icon style={{ width: iconSize, height: iconSize, color: isActive ? "#fff" : "#5a7fac" }} />
 										</div>
-										<div className={clsx("absolute px-3 py-1 rounded-full transition-all duration-500 whitespace-nowrap", isActive ? "bg-white shadow border border-slate-100 -bottom-10 opacity-100" : "opacity-60 -bottom-8")}>
-											<span className="text-[11px] font-bold tracking-wider uppercase" style={{ color: isActive ? BRAND : "#64748b" }}>
+										<div
+											className={clsx(
+												"absolute rounded-full whitespace-nowrap transition-all duration-500",
+												isCompactLayout
+													? isActive
+														? "border border-slate-100 bg-white px-2 py-0.5 shadow opacity-100 -bottom-6"
+														: "px-2 py-0.5 opacity-70 -bottom-7"
+													: isActive
+														? "border border-slate-100 bg-white px-2.5 py-1 shadow opacity-100 -bottom-9 sm:px-3 sm:-bottom-10"
+														: "px-2.5 py-1 opacity-60 -bottom-7 sm:px-3 sm:-bottom-8",
+											)}
+										>
+											<span className="text-[8px] font-bold uppercase tracking-[0.12em] sm:text-[11px] sm:tracking-[0.18em]" style={{ color: isActive ? BRAND : "#64748b" }}>
 												{item.title}
 											</span>
 										</div>
@@ -144,26 +174,19 @@ export default function GrandPlanetaryCycle({ data }: LearningCycleProps) {
 					</div>
 
 					{/* Content Panel */}
-					<div className="w-full lg:w-[48%] lg:pl-6 xl:pl-10">
+					<div className="w-full px-2 lg:w-[48%] lg:pl-6 lg:pr-0 xl:pl-10">
 						<div key={activeIdx} className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-							<div className="flex items-center gap-4 mb-4">
-								<div className="w-9 h-0.5 rounded-full bg-[#215ca5]" />
+							<div className="mb-3 flex items-center gap-3 sm:mb-4 sm:gap-4">
+								<div className="h-0.5 w-8 rounded-full bg-[#215ca5] sm:w-9" />
 								<span className="text-xs font-bold uppercase tracking-[0.2em] text-[#215ca5]/50">Step 0{activeIdx + 1}</span>
 							</div>
 
-							<h3 className="text-3xl font-bold text-slate-900 mb-3 tracking-tight">{activeItem.title}</h3>
-							<p className="text-base text-slate-500 leading-relaxed mb-3 whitespace-pre-line">{activeItem.description}</p>
+							<h3 className="mb-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{activeItem.title}</h3>
+							<p className="mb-3 whitespace-pre-line text-sm leading-relaxed text-slate-500 sm:text-base">{activeItem.description}</p>
 
 							{/* Controls */}
-							<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-4 border-t border-slate-100">
-								<button onClick={() => setActiveIdx((activeIdx + 1) % steps.length)} className="flex items-center gap-3 group focus:outline-none">
-									<div className="flex items-center justify-center w-10 h-10 rounded-full text-[#215ca5] text-white transition-all duration-300 group-hover:scale-105">
-										<ChevronRight className="text-[#215ca5]" size={20} />
-									</div>
-									<span className="text-[#215ca5] font-bold uppercase tracking-widest text-xs">Next</span>
-								</button>
-
-								<div className="flex gap-2 items-center">
+							<div className="flex items-center justify-between gap-4 border-t border-slate-100 pt-4">
+								<div className="flex items-center gap-2">
 									{steps.map((_, idx) => (
 										<button
 											key={idx}
@@ -177,6 +200,13 @@ export default function GrandPlanetaryCycle({ data }: LearningCycleProps) {
 										/>
 									))}
 								</div>
+
+								<button onClick={() => setActiveIdx((activeIdx + 1) % steps.length)} className="group flex items-center gap-2 rounded-full px-1 py-1 focus:outline-none">
+									<div className="flex h-9 w-9 items-center justify-center rounded-full text-[#215ca5] text-white transition-all duration-300 group-hover:scale-105">
+										<ChevronRight className="text-[#215ca5]" size={20} />
+									</div>
+									<span className="text-xs font-bold uppercase tracking-[0.18em] text-[#215ca5]">Next</span>
+								</button>
 							</div>
 						</div>
 					</div>
