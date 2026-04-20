@@ -11,10 +11,9 @@ import HeroSection from "../components/homepage/HeroSection";
 import LecturerIntroduction from "../components/homepage/LecturerIntroduction";
 import Instructors from "../components/homepage/Instructors";
 import FreeTrial from "../components/homepage/FreeTrial";
-import { BookOpen, Briefcase } from "lucide-react";
-import { CardGridData } from "../components/homepage/CardGridSection";
 import ProgramsTabs from "../components/homepage/ProgramsTabs";
 import SingleRowTestimonials from "../components/homepage/Testimonials";
+import CommunityForum from "../components/homepage/CommunityForum";
 
 export const dynamic = "force-dynamic";
 
@@ -89,7 +88,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: A
 			<div id="programs" className="bg-[#f2f7fe] pt-10 scroll-mt-16">
 				<h1 className="text-2xl md:text-5xl text-center flex justify-center lg:text-5xl font-extrabold tracking-tight text-gray-600 mb-10"></h1>
 				<ProgramsTabs data={programs} />
-			</div>{" "}
+			</div>
+			<CommunityForum />
 			<div id="pricing" className="scroll-mt-16">
 				<PricingSection data={pricingContent} />
 			</div>

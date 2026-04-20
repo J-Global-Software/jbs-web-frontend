@@ -176,6 +176,85 @@
     "sixWaysLearning": "Six learning modules:",
     "learnMore": "Learn more",
     "freeCoaching": "Free Coaching",
+    "communityForum": {
+        "badge": "Community Forum",
+        "title": "Learn together with <highlight>peers building global careers.</highlight>",
+        "description": "A members-only space to ask questions, compare experiences, and keep practicing between workshops.",
+        "recentDiscussions": {
+            "title": "Recent Discussions",
+            "discussion1": {
+                "initials": "SK",
+                "author": "Satomi K.",
+                "tag": "Culture",
+                "title": "How do you handle silence in mixed Japanese and Western video calls?",
+                "replies": "14 replies",
+                "views": "62 views",
+                "helpful": "8 helpful",
+                "time": "2h ago"
+            },
+            "discussion2": {
+                "initials": "MT",
+                "author": "Marcus T.",
+                "tag": "Career",
+                "title": "Tips for presenting Q3 results to senior management as a non-Japanese PM?",
+                "replies": "9 replies",
+                "views": "48 views",
+                "helpful": "12 helpful",
+                "time": "5h ago"
+            },
+            "discussion3": {
+                "initials": "YN",
+                "author": "Yuki N.",
+                "tag": "Language",
+                "title": "Favorite English phrases for softening direct feedback with Japanese colleagues?",
+                "replies": "21 replies",
+                "views": "105 views",
+                "helpful": "19 helpful",
+                "time": "Yesterday"
+            },
+            "discussion4": {
+                "initials": "HL",
+                "author": "Hiroshi L.",
+                "tag": "General",
+                "title": "Biz Nite debrief: what was your biggest takeaway from this week’s session?",
+                "replies": "7 replies",
+                "views": "34 views",
+                "helpful": "5 helpful",
+                "time": "2 days ago"
+            }
+        },
+        "topics": {
+            "topic1": {
+                "title": "Culture & Communication",
+                "description": "Cross-cultural moments, language tips, and real workplace scenarios from daily work in Japan.",
+                "threads": "142 threads"
+            },
+            "topic2": {
+                "title": "Career Development",
+                "description": "Job searching, promotions, leadership challenges, and long-term career planning in Japan.",
+                "threads": "89 threads"
+            },
+            "topic3": {
+                "title": "Workshop Debriefs",
+                "description": "Continue the discussion after class with shared notes, reflections, and follow-up questions.",
+                "threads": "217 threads"
+            },
+            "topic4": {
+                "title": "Networking",
+                "description": "Meet accountability partners, exchange opportunities, and stay close to upcoming events.",
+                "threads": "64 threads"
+            }
+        },
+        "members": {
+            "title": "Members-only space",
+            "description": "Forum access is included during the free trial and for active members. Discussions are moderated to keep the space practical, respectful, and genuinely useful."
+        },
+        "cta": "Join the Community with a Free Trial",
+        "benefits": {
+            "benefit1": "Access forums right after sign-up",
+            "benefit2": "Moderated and bilingual"
+        }
+    },
     "pricing": {
         "title": "Plan Prices",
         "subtitle": "Choose the best plan to master your global business skills.",

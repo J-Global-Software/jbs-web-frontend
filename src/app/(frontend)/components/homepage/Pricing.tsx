@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Check, Minus } from "lucide-react";
 import Link from "next/link";
 import clsx from "clsx";
+import PricingComparisonTable from "./PricingComparisonTable";
 
 type PlanCycle = "monthly" | "biannual" | "annual";
 
@@ -95,6 +96,12 @@ export default function PricingSection({ data }: PricingProps) {
 						</PlanBtn>
 					</div>
 				</div>
+
+				<PricingComparisonTable
+					annualPrice={unlimited?.cycles?.annual?.price}
+					monthlyPrice={unlimited?.cycles?.monthly?.price}
+					freeTrialPrice={freeTrial?.price}
+				/>
 			</div>
 		</section>
 	);
